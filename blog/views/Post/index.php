@@ -1,0 +1,1 @@
+<?php new AjaxContentView(_t('Posts')) ?>
