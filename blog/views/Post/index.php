@@ -1,1 +1,1 @@
-<?php new AjaxContentView(_t('Posts')) ?>
+<?php new AjaxContentView(_t('Posts'),'blog'); HMeta::canonical(array(true,'/post','?'=>'page='.$posts->getPage())) ?>

@@ -2,6 +2,8 @@
 class PostController extends AController{
 	/** */
 	function index(){
+		set('posts',CPagination::create(Post::QAll()->fields('id,title,slug,intro,created,published,updated')
+						->with('PostImage','image_id')->orderByCreated())->pageSize(10)->execute());
 		render();
 	}
 	/** @ValidParams('/') @CachedFor('10m')
@@ -17,16 +19,10 @@ class PostController extends AController{
 		if($post->slug!==$slug) redirect($post->link());
 
 		$userId=CSecure::connected();
-		$pagination=$post->findWithPaginate('UserComment',UserComment::_paginationQueryCommentsOptions($userId));
+		$pagination=$post->findWithPaginate('PostComment',PostComment::_paginationQueryCommentsOptions($userId));
 		$pagination->pageSize(5)->page(1)->execute();
 		
-		if($userId===false) $userHasRating=false;
-		else{
-			//$guestHasComment=$pagination->getTotalResults() > 0 ? PostComment::exist($guestId,$id) : false;
-			$userHasRating=/*$guestHasComment ? PostRating::exist($guestId,$id) : */UserRating::ratingPostValue($userId,$id);
-		}
-		mset($post,$userId,$userHasRating);
-		set('visitCode',PageVisit::visitPost($id,AConsts::LGS));
+		mset($post);
 		render();
 	}
 	
@@ -34,9 +30,9 @@ class PostController extends AController{
 	* postId > @Required
 	* page > @Required
 	*/ function commentsPagination(int $postId,int $page,boolean $forceLastPage){
-		$query=UserComment::QAll()->where(array('about_type'=>AConsts::POST,'about_id'=>&$postId));
+		$query=PostComment::QAll()->where(array('post_id'=>&$postId));
 		set('userId',$userId=CSecure::connected());
-		$queryOptions=UserComment::_paginationQueryCommentsOptions($userId);
+		$queryOptions=PostComment::_paginationQueryCommentsOptions($userId);
 		$query->setAllWith($queryOptions['with']); $query->where($queryOptions['where']);
 		$pagination=CPagination::create($query)->pageSize(5)->page($page)->execute(); /* Don't forget lgs_post.js ! */
 		
@@ -50,7 +46,6 @@ class PostController extends AController{
 	
 	/** @Ajax @Check
 	* postId > @Required
-	*/ function rating(int $postId,int $rating,UserComment $userComment){
-		self::addRating(AConsts::POST,$postId,$rating,$userComment);
+	*/ function comment(int $postId,int $rating,PostComment $comment){
 	}
 }

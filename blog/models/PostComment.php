@@ -1,8 +1,8 @@
 <?php
-/** @TableAlias('ucom')
-* @Index('about_type','about_id','user_id')
+/** @TableAlias('pcom')
+* @Index('post_id','user_id')
 */
-class UserComment extends SSqlModel{
+class PostComment extends SSqlModel{
 	CONST VALID=1,WAITING_VALIDATION=2,DENIED=0;
 	
 	public
@@ -11,11 +11,9 @@ class UserComment extends SSqlModel{
 		/** @SqlType('int(10) unsigned') @NotNull
 		* @ForeignKey('User','id')
 		*/ $user_id,
-		/** @SqlType('int(1) unsigned') @NotNull
-		* @Index @Enum(AConsts::ratingableTypes())
-		*/ $about_type,
 		/** @SqlType('int(10) unsigned') @NotNull
-		*/ $about_id,
+		* @ForeignKey('Post','id')
+		*/ $post_id,
 		/** @SqlType('varchar(100)') @NotNull
 		*/ $title,
 		/** @SqlType('text') @NotNull
@@ -31,19 +29,19 @@ class UserComment extends SSqlModel{
 		*/ $updated;
 	
 	public static $hasOne=array(
-		'UserRating'=>array(
+		'PostRating'=>array(
 			'foreignKey'=>'user_id','associationForeignKey'=>'user_id',
-			'onConditions'=>array('ucom.about_type=urat.about_type','ucom.about_id=urat.about_id'),
+			'onConditions'=>array('ucom.post_id=urat.post_id'),
 			'fields'=>array('value'=>'rating'),'fieldsInModel'=>true
 		),
 	);
 	
 	public static function _paginationQueryCommentsOptions($userId){
 		$with=array(
-			'UserRating',
+			'PostRating',
 			'User'=>array('fields'=>'pseudo','fieldsInModel'=>true)
 		);
-		$where=array('status'=>UserComment::VALID,'u.status'=>array(User::VALID,User::ADMIN));
+		$where=array('status'=>PostComment::VALID,'u.status'=>array(User::VALID,User::ADMIN));
 		if($userId!==false) $where=array('OR'=>array($where,'user_id'=>$userId));
 		return array('with'=>$with,'where'=>$where);
 	}

@@ -9,9 +9,9 @@ class PostHistory extends SSqlModel{
 		* @ForeignKey('Post','id')
 		*/ $post_id,
 		/** @SqlType('text') @NotNull
-		*/ $intro,
+		*/ $excerpt,
 		/** @SqlType('text') @NotNull
-		*/ $text,
+		*/ $content,
 		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(1)
 		* @Enum(0=>'Import',1=>'Save',2=>'AutoSave')
 		*/ $type,
@@ -19,16 +19,16 @@ class PostHistory extends SSqlModel{
 		*/ $created;
 	
 	public static function last($postId){
-		return self::QOne()->fields('intro,text')->byPost_id($postId)->orderByCreated();
+		return self::QOne()->fields('excerpt,content')->byPost_id($postId)->orderByCreated();
 	}
 	
 	public static function create(&$post,$type){
 		$lastPostHistory=self::last($post->id);
-		if($lastPostHistory!==false && $lastPostHistory->intro===$post->intro && $lastPostHistory->text===$post->text) return true;
+		if($lastPostHistory!==false && $lastPostHistory->excerpt===$post->excerpt && $lastPostHistory->content===$post->content) return true;
 		return self::QInsert()->set(array(
 			'post_id'=>$post->id,
-			'intro'=>$post->intro,
-			'text'=>$post->text
+			'excerpt'=>$post->excerpt,
+			'content'=>$post->content
 		));
 	}
 	

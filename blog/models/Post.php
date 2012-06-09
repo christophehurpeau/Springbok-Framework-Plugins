@@ -1,7 +1,7 @@
 <?php
 /** @TableAlias('p') @DisplayField('title') */
 class Post extends SSqlModel{
-	const DRAFT=1,PUBLISHED=2,ARCHIVED=3;
+	const DRAFT=1,PUBLISHED=2,ARCHIVED=3,DELETED=4;
 	
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
@@ -38,16 +38,12 @@ class Post extends SSqlModel{
 		*/ $updated;
 	
 	public static $hasOne=array(
-		'Rating'=>array('modelName'=>'UserRating','foreignKey'=>'id','associationForeignKey'=>'about_id','onConditions'=>array('about_type'=>AConsts::POST),
-			'fields'=>array('ROUND(AVG(urat.value))'=>'rating'),'fieldsInModel'=>true),
+		'Rating'=>array('modelName'=>'PostRating','fields'=>array('ROUND(AVG(prat.value))'=>'rating'),'fieldsInModel'=>true),
 	);
 	
 	public static $hasMany=array(
 		'PostPost'=>array('onConditions'=>array('deleted'=>false)),
 		'LinkedPost'=>array('modelName'=>'PostPost','associationForeignKey'=>'linked_post_id'),
-		
-		'UserRating'=>array('foreignKey'=>'id','associationForeignKey'=>'about_id','onConditions'=>array('about_type'=>AConsts::POST),'dataName'=>'ratings'),
-		'UserComment'=>array('foreignKey'=>'id','associationForeignKey'=>'about_id','onConditions'=>array('about_type'=>AConsts::POST),'dataName'=>'comments'),
 	);
 	public static $hasManyThrough=array('Post'=>array('joins'=>array('PostPost'=>array('associationForeignKey'=>'linked_post_id'))));
 	
