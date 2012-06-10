@@ -27,8 +27,10 @@ class Post extends SSqlModel{
 		/** @SqlType('tinyint(1)') @NotNull
 		* @Enum(1=>'Draft',2=>'Published',3=>'Archived')
 		*/ $status,
+		/* IF(blog_comments_enabled) */
 		/** @Boolean @Default(true)
 		*/ $comments,
+		/* /IF */
 		/** @SqlType('datetime') @NotNull
 		*/ $created,
 		/** @SqlType('datetime') @Null @Default(NULL)
@@ -66,7 +68,7 @@ class Post extends SSqlModel{
 	
 	public function auto_slug(){ return HString::slug($this->title); }
 	public function auto_meta_title(){ return $this->title; }
-	public function auto_meta_descr(){ return str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->intro),ENT_QUOTES,'UTF-8')); }
+	public function auto_meta_descr(){ return str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->excerpt),ENT_QUOTES,'UTF-8')); }
 	public function auto_meta_keywords(){ return empty($this->tags)?'':implode(', ',PostsTag::QValues()->field('name')->byId($this->tags)->orderBy('name')); }
 	
 	public function isPublished(){return $this->status!==self::DRAFT;}

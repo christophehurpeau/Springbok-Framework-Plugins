@@ -1,22 +1,16 @@
 <?php
 class PostController extends AController{
-	/** */
-	function index(){
-		set('posts',CPagination::create(Post::QAll()->fields('id,title,slug,intro,created,published,updated')
-						->with('PostImage','image_id')->orderByCreated())->pageSize(10)->execute());
-		render();
-	}
-	/** @ValidParams('/') @CachedFor('10m')
-	* id > @Required
-	* slug > @Required
+	/** @ValidParams('/') @Required('slug')
+	* slug > @MinSize(2)
 	*/ function view(int $id,$slug){
-		$post=Post::QOne()->byId($id)
-			->with('Rating')
+		$post=Post::QOne()->where(/* IF(blog_slugOnly_enabled) */$id===null ? array('slug'=>$slug) :/* /IF */array('id'=>$id))
+			/* IF(blog_ratings_enabled) */->with('Rating')/* /IF */
 			->with('Post','id,title,slug')
 			->with('PostImage',array('fields'=>'image_id','onConditions'=>array('in_text'=>true)))
-			->with('PostsAuthor','name,url');
+			/* IF(blog_personalizeAuthors_enabled) */->with('PostsAuthor','name,url')/* /IF */
+			;
 		notFoundIfFalse($post);
-		if($post->slug!==$slug) redirect($post->link());
+		if(/* IF(blog_slugOnly_enabled) */$id!==null && /* /IF*/$post->slug!==$slug) redirect($post->link());
 
 		$userId=CSecure::connected();
 		$pagination=$post->findWithPaginate('PostComment',PostComment::_paginationQueryCommentsOptions($userId));

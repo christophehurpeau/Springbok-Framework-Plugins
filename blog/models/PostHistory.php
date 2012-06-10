@@ -41,16 +41,16 @@ class PostHistory extends SSqlModel{
 	}*/
 	
 	public function restore(){
-		$post=Post::QOne()->fields('meta_descr,intro')->byId($this->post_id);
+		$post=Post::QOne()->fields('meta_descr,excerpt')->byId($this->post_id);
 		$isAutoMetaDescr=$post->auto_meta_descr()===$post->meta_descr;
 		
 		$post->id=$this->post_id;
-		$post->intro=$this->intro;
-		$post->text=$this->text;
+		$post->excerpt=$this->excerpt;
+		$post->content=$this->content;
 		if($isAutoMetaDescr){
 			$post->meta_descr=$post->auto_meta_descr();
-			return $post->update('intro','text','meta_descr');
+			return $post->update('excerpt','content','meta_descr');
 		}
-		return $post->update('intro','text');
+		return $post->update('excerpt','content');
 	}
 }
