@@ -35,8 +35,8 @@ class PostHistory extends SSqlModel{
 	/*public static function restore($postId,$historyId){
 		return Post::QUpdateSelect()
 			->with('PostHistory',array('onConditions'=>array('id'=>$historyId)))
-			->set('intro','intro')
-			->set('text','text')
+			->set('excerpt','excerpt')
+			->set('content','content')
 			->set('updated','created');
 	}*/
 	

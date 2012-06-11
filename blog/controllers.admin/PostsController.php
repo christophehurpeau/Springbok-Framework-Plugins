@@ -79,8 +79,8 @@ class PostsController extends Controller{
 	
 	/** @ValidParams @Required('id') */
 	function test(int $id){
-		$post=Post::QOne()->fields('id,title,slug,intro,text')->byId($id);
-		renderText(UHtml::transformInternalLinks($post->intro,array(
+		$post=Post::QOne()->fields('id,title,slug,excerpt,text')->byId($id);
+		renderText(UHtml::transformInternalLinks($post->excerpt,array(
 			'article'=>function($id){$postSlug=Post::findValueSlugById($id); return array('/:controller/:id-:slug','posts',sprintf('%03d',$id),$postSlug);}
 		)));
 	}

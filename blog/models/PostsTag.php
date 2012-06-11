@@ -37,23 +37,34 @@ class PostsTag extends SSqlModel{
 		return parent::beforeUpdate();
 	}
 	
+	public function afterSave(){
+		VPostsTags::generate();
+	}
+	
+	public function link(){
+		return '/posts/tag/'.$this->slug;
+	}
+	
 	const MAX_SIZE=20;
 	public static function findAllSize(){
-		$models=self::QAll()
+		$models=self::QListAll()->fields('name,slug')
 			->with('PostTag',array('isCount'=>true))
-			->orderBy(array('postTags'=>'DESC'))
+			->orderBy(array('tags'=>'DESC'))
 			->limit(self::MAX_SIZE);
 
 		$total=0;
 		foreach($models as $model)
-			$total+=$model->postTags;
+			$total+=$model->tags;
 
-		$tags=array();
 		if($total>0){
-			foreach($models as $model)
-				$tags[$model->name]=8+(int)(16*$model->postTags/($total+10));
-			uksort($tags,'strcasecmp');
+			foreach($models as &$model)
+				//$model->size=8+(int)(16*$model->tags/($total+10));
+				//$model->size=(int)(150*(1+(1.5*$model->tags-$total/2)/$total));
+				
+				//pointsize = cnt / maxcount * (maxfontsize - minfontsize) + minfontsize http://www.fastechws.com/tricks/sql/labels_and_tag_clouds.php
+				$model->size=8+round($model->tags / $total * /* EVAL 16-8 *//* HIDE */0/* /HIDE */ ,0);
+			uksort($models,'strcasecmp');
 		}
-		return $tags;
+		return $models;
 	}
 }

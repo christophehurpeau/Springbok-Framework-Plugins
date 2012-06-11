@@ -1,8 +1,6 @@
-{=$pagination=HPagination::simple($posts)}
-
-<ul class="nobullets cMt10">
-{f $posts->getResults() as $post}
-	<li itemscope itemtype="http://schema.org/Article" class="block1 clearfix">
+<h2>Actualités Santé</h2>
+{f $posts as $post}
+	<div itemscope itemtype="http://schema.org/Article" class="clearfix sepTop">
 		{if!null $post->image->image_id}
 			<?php $url=Config::$static_url.'/files/posts_images/'.$post->image->image_id; ?>
 			{link '<img class="float_left mr10" itemprop="image" content="'.$url.'.jpg" width="75" height="75" src="'.$url.'-medium.jpg" />',$post->link(),array('escape'=>false)}
@@ -12,8 +10,5 @@
 		<span itemprop="datePublished" content="{$post->published}"></span>
 		{if!null $post->updated}<span itemprop="dateModified" content="{$post->updated}"></span>{/if}
 		{=$post->excerpt}
-	</li>
+	</div>
 {/f}
-</ul>
-
-{=$pagination}

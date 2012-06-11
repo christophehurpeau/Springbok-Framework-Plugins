@@ -1,25 +1,29 @@
 <?php
 class PostController extends AController{
 	/** @ValidParams('/') @Required('slug')
-	* slug > @MinSize(2)
+	* slug > @MinLength(2)
 	*/ function view(int $id,$slug){
 		$post=Post::QOne()->where(/* IF(blog_slugOnly_enabled) */$id===null ? array('slug'=>$slug) :/* /IF */array('id'=>$id))
 			/* IF(blog_ratings_enabled) */->with('Rating')/* /IF */
 			->with('Post','id,title,slug')
 			->with('PostImage',array('fields'=>'image_id','onConditions'=>array('in_text'=>true)))
+			->with('PostsTag','name,slug')
 			/* IF(blog_personalizeAuthors_enabled) */->with('PostsAuthor','name,url')/* /IF */
 			;
 		notFoundIfFalse($post);
 		if(/* IF(blog_slugOnly_enabled) */$id!==null && /* /IF*/$post->slug!==$slug) redirect($post->link());
 
+		/* IF(blog_comments_enabled) */
 		$userId=CSecure::connected();
 		$pagination=$post->findWithPaginate('PostComment',PostComment::_paginationQueryCommentsOptions($userId));
 		$pagination->pageSize(5)->page(1)->execute();
+		/* /IF */
 		
 		mset($post);
 		render();
 	}
 	
+	/* IF(blog_comments_enabled) */
 	/** @Ajax
 	* postId > @Required
 	* page > @Required
@@ -36,7 +40,7 @@ class PostController extends AController{
 		set('comments',$pagination);
 		render('_comments');
 	}
-
+	/* /IF */
 	
 	/** @Ajax @Check
 	* postId > @Required
