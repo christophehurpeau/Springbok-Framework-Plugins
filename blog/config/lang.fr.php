@@ -1,0 +1,16 @@
+<?php return array(
+	'plugin.blog.postsListTag'=>'Etiquette',
+	'plugin.blog.Posts:'=>'Billets :',
+	'plugin.blog.Posts'=>'Billets',
+	'plugin.blog.Post'=>'Billet',
+	'plugin.blog.Authors:'=>'Auteurs :',
+	'plugin.blog.Authors'=>'Auteurs',
+	'plugin.blog.Tags'=>'Etiquettes',
+	'plugin.blog.Tag'=>'Etiquette',
+	'plugin.blog.Categories'=>'Catégories',
+	'plugin.blog.Categorie'=>'Catégorie',
+	'plugin.blog.Comments'=>'Commentaires',
+	'plugin.blog.Comment'=>'Commentaire',
+	'plugin.blog.CommentValidation'=>'Validation des commentaires',
+	'plugin.blog.Tools'=>'Outils',
+);

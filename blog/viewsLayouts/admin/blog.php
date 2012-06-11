@@ -3,18 +3,18 @@
 
 <div class="fixed left w200">
 	{menuLeft 'startsWith':true/*,'menuAttributes':array('rel'=>'page')*/
-		'Articles'=>array('url'=>'/posts','startsWith'=>false),
+		_t('plugin.blog.Posts')=>array('url'=>'/posts','startsWith'=>false),
 		/* IF(blog_personalizeAuthors_enabled) */
-		'Auteurs'=>'/postsAuthors',
+		_t('plugin.blog.Authors')=>'/postsAuthors',
 		/* /IF */
-		'Mots-clés'=>'/postsTags',
-		'Catégories'=>'/postsCategories',
+		_t('plugin.blog.Tags')=>'/postsTags',
+		_t('plugin.blog.Categories')=>'/postsCategories',
 		/* IF(blog_comments_enabled) */
-		'Commentaires'=>array('url'=>'/postsComments','startsWith'=>false),
-		'Validation Commentaires'=>'/postsComments/validation',
+		_t('plugin.blog.Comments')=>array('url'=>'/postsComments','startsWith'=>false),
+		_t('plugin.blog.CommentValidation')=>'/postsComments/validation',
 		/* /IF */
 		false,
-		'Outils'=>'/posts/tools',
+		_t('plugin.blog.Tools')=>'/posts/tools',
 	}
 </div>
 
