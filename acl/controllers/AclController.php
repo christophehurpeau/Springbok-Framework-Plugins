@@ -4,9 +4,8 @@ Controller::$defaultLayout='admin';
 class AclController extends Controller{
 	/** @Acl('AclGroup') */
 	function index(){
-		$table=CTable::create(AclGroup::QAll());
-		$table->defaultAction='permissions';
-		self::renderTable('Acl Groups',$table,array('modelName'=>'AclGroup','form'=>array('action'=>'/acl/add')));
+		AclGroup::Table()->paginate()->actionClick('permissions')
+			->render('Acl Groups',array('modelName'=>'AclGroup','form'=>array('action'=>'/acl/add')));
 	}
 	
 	/** @ValidParams @Acl('Acl') */

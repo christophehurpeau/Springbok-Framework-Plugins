@@ -1,12 +1,9 @@
 <?php
-/** @TableAlias('st') @Created @Updated */
+/** @TableAlias('st') @Created @Updated @DisplayField('term') */
 class SearchableTerm extends SSqlModel{
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
-		/** @SqlType('int(10) unsigned') @NotNull
-		 * @ForeignKey('SearchableKeyword','id')
-		*/ $keyword_id,
 		/** @Unique @SqlType('varchar(100)') @NotNull
 		*/ $term;
 	
@@ -17,6 +14,8 @@ class SearchableTerm extends SSqlModel{
 	}
 	
 	public static function cleanTerm($term){
-		return SearchableKeyword::cleanKeyword($term);
+		return HString::removeSpecialChars(trim(preg_replace('/[\s\,\+\\\\]+/',' ',$term)));
 	}
+	
+	public function name(){ return $this->term; }
 }

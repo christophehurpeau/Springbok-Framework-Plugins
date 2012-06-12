@@ -7,9 +7,13 @@ class SearchableKeyword extends SSqlModelParent{
 		/** @SqlType('varchar(100)') @NotNull @MinLenth(3)
 		*/ $name,
 		/* IF(searchable_slug) */
-		/** @SqlType('varchar(100)') @NotNull
+		/** @SqlType('varchar(100)') @NotNull @MinLenth(3)
 		*/ $slug
 		/* /IF */;
+	
+	public static $hasManyThrough=array(
+		'SearchableTerm'=>array('joins'=>'SearchableKeywordTerm')
+	);
 	
 	
 	/* IF(searchable_slug_auto) */
@@ -19,18 +23,14 @@ class SearchableKeyword extends SSqlModelParent{
 	}
 	/* /IF */
 	
-	public static function cleanKeyword($keyword){
-		return trim(preg_replace('/[\s\,\+\\]+',' ',$phrase));
+	public static function cleanPhrase($phrase){
+		return trim(preg_replace('/[\s\,\+\-]+/',' ',$phrase));
 	}
 	
-	public static function listKeywords($phrase){
-		$phrase=trim(preg_replace('/[\s\,\+\-]+',' ',$phrase));
-		$phrase=HString::removeSpecialChars($phrase);
-		
-		$keywords=self::QAll()
-			->with('SearchableTerm',false)
-			->where(self::dbEscape(' '.$phrase.' ').' LIKE CONCAT("% ",st.term," %")')
-			->groupBy('sk.id');
-		return $keywords;
+	
+	public static function listKeywordIds($phraseCleaned){
+		return SearchableKeywordTerm::QValues()->field('DISTINCT keyword_id')
+			->withForce('SearchableTerm')
+			->where(array(self::dbEscape(' '.$phraseCleaned.' ').' LIKE CONCAT("% ",st.term," %")'));
 	}
 }
