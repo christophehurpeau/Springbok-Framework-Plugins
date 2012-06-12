@@ -1,0 +1,16 @@
+<?php return array(
+	'plugin.blog.postsListTag'=>'Tag',
+	'plugin.blog.Posts:'=>'Posts:',
+	'plugin.blog.Posts'=>'Posts',
+	'plugin.blog.Post'=>'Post',
+	'plugin.blog.Authors:'=>'Authors:',
+	'plugin.blog.Authors'=>'Authors',
+	'plugin.blog.Tags'=>'Tags',
+	'plugin.blog.Tag'=>'Tag',
+	'plugin.blog.Categories'=>'Categories',
+	'plugin.blog.Categorie'=>'Categorie',
+	'plugin.blog.Comments'=>'Comments',
+	'plugin.blog.Comment'=>'Comment',
+	'plugin.blog.CommentValidation'=>'Comment Validation',
+	'plugin.blog.Tools'=>'Tools',
+);
