@@ -4,7 +4,8 @@ Controller::$defaultLayout='admin/blog';
 class PostsController extends Controller{
 	/** */
 	function index(){
-		$table=Post::Table()->fields('id,title,slug,status,created,updated')->where(array('status !='=>Post::DELETED))->orderByCreated()
+		$table=Post::Table()->fields('id,title,slug,status,created,updated')
+			->where(array('status !='=>Post::DELETED))->orderByCreated()
 			->allowFilters()
 			->paginate()->fields(array('id','title','status','created','updated'))->actionClick('edit')
 			->render('Articles',true);
@@ -76,6 +77,19 @@ class PostsController extends Controller{
 		redirect('/posts/tools');
 	}
 	
+	/** @ValidParams */
+	function autoEveryPosts(){
+		foreach(Post::QAll()->with('PostTag',array('fields'=>'tag_id')) as $post){
+			foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName) if(empty($post->$metaName)) $post->$metaName=$post->{'auto_'.$metaName}();
+			$post->update('slug','meta_title','meta_descr','meta_keywords');
+			PostPost::refind($post->id);
+		}
+	}
+	
+	/** @ValidParams */
+	function recountTagsPosts(){
+		
+	}
 	
 	/** @ValidParams @Required('id') */
 	function test(int $id){
