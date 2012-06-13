@@ -22,4 +22,5 @@
 	'plugin.blog.updatedOn'=>'Updated on',
 	'plugin.blog.LatestPosts'=>'Latest posts',
 	'plugin.blog.editPost'=>'Edit post',
+	'plugin.blog.postLinked_title'=>'Linked posts',
 );

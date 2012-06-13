@@ -3,13 +3,7 @@ class PostController extends AController{
 	/** @ValidParams('/') @Required('slug')
 	* slug > @MinLength(2)
 	*/ function view(int $id,$slug){
-		$post=Post::QOne()->where(/* IF(blog_slugOnly_enabled) */$id===null ? array('slug'=>$slug) :/* /IF */array('id'=>$id))
-			/* IF(blog_ratings_enabled) */->with('Rating')/* /IF */
-			->with('Post','id,title,slug')
-			->with('PostImage',array('fields'=>'image_id','onConditions'=>array('in_text'=>true)))
-			->with('PostsTag','name,slug')
-			/* IF(blog_personalizeAuthors_enabled) */->with('PostsAuthor','name,url')/* /IF */
-			;
+		$post=Post::QOne()->fields('title,slug')->where(/* IF(blog_slugOnly_enabled) */$id===null ? array('slug'=>$slug) :/* /IF */array('id'=>$id));
 		notFoundIfFalse($post);
 		if(/* IF(blog_slugOnly_enabled) */$id!==null && /* /IF*/$post->slug!==$slug) redirect($post->link());
 
@@ -19,7 +13,9 @@ class PostController extends AController{
 		$pagination->pageSize(5)->page(1)->execute();
 		/* /IF */
 		
-		mset($post);
+		$ve=VPost::create($id);
+		set('metas',$ve->metas());
+		mset($post,$ve);
 		render();
 	}
 	

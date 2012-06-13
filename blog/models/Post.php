@@ -29,7 +29,7 @@ class Post extends SSqlModel{
 		*/ $status,
 		/* IF(blog_comments_enabled) */
 		/** @Boolean @Default(true)
-		*/ $comments,
+		*/ $comments_allowed,
 		/* /IF */
 		/** @SqlType('datetime') @NotNull
 		*/ $created,
@@ -52,6 +52,15 @@ class Post extends SSqlModel{
 	
 	public static function findLatest(){
 		return Post::QAll()->byStatus(Post::PUBLISHED)->fields('id,title')->orderByCreated()->limit(5);
+	}
+
+	public static function QListAll(){
+		return/* */ Post::QAll()->fields('id,title,slug,excerpt,/* IF(blog_comments_enabled) */comments_allowed,/* /IF */created,published,updated')
+			->with('PostImage','image_id')
+			->with('PostsTag','id,name,slug')
+			/* IF(blog_comments_enabled) */->with('PostComment',array('isCount'=>true,'onConditions'=>array('pcom.status'=>PostComment::VALID)))/* /IF */
+			->byStatus(Post::PUBLISHED)
+			->orderByCreated();
 	}
 	
 	public function beforeInsert(){

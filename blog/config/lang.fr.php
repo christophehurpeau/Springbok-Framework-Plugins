@@ -22,4 +22,5 @@
 	'plugin.blog.updatedOn'=>' Mis à jour le',
 	'plugin.blog.LatestPosts'=>'Derniers billets',
 	'plugin.blog.editPost'=>'Modifer ce billet',
+	'plugin.blog.postLinked_title'=>'Billets liés',
 );

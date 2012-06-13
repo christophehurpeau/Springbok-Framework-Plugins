@@ -21,7 +21,7 @@
 	
 	{if!e $post->posts}
 		<div class="sepTop">
-			<h5>/* VALUE(blog_postLinked_title) */</h5>
+			<h5>{t 'plugin.blog.postLinked_title'}</h5>
 			<ul>
 				{f $post->posts as $lPost}<li>{link $lPost->title,$lPost->link()}</li>{/f}
 			</ul>

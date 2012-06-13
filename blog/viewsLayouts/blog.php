@@ -1,4 +1,4 @@
-<?php $v=new AjaxPageView($layout_title,''); ?>
+<?php $v=new AjaxPageView($layout_title,'mr200'); ?>
 <?php HBreadcrumbs::display(_tC('Home'),$layout_title) ?>
 <div class="fixed right w200">
 	<div class="content">
