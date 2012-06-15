@@ -23,4 +23,5 @@
 	'plugin.blog.LatestPosts'=>'Latest posts',
 	'plugin.blog.editPost'=>'Edit post',
 	'plugin.blog.postLinked_title'=>'Linked posts',
+	'plugin.blog.PostsLatestTitle'=>'Latest posts',
 );

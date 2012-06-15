@@ -21,6 +21,7 @@ class PostHistoriesController extends Controller{
 		$history=PostHistory::QOne()->byId($id);
 		notFoundIfFalse($history);
 		$history->restore();
+		Post::onModified($history->post_id);
 		redirect('/posts/edit/'.$history->post_id);
 	}
 }

@@ -13,6 +13,8 @@ class PostTagsController extends Controller{
 	}
 	/** @Ajax @ValidParams @AllRequired */
 	function del(int $tag_id,int $post_id){
-		renderText(PostTag::deleteOneByTag_idAndPost_id($tag_id,$post_id) ? '1' : '0');
+		$res=PostTag::deleteOneByTag_idAndPost_id($tag_id,$post_id);
+		Post::onModified($post_id);
+		renderText($res ? '1' : '0');
 	}
 }

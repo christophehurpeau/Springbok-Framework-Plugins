@@ -24,9 +24,13 @@ class PostPost extends SSqlModel{
 					->with('PostTag',array('forceJoin'=>true,'fields'=>false))
 					->where(array('id !='=>$postId,'pt.tag_id'=>$tags))
 			);
+		Post::onModified($id);
 	}
 	
 	public static function add($postId,$linkedPostId){
-		return self::QInsert()->ignore()->set(array('post_id'=>$postId,'linked_post_id'=>$linkedPostId,'manual'=>true));
+		if(self::QInsert()->ignore()->set(array('post_id'=>$postId,'linked_post_id'=>$linkedPostId,'manual'=>true))){
+			Post::onModified($id);
+			return true;
+		}
 	}
 }

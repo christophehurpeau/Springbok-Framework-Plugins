@@ -33,9 +33,11 @@
 			</div>
 			/* /IF */
 			
-			<div id="divPostImage" class="content mt10 mr200 clearfix block4">
-				{ifnull $post->image->image_id} Pas d'image associée. {link 'Sélectionner une image','#',array('onclick'=>'return _.posts.selectImage('.$id.')')}
-				{else}<?php $image=$post->image ?>{include _post_image.php}{/if}
+			<div class="content mt10 mr200 clearfix">
+				<div id="divPostImage">
+					{ifnull $post->image->image_id} Pas d'image associée. {link 'Sélectionner une image','#',array('onclick'=>'return _.posts.selectImage('.$id.')')}
+					{else}<?php $image=$post->image ?>{include post_image.php}{/if}
+				</div>
 				{=$form->submit(true,array(),array('class'=>'submit center'))}
 			</div>
 			

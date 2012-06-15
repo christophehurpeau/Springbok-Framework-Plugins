@@ -91,12 +91,15 @@ class Post extends SSqlModel{
 	
 	
 	public function save(){
-		if($this->status===self::PUBLISHED && !Post::existByIdAndStatus($id,self::PUBLISHED)) $this->published=array('NOW()');
+		if($this->status===self::PUBLISHED && !Post::existByIdAndStatus($this->id,self::PUBLISHED)) $this->published=array('NOW()');
 		$res=$this->update();
-		if($res && $this->status===self::PUBLISHED){
-			ACSitemap::generatePosts();
-			VPostsLatest::generate();
-		}
+		if($res && $this->status===self::PUBLISHED)
+			self::onModified($this->id);
 		return $res;
+	}
+	
+	public static function onModified($postId){
+		VPostsLatest::generate(); VPostsLatestMenu::generate(); VPost::generate($postId);
+		ACSitemapPosts::generate();
 	}
 }

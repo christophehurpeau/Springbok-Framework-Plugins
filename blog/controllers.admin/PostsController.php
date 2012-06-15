@@ -35,6 +35,7 @@ class PostsController extends Controller{
 	/** @ValidParams @Required('id') */
 	function delete(int $id){
 		Post::updateOneFieldByPk($id,'status',Post::DELETED);
+		Post::onModified($id);
 		redirect('/posts');
 	}
 	
@@ -43,13 +44,27 @@ class PostsController extends Controller{
 	function save(int $id,Post $post){
 		$post->id=$id;
 		if(empty($post->meta_keywords)) $post->findWith('PostTag',array('fields'=>'tag_id'));
-		//if(isset($_POST['imageInText'])) PostImage::QUpdateOneField('in_text',$_POST['imageInText']?true:false)->byPost_id($id)->limit1()->execute();
+		if(isset($_POST['imageInText'])) PostImage::updateOneFieldByPk($id,'in_text',$_POST['imageInText']?true:false);
 		foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName) if(empty($post->$metaName)) $post->$metaName=$post->{'auto_'.$metaName}();
 		$res=$post->save();
 		PostHistory::create($post,PostHistory::SAVE);
 		renderText($res);
 	}
 
+
+	/** @Ajax @ValidParams @AllRequired */
+	function selectImage(int $postId,int $imageId){
+		$pi=new PostImage;
+		$pi->post_id=$postId;
+		$pi->image_id=$imageId;
+		$pi->replace();
+		$pi->in_text=true;
+		Post::onModified($postId);
+		set_('image',$pi);
+		set_('id',$postId);
+		render('post_image');
+	}
+	
 	
 	/** @Ajax @ValidParams @Required('term') */
 	function autocomplete($term){

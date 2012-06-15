@@ -1,5 +1,9 @@
-<div class="article" itemscope itemtype="http://schema.org/Article">
+<article itemscope itemtype="http://schema.org/Article">
 	<h1 itemprop="name">{$post->title}</h1>
+	{if!null $post->image->image_id}
+		<?php $url=Config::$static_url.'/files/posts_images/'.$post->image->image_id; ?>
+		{link '<img class="float_left mr10" itemprop="image" content="'.$url.'.jpg" width="75" height="75" src="'.$url.'-medium.jpg" />',$post->link(),array('escape'=>false)}
+	{/if}
 	
 	/* IF(blog_displayExcerptInView) */<div class="ml20 italic" itemprop="description">{=$post->excerpt}</div>/* /IF */
 	<div itemprop="articleBody" class="clearfix">
@@ -27,4 +31,4 @@
 			</ul>
 		</div>
 	{/if}
-</div>
+</article>

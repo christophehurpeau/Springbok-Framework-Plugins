@@ -4,7 +4,7 @@ _.posts={
 	getGallery:function(){
 		if(this.gallery!==undefined) return this.gallery;
 		return this.gallery=new Gallery($('<div id="PostsGallery" style="width:800px;height:600px;margin-right:20px"/>'),
-										basedir+'postsAlbum',function(id){return webdir+'files/images/'+id+'-small.jpg';});
+										basedir+'postsAlbum',function(id){return webdir+'files/posts_images/'+id+'-small.jpg';});
 	},
 	edit:function(postId){
 		S.ready(function(){
@@ -67,6 +67,15 @@ _.posts={
 				ac.text(val.length);
 			});
 		});
+	},
+	selectImage:function(postId){
+		var g=this.gallery;
+		g.setOnSelectImage(function(id){
+			g.close();
+			$('#divPostImage').load(basedir+'posts/selectImage/'+postId+'/'+id);
+		});
+		g.load();
+		return false;
 	},
 	meta:function(t){
 		var tr=$(t).closest('tr');
