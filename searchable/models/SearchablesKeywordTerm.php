@@ -1,11 +1,11 @@
 <?php
 /** @TableAlias('skt') @Created @Updated */
-class SearchableKeywordTerm extends SSqlModel{
+class SearchablesKeywordTerm extends SSqlModel{
 	public
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
-		 * @ForeignKey('SearchableKeyword','id')
+		 * @ForeignKey('SearchablesKeyword','id')
 		*/ $keyword_id,
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
-		 * @ForeignKey('SearchableTerm','id')
+		 * @ForeignKey('SearchablesTerm','id')
 		*/ $term_id;
 }

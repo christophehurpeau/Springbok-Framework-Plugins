@@ -1,6 +1,6 @@
 <?php
 /** @TableAlias('sw') */
-class SearchableWord extends SSqlModel{
+class SearchablesWord extends SSqlModel{
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,

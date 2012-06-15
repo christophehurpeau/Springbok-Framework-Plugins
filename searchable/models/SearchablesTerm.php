@@ -1,6 +1,6 @@
 <?php
 /** @TableAlias('st') @Created @Updated @DisplayField('term') */
-class SearchableTerm extends SSqlModel{
+class SearchablesTerm extends SSqlModel{
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,

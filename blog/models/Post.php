@@ -1,7 +1,8 @@
 <?php
 /** @TableAlias('p') @DisplayField('title') */
-class Post extends SSqlModel{
-	const DRAFT=1,PUBLISHED=2,ARCHIVED=3,DELETED=4;
+class Post extends Searchable{
+	const LINK_CONTROLLER='post',
+		DRAFT=1,PUBLISHED=2,ARCHIVED=3,DELETED=4;
 	
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
@@ -64,8 +65,6 @@ class Post extends SSqlModel{
 	}
 	
 	public function beforeInsert(){
-		$this->slug=$this->auto_slug();
-		$this->meta_title=$this->auto_meta_title();
 		return parent::beforeInsert();
 	}
 
