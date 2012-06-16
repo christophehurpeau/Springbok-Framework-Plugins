@@ -6,4 +6,4 @@
 
 <h5 class="noclear">Linked terms</h5>
 
-<? HHtml::ajaxCRDInputAutocomplete('/searchable',$keyword->terms,array('allowNew'=>1,'url'=>'/'.$keyword->id)) ?>
+<? HHtml::ajaxCRDInputAutocomplete('/searchableKeyword',$keyword->terms,array('allowNew'=>1,'url'=>'/'.$keyword->id)) ?>

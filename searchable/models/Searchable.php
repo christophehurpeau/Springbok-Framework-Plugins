@@ -42,6 +42,12 @@ class Searchable extends SSqlModel{
 		return true;
 	}
 	
+	public function aftoerSave(&$data=null){
+		if(!empty($data['name'])){
+			SearchableWord::add($this->id,$this->name);
+		}
+	}
+	
 	public function name(){ return $this->name; }
 	public function link(){
 		return array('/:controller/:id-:slug',static::LINK_CONTROLLER,sprintf('%03d',$this->id),$this->slug);
