@@ -42,7 +42,7 @@ class Searchable extends SSqlModel{
 		return true;
 	}
 	
-	public function aftoerSave(&$data=null){
+	public function afterSave(&$data=null){
 		if(!empty($data['name'])){
 			SearchableWord::add($this->id,$this->name);
 		}

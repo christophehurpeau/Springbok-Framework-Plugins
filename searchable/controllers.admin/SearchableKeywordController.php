@@ -1,6 +1,11 @@
 <?php
+Controller::$defaultLayout='admin/searchable';
 /** @Check('ASecureAdmin') @Acl('Searchable') */
 class SearchableKeywordController extends Controller{
+	/** */
+	function autoEveryKeywords(){
+		SearchablesKeyword::autoEveryKeywords();
+	}
 	
 	/** @ValidParams('/searchable') @Required('id') */
 	function view($id){
@@ -9,6 +14,18 @@ class SearchableKeywordController extends Controller{
 		notFoundIfFalse($keyword);
 		mset($keyword);
 		render();
+	}
+	
+	
+	/** @ValidParams @AllRequired
+	* keyword > @Valid('descr') */
+	function save(int $id,SearchablesKeyword $keyword){
+		$keyword->id=$id;
+		foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName)
+			if(empty($keyword->$metaName)) $keyword->$metaName=$keyword->{'auto_'.$metaName}();
+		$res=$keyword->update();
+		//SearchableKeywordHistory::create($keyword,SearchableKeywordHistory::SAVE);
+		renderText($res);
 	}
 	
 	/** @ValidParams('/searchable') @Required('id','term') */
@@ -31,8 +48,11 @@ class SearchableKeywordController extends Controller{
 	}
 	/** @ValidParams('/searchable') @Required('id','val') */
 	function create(int $id,$val){
-		$termId=SearchablesTerm::QInsert()->set(array('term'=>SearchablesTerm::cleanTerm($val)));
-		if(SearchablesKeywordTerm::QInsert()->set(array('term_id'=>$termId,'keyword_id'=>$id)))
+		//$termId=SearchablesTerm::QInsert()->set(array('term'=>SearchablesTerm::cleanTerm($val)));
+		$term=new SearchablesTerm;
+		$term->term=SearchablesTerm::cleanTerm($val);
+		$term->insert();
+		if(SearchablesKeywordTerm::QInsert()->set(array('term_id'=>$term->id,'keyword_id'=>$id)))
 			renderText('1');
 	}
 }

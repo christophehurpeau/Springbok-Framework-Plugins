@@ -18,4 +18,11 @@ class SearchablesTerm extends SSqlModel{
 	}
 	
 	public function name(){ return $this->term; }
+	
+	
+	public function afterSave(&$data=null){
+		if(!empty($data['term'])){
+			SearchableTermWord::add($this->id,$this->term);
+		}
+	}
 }
