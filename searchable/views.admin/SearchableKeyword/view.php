@@ -3,11 +3,12 @@
 /* IF(searchable_seo) */<div class="float_right w300">/* /IF */
 
 <div class="/* IF!(searchable_seo) */float_right /* /IF */block2">
-	Created : <? HTime::compact($keyword->created) ?>
+	<div>Type : <? _tF($keyword->_type(),'') ?></div>
+	<div>Created : <? HTime::compact($keyword->created) ?></div>
 </div>
 
 <div id="linkedTerms" class="clear mt10 block1">
-	<h5 class="noclear">Linked terms</h5>
+	<h5 class="noclear">{t 'plugin.searchable.LinkedTerms'}</h5>
 	<? HHtml::ajaxCRDInputAutocomplete('/searchableKeyword',$keyword->terms,array('allowNew'=>1,'url'=>'/'.$keyword->id)) ?>
 	<p class="smallinfo message info">{icon info} N'oubliez pas d'enregistrer après avoir ajouté un terme pour modifier les métas.</p>
 </div>
@@ -27,13 +28,12 @@
 	{=$form->submit(true,array(),array('class'=>'submit center'))}
 </div>
 
-<? HHtml::jsInline('_.seo.init(false,$(\'#linkedTerms ul\'));'
+<? HHtml::jsInline('S.ready(function(){_.seo.init($(\'#SearchablesKeywordName\'),$(\'#linkedTerms ul\'));'
 	.'S.tinymce.init("100%","250px","basicAdvanced",true).wordCount().autolink().autoSave().validXHTML()'
-		.'.addAttr("onchange_callback",function(inst){$("#SeoMeta_descrAuto").val(inst.getBody().innerHTML.sbStripTags()).change()})'
-		.'.addAttr("internalLinks",_.posts.internalLinks).createForIds("SearchablesKeywordDescr");'
+		.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'
+		.'.addAttr("internalLinks",_.posts.internalLinks).createForId("SearchablesKeywordDescr");'
 	.'$("#formKeywordEdit").ajaxForm(basedir+"searchableKeyword/save/'.$keyword->id.'",false,function(){'
 		.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
-	.'});') ?>
-
+	.'});});') ?>
 /* /IF */
 <br class="clear"/>

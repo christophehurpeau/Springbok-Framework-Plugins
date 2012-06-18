@@ -28,7 +28,7 @@ class SearchablesKeyword extends SSqlModel{
 	public function auto_slug(){ return HString::slug($this->name); }
 	/* IF(searchable_seo) */
 	public function auto_meta_title(){ return $this->name; }
-	public function auto_meta_descr(){ return str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->descr),ENT_QUOTES,'UTF-8')); }
+	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->descr),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('term')->withForce('SearchablesKeywordTerm')->addCondition('skt.keyword_id',$this->id)->orderBy('term')); }
 	/* /IF */
 	

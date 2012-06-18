@@ -9,7 +9,7 @@ class SearchableKeywordController extends Controller{
 	
 	/** @ValidParams('/searchable') @Required('id') */
 	function view($id){
-		HBreadcrumbs::set(array('Keywords'=>'/searchableKeyword'));
+		HBreadcrumbs::set(array('Keywords'=>'/searchable/keywords'));
 		$keyword=SearchablesKeyword::ById($id)->with('SearchablesTerm','id,term');
 		notFoundIfFalse($keyword);
 		mset($keyword);

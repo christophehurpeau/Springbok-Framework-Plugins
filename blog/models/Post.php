@@ -57,6 +57,9 @@ class Post extends Searchable{
 		VPost::destroy($this->id);
 	}
 	
+	public function auto_meta_descr(){ return trim(preg_replace('/(\s*\n\s*\n\s*)+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->excerpt),ENT_QUOTES,'UTF-8')))); }
+	public function auto_meta_keywords(){ return empty($this->tags)?'':implode(', ',PostsTag::QValues()->field('name')->byId($this->tags)->orderBy('name')); }
+	
 	
 	public function isPublished(){return $this->status!==self::DRAFT;}
 	
