@@ -29,6 +29,7 @@ class Searchable extends SSqlModel{
 		*/ $meta_keywords
 		/* /IF */;
 	
+	public function normalized(){ return trim(preg_replace('/[ \-\'\"]+/',' ',$this->name)); }
 	public function auto_slug(){ return HString::slug($this->name); }
 	public function auto_meta_title(){ return $this->name; }
 	
@@ -38,7 +39,7 @@ class Searchable extends SSqlModel{
 		return true;
 	}
 	public function beforeSave(){
-		if(!empty($this->name)) $this->normalized=trim(preg_replace('/[ \-\'\"]+/',' ',$this->name));
+		if(!empty($this->name)) $this->normalized=$this->normalized();
 		return true;
 	}
 	
