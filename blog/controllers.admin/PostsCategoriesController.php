@@ -37,6 +37,6 @@ class PostsCategoriesController extends Controller{
 	function view(int $id){
 		self::_breadcrumbs();
 		CRUD::view('PostsCategory',$id,array(),array(
-			'Post'=>array('title'=>'Articles','fields'=>'id,title,slug,status,created,published,updated','orderBy'=>array('created'=>'DESC'))));
+			'Post'=>Post::CRUDOptions()));
 	}
 }

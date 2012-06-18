@@ -23,7 +23,7 @@
 	<div id="editTabs" class="tabs">
 		<ul><li>{iconLink 'page','Article','#editTab1'}</li><li>{iconLink 'pageEdit','Contenu','#editTab2'}</li><li>{iconLink 'time','Historique','/postHistories/view/'.$id}</li><li>{iconLink 'pageLink','Articles liés','/postPosts/view/'.$id}</li></ul>
 		<div id="editTab1" class="clearfix">
-			{=$form->input('title',array('class'=>'wp100'))}
+			{=$form->input('name',array('class'=>'wp100'))}
 			
 			/* IF(blog_personalizeAuthors_enabled) */
 			<div class="float_right clearfix mt10 ml10 content block4" style="width:180px">

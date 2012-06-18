@@ -1,22 +1,9 @@
 <?php
-/** @TableAlias('t') */
+/** @TableAlias('t') @Child('SearchablesKeyword') */
 class PostsTag extends SSqlModel{
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
-		*/ $id,
-		/** @SqlType('VARCHAR(60)') @NotNull
-		* @Unique
-		* @MinLength(3)
-		*/ $name,
-		/** @SqlType('varchar(60)') @NotNull
-		* @Unique
-		*/ $slug,
-		/** @Boolean @Default(true)
-		*/ $slug_auto,
-		/** @SqlType('datetime') @NotNull
-		*/ $created,
-		/** @SqlType('datetime') @Null @Default(NULL)
-		*/ $updated;
+		*/ $id;
 	
 	public static function create($name){
 		$t=new PostsTag;
@@ -24,17 +11,6 @@ class PostsTag extends SSqlModel{
 		if($t->insertIgnore())
 			return $t->id;
 		return PostsTag::findValueIdByName($name);
-	}
-	
-	public function beforeInsert(){
-		$this->slug=HString::slug($this->name);
-		$this->slug_auto=true;
-		return parent::beforeInsert();
-	}
-	
-	public function beforeUpdate(){
-		if(!empty($this->name) && $this->isSlugAuto()) $this->slug=HString::slug($this->name);
-		return parent::beforeUpdate();
 	}
 	
 	public function afterSave(){
@@ -47,7 +23,7 @@ class PostsTag extends SSqlModel{
 	
 	const MAX_SIZE=20;
 	public static function findAllSize(){
-		$models=self::QListAll()->fields('name,slug')
+		$models=self::QListAll()->withParent('name,slug')
 			->with('PostTag',array('isCount'=>true))
 			->orderBy(array('tags'=>'DESC'))
 			->limit(self::MAX_SIZE);

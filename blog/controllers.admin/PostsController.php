@@ -4,15 +4,15 @@ Controller::$defaultLayout='admin/blog';
 class PostsController extends Controller{
 	/** */
 	function index(){
-		$table=Post::Table()->fields('id,title,slug,status,created,updated')
+		$table=Post::Table()->fields('id,status')->withParent('name,created,updated')
 			->where(array('status !='=>Post::DELETED))->orderByCreated()
 			->allowFilters()
-			->paginate()->fields(array('id','title','status','created','updated'))->actionClick('edit')
+			->paginate()->fields(array('id','name','status','created','updated'))->actionClick('edit')
 			->render('Articles',true);
 	}
 	
 	/** @ValidParams @Required('post')
-	* post > @Valid('title')
+	* post > @Valid('name')
 	*/ function add(Post $post){
 		$post->status=Post::DRAFT;
 		$post->author_id=CSecure::connected();
@@ -40,7 +40,7 @@ class PostsController extends Controller{
 	}
 	
 	/** @ValidParams @AllRequired
-	* post > @Valid('title','excerpt','content') */
+	* post > @Valid('name','excerpt','content') */
 	function save(int $id,Post $post){
 		$post->id=$id;
 		if(empty($post->meta_keywords)) $post->findWith('PostTag',array('fields'=>'tag_id'));
@@ -69,15 +69,15 @@ class PostsController extends Controller{
 	/** @Ajax @ValidParams @Required('term') */
 	function autocomplete($term){
 		self::renderJSON(SModel::json_encode(
-			Post::QAll()->fields('id,title,slug')
-				->where(array('title LIKE'=>'%'.$term.'%'))
+			Post::QAll()->fields('id,name,slug')
+				->where(array('name LIKE'=>'%'.$term.'%'))
 			,'_autocomplete'
 		));
 	}
 
 	/** @Ajax @ValidParams @Required('val') */
 	function checkId(int $val){
-		$post=Post::QOne()->fields('id,title,slug')->byId($val);
+		$post=Post::QOne()->fields('id,name,slug')->byId($val);
 		self::renderJSON($post===false?'{"error":"Article inconnu"}':$post->toJSON_autocomplete());
 	}
 	
@@ -108,7 +108,7 @@ class PostsController extends Controller{
 	
 	/** @ValidParams @Required('id') */
 	function test(int $id){
-		$post=Post::QOne()->fields('id,title,slug,excerpt,text')->byId($id);
+		$post=Post::QOne()->fields('id,excerpt,text')->withParent('name,slug')->byId($id);
 		renderText(UHtml::transformInternalLinks($post->excerpt,array(
 			'article'=>function($id){$postSlug=Post::findValueSlugById($id); return array('/:controller/:id-:slug','posts',sprintf('%03d',$id),$postSlug);}
 		)));

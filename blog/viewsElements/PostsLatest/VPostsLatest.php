@@ -4,7 +4,7 @@ class VPostsLatest extends SViewCachedElement{
 	public static function path(){return DATA.'elementsCache/posts/latest-list';}
 	public static function vars(){
 		return array(
-			'posts'=>Post::QListAll()->limit(4)->execute()
+			'posts'=>Post::QListAll()->limit(4)
 		);
 	}
 }

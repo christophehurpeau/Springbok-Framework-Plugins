@@ -36,6 +36,6 @@ class PostsTagsController extends Controller{
 	/** @ValidParams('/postsTags') @Required('id') */
 	function view(int $id){
 		self::_breadcrumbs();
-		CRUD::view('PostsTag',$id,array(),array('Post'=>array('title'=>'Articles','fields'=>'id,title,slug,status,created,published,updated','orderBy'=>array('created'=>'DESC'))));
+		CRUD::view('PostsTag',$id,array(),array('Post'=>Post::CRUDOptions()));
 	}
 }

@@ -5,8 +5,8 @@ class VPostsLatestMenu extends SViewCachedElement{
 	public static function vars(){
 		return array(
 			'posts'=>Post::QAll()->byStatus(Post::PUBLISHED)
-				->fields('id,title,slug')
-				->orderByCreated()
+				->fields('id')->withParent('name,slug')
+				->orderBy(array('sb.created'=>'DESC'))
 				/*->with('PostsAuthor','name,url')*/
 				->limit(6)
 				->execute()

@@ -3,7 +3,7 @@
 class PostPostsController extends Controller{
 	/** @Ajax @ValidParams @Required('id') */
 	function view(int $id){
-		$allPosts=Post::QAll()->fields('id,title,slug,status')
+		$allPosts=Post::QAll()->fields('id,status')->withParent('name,slug')
 			->with('LinkedPost',array('forceJoin'=>true,'fields'=>'deleted','fieldsInModel'=>true))
 			->where(array('pp.post_id'=>$id));
 		$posts=$deletedPosts=array();
@@ -47,9 +47,9 @@ class PostPostsController extends Controller{
 	/** @Ajax @ValidParams @Required('term') */
 	function autocomplete(int $postId,$term){
 		self::renderJSON(SModel::json_encode(
-			Post::QAll()->fields('DISTINCT id,title,slug,status')
+			Post::QAll()->fields('DISTINCT id,status')->withParent('name,slug')
 				->with('LinkedPost',array('fields'=>false,'forceJoin'=>true))
-				->where(array('id !='=>$postId,'title LIKE'=>'%'.$term.'%','OR'=>array('pp.post_id IS NULL','pp.post_id !='=>$postId)))
+				->where(array('id !='=>$postId,'sb.name LIKE'=>'%'.$term.'%','OR'=>array('pp.post_id IS NULL','pp.post_id !='=>$postId)))
 			,'_autocomplete_linkedposts'
 		));
 	}

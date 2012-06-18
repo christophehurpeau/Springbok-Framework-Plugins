@@ -13,6 +13,16 @@ class SearchablesTerm extends SSqlModel{
 			$data[]=array('keyword_id'=>$keywordId,'term'=>self::cleanTerm($term));
 	}
 	*/
+	
+	public static function createOrGet($term){
+		$st=new SearchablesTerm;
+		$st->term=$term;
+		if(!$st->insert())
+			return self::QValue()->field('id')->where(array('term'=>$term));
+		return $st->id;
+	}
+	
+	
 	public static function cleanTerm($term){
 		return HString::removeSpecialChars(trim(preg_replace('/[\s\,\+\\\\°]+/',' ',$term)));
 	}

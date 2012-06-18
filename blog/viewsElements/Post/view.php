@@ -1,5 +1,5 @@
 <article itemscope itemtype="http://schema.org/Article">
-	<h1 itemprop="name">{$post->title}</h1>
+	<h1 itemprop="name">{$post->name}</h1>
 	{if!null $post->image->image_id}
 		<?php $url=Config::$static_url.'/files/posts_images/'.$post->image->image_id; ?>
 		{link '<img class="float_left mr10" itemprop="image" content="'.$url.'.jpg" width="75" height="75" src="'.$url.'-medium.jpg" />',$post->link(),array('escape'=>false)}
@@ -27,7 +27,7 @@
 		<div class="sepTop">
 			<h5>{t 'plugin.blog.postLinked_title'}</h5>
 			<ul>
-				{f $post->posts as $lPost}<li>{link $lPost->title,$lPost->link()}</li>{/f}
+				{f $post->posts as $lPost}<li>{link $lPost->name,$lPost->link()}</li>{/f}
 			</ul>
 		</div>
 	{/if}

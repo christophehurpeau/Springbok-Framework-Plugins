@@ -9,7 +9,7 @@ class VPost extends SViewCachedElement{
 	public static function vars($id){
 		return array('post'=>Post::QOne()->where(array('id'=>$id))
 			/* IF(blog_ratings_enabled) */->with('Rating')/* /IF */
-			->with('Post','id,title,slug')
+			->with('Post',Post::withOptions())
 			->with('PostImage',array('fields'=>'image_id','onConditions'=>array('in_text'=>true)))
 			->with('PostsTag','name,slug')
 			/* IF(blog_comments_enabled) */->with('PostComment',array('where'=>array('status'=>PostComment::VALID)))/* /IF */

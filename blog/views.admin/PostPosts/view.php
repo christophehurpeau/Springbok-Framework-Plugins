@@ -3,7 +3,7 @@
 	{ife $posts}<div class="italic">Aucun</div>{else}
 	<ul class="compact">
 		{f $posts as $post}
-		<li{if !$post->isPublished()} class="italic"{/if}>{=$post->id} : {$post->title} {iconAction 'delete','#',array('onclick'=>'return _.posts.delLinked(this,'.$id.','.$post->id.')')}</li>
+		<li{if !$post->isPublished()} class="italic"{/if}>{=$post->id} : {$post->name} {iconAction 'delete','#',array('onclick'=>'return _.posts.delLinked(this,'.$id.','.$post->id.')')}</li>
 		{/f}
 	</ul>
 	{/if}
@@ -14,7 +14,7 @@
 	{ife $deletedPosts}<div class="italic">Aucun</div>{else}
 	<ul class="compact">
 		{f $deletedPosts as $post}
-		<li{if !$post->isPublished()} class="italic"{/if}>{=$post->id} : {$post->title} {iconAction 'delete','#',array('onclick'=>'return _.posts.undelLinked(this,'.$id.','.$post->id.')')}</li>
+		<li{if !$post->isPublished()} class="italic"{/if}>{=$post->id} : {$post->name} {iconAction 'delete','#',array('onclick'=>'return _.posts.undelLinked(this,'.$id.','.$post->id.')')}</li>
 		{/f}
 	</ul>
 	{/if}

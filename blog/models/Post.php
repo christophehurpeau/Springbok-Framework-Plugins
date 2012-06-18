@@ -1,5 +1,5 @@
 <?php
-/** @TableAlias('p') @DisplayField('title') */
+/** @TableAlias('p') @DisplayField('name') @Child('Searchable') */
 class Post extends Searchable{
 	const LINK_CONTROLLER='post',
 		DRAFT=1,PUBLISHED=2,ARCHIVED=3,DELETED=4;
@@ -10,21 +10,10 @@ class Post extends Searchable{
 		/** @SqlType('int(10) unsigned') @NotNull
 		*  @ForeignKey('User','id')
 		*/ $author_id,
-		/** @SqlType('VARCHAR(128)') @NotNull
-		*/ $title,
 		/** @SqlType('text') @NotNull
 		*/ $excerpt,
 		/** @SqlType('text') @NotNull
 		*/ $content,
-		/** @SqlType('varchar(128)') @NotNull
-		*/ $slug,
-		/** @SqlType('varchar(128)') @NotNull
-		*/ $meta_title,
-		/** @SqlType('varchar(200)') @NotNull @Default('""')
-		* @Text
-		*/ $meta_descr,
-		/** @SqlType('varchar(255)') @NotNull @Default('""')
-		*/ $meta_keywords,
 		/** @SqlType('tinyint(1)') @NotNull
 		* @Enum(1=>'Draft',2=>'Published',3=>'Archived')
 		*/ $status,
@@ -32,13 +21,9 @@ class Post extends Searchable{
 		/** @Boolean @Default(true)
 		*/ $comments_allowed,
 		/* /IF */
-		/** @SqlType('datetime') @NotNull
-		*/ $created,
 		/** @SqlType('datetime') @Null @Default(NULL)
 		* @NotBindable
-		*/ $published,
-		/** @SqlType('datetime') @Null @Default(NULL)
-		*/ $updated;
+		*/ $published;
 	
 	public static $hasOne=array(
 		'Rating'=>array('modelName'=>'PostRating','fields'=>array('ROUND(AVG(prat.value))'=>'rating'),'fieldsInModel'=>true),
@@ -52,40 +37,34 @@ class Post extends Searchable{
 	
 	
 	public static function findLatest(){
-		return Post::QAll()->byStatus(Post::PUBLISHED)->fields('id,title')->orderByCreated()->limit(5);
+		return Post::QAll()->byStatus(Post::PUBLISHED)->fields('id')->withParent('name')->orderByCreated()->limit(5);
 	}
 
 	public static function QListAll(){
-		return/* */ Post::QAll()->fields('id,title,slug,excerpt,/* IF(blog_comments_enabled) */comments_allowed,/* /IF */created,published,updated')
+		return/* */ Post::QAll()->withParent('name,slug,created,updated')->fields('id,excerpt,/* IF(blog_comments_enabled) */comments_allowed,/* /IF */published')
 			->with('PostImage','image_id')
-			->with('PostsTag','id,name,slug')
+			->with('PostsTag',array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name/* IF(searchable_slug) */,slug/* /IF */'))))
 			/* IF(blog_comments_enabled) */->with('PostComment',array('isCount'=>true,'onConditions'=>array('pcom.status'=>PostComment::VALID)))/* /IF */
 			->byStatus(Post::PUBLISHED)
-			->orderByCreated();
+			->orderBy(array('sb.created'=>'DESC'));
 	}
 	
-	public function beforeInsert(){
-		return parent::beforeInsert();
-	}
-
-
-	public function name(){ return $this->title; }
-	public function link(){
-		return array('/:controller/:id-:slug',_tR('post'),sprintf('%03d',$this->id),$this->slug);
+	public function beforeInsert(){ return true; }
+	
+	public function beforeSave(){ return true; }
+	
+	public function afterSave(&$data=null){
+		VPost::destroy($this->id);
 	}
 	
-	public function auto_slug(){ return HString::slug($this->title); }
-	public function auto_meta_title(){ return $this->title; }
-	public function auto_meta_descr(){ return str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->excerpt),ENT_QUOTES,'UTF-8')); }
-	public function auto_meta_keywords(){ return empty($this->tags)?'':implode(', ',PostsTag::QValues()->field('name')->byId($this->tags)->orderBy('name')); }
 	
 	public function isPublished(){return $this->status!==self::DRAFT;}
 	
 	public function toJSON_autocomplete(){
-		return json_encode(array('id'=>$this->id,'value'=>$this->title,'url'=>HHtml::url($this->_link,Config::$site_url)));
+		return json_encode(array('id'=>$this->id,'value'=>$this->name,'url'=>HHtml::url($this->link(),Config::$site_url)));
 	}
 	public function toJSON_autocomplete_linkedposts(){
-		return json_encode(array('id'=>$this->id,'value'=>$this->title,'pblsd'=>$this->isPublished()));
+		return json_encode(array('id'=>$this->id,'value'=>$this->name,'pblsd'=>$this->isPublished()));
 	}
 	
 	
@@ -100,5 +79,17 @@ class Post extends Searchable{
 	public static function onModified($postId){
 		VPostsLatest::generate(); VPostsLatestMenu::generate(); VPost::generate($postId);
 		ACSitemapPosts::generate();
+	}
+	
+	public static function CRUDOptions(){
+		return array('title'=>'Articles',
+			'fields'=>'id,status,published',
+			'with'=>array('Parent'=>array('fields'=>'name,created,updated')),
+			'orderBy'=>array('created'=>'DESC')
+		);
+	}
+	
+	public static function withOptions(){
+		return array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name,slug')));
 	}
 }
