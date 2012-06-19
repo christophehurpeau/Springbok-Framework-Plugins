@@ -14,8 +14,8 @@
 </div>
 
 /* IF(searchable_seo) */</div>
+<?php $form=HForm::create('SearchablesKeyword',array('id'=>'formKeywordEdit','name'=>'keyword'),'div',false) ?>
 <div class="mr300 context">
-	<?php $form=HForm::create('SearchablesKeyword',array('id'=>'formKeywordEdit','name'=>'keyword'),'div',false) ?>
 	{=$form->input('name',array('class'=>'wp100 biginfo'),array('class'=>'input text mb10'))}
 	
 	<? View::element('seo',array('model'=>&$keyword,'form'=>&$form)) ?>
@@ -27,6 +27,7 @@
 	{=$form->textarea('descr',array('class'=>'wp100'))}
 	{=$form->submit(true,array(),array('class'=>'submit center'))}
 </div>
+{=$form->end(false)}
 
 <? HHtml::jsInline('S.ready(function(){_.seo.init($(\'#SearchablesKeywordName\'),$(\'#linkedTerms ul\'));'
 	.'S.tinymce.init("100%","250px","basicAdvanced",true).wordCount().autolink().autoSave().validXHTML()'
