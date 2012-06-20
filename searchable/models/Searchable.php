@@ -20,26 +20,30 @@ class Searchable extends SSqlModel{
 		*/ $slug,
 		/** @Boolean @Default(true)
 		*/ $visible/* IF(searchable_seo) */,
-		/** @SqlType('varchar(128)') @NotNull
+		/** @SqlType('varchar(128)') @Null
 		*/ $meta_title,
-		/** @SqlType('varchar(200)') @NotNull @Default('""')
+		/** @SqlType('varchar(200)') @Null
 		* @Text
 		*/ $meta_descr,
-		/** @SqlType('varchar(255)') @NotNull @Default('""')
+		/** @SqlType('varchar(255)') @Null
 		*/ $meta_keywords
 		/* /IF */;
 	
 	public function normalized(){ return trim(preg_replace('/[ \-\'\"]+/',' ',$this->name)); }
 	public function auto_slug(){ return HString::slug($this->name); }
+	
 	public function auto_meta_title(){ return $this->name; }
+	public function metaTitle(){ return empty($this->meta_title) ? $this->auto_meta_title() : $this->meta_title; }
 	
 	public function beforeInsert(){
 		if(empty($this->slug)) $this->slug=$this->auto_slug();
-		if(empty($this->meta_title)) $this->meta_title=$this->auto_meta_title();
 		return true;
 	}
 	public function beforeSave(){
-		if(!empty($this->name)) $this->normalized=$this->normalized();
+		if(!empty($this->name)){
+			$this->normalized=$this->normalized();
+			if(empty($this->slug)) $this->slug=$this->auto_slug();
+		}
 		return true;
 	}
 	
