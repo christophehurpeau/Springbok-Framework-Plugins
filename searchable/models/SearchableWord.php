@@ -9,6 +9,8 @@ class SearchableWord extends SSqlModel{
 		* @ForeignKey('SearchablesWord','id')
 		*/ $word_id;
 	
+	/* VALUE(searchable_word_phpcontent) */ 
+	
 	public static function add($searchableId,$name){
 		$words=self::getWords($searchableId);
 		foreach(SearchablesWord::explodePhrase($name) as $word){

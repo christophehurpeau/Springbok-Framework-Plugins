@@ -1,4 +1,4 @@
-<?php new AjaxBreadcrumbsPageView($layout_title,'ml160','admin-page') ?>
+<?php new AjaxBreadcrumbsPageView($layout_title,'ml160','admin_page') ?>
 
 <div class="fixed left w160">
 	{menuLeft

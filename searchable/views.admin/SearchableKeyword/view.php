@@ -10,7 +10,6 @@
 <div id="linkedTerms" class="clear mt10 block1">
 	<h5 class="noclear">{t 'plugin.searchable.LinkedTerms'}</h5>
 	<? HHtml::ajaxCRDInputAutocomplete('/searchableKeyword',$keyword->terms,array('allowNew'=>1,'url'=>'/'.$keyword->id)) ?>
-	<p class="smallinfo message info">{icon info} N'oubliez pas d'enregistrer après avoir ajouté un terme pour modifier les métas.</p>
 </div>
 
 /* IF(searchable_seo) */</div>

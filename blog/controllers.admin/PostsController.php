@@ -5,7 +5,7 @@ class PostsController extends Controller{
 	/** */
 	function index(){
 		$table=Post::Table()->fields('id,status')->withParent('name,created,updated')
-			->where(array('status !='=>Post::DELETED))->orderByCreated()
+			->where(array('status !='=>Post::DELETED))->orderBy(array('sb.created'=>'DESC'))
 			->allowFilters()
 			->paginate()->fields(array('id','name','status','created','updated'))->actionClick('edit')
 			->render('Articles',true);
@@ -23,7 +23,7 @@ class PostsController extends Controller{
 	
 	/** @ValidParams @Required('id') */
 	function edit(int $id){
-		$post=Post::ById($id)->with('PostTag','tag_id')->with('PostCategory','category_id')
+		$post=Post::ById($id)->withParent('name,slug,meta_title,meta_descr,meta_keywords')->with('PostTag','tag_id')->with('PostCategory','category_id')
 			->with('PostImage')
 			/* IF(blog_personalizeAuthors_enabled) */->with('PostAuthor','author_id')/* /IF */
 			;
@@ -35,7 +35,7 @@ class PostsController extends Controller{
 	/** @ValidParams @Required('id') */
 	function delete(int $id){
 		Post::updateOneFieldByPk($id,'status',Post::DELETED);
-		Post::onModified($id);
+		Post::onModified($id,true);
 		redirect('/posts');
 	}
 	
@@ -43,9 +43,10 @@ class PostsController extends Controller{
 	* post > @Valid('name','excerpt','content') */
 	function save(int $id,Post $post){
 		$post->id=$id;
-		if(empty($post->meta_keywords)) $post->findWith('PostTag',array('fields'=>'tag_id'));
+		//if(empty($post->meta_keywords)) $post->findWith('PostTag',array('fields'=>'tag_id'));
 		if(isset($_POST['imageInText'])) PostImage::updateOneFieldByPk($id,'in_text',$_POST['imageInText']?true:false);
-		foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName) if(empty($post->$metaName)) $post->$metaName=$post->{'auto_'.$metaName}();
+		//foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName) if(empty($post->$metaName)) $post->$metaName=$post->{'auto_'.$metaName}();
+		if(empty($post->slug)) $post->slug=$post->auto_slug();
 		$res=$post->save();
 		PostHistory::create($post,PostHistory::SAVE);
 		renderText($res);
@@ -94,9 +95,11 @@ class PostsController extends Controller{
 	
 	/** @ValidParams */
 	function autoEveryPosts(){
-		foreach(Post::QAll()->with('PostTag',array('fields'=>'tag_id')) as $post){
-			foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName) if(empty($post->$metaName)) $post->$metaName=$post->{'auto_'.$metaName}();
-			$post->update('slug','meta_title','meta_descr','meta_keywords');
+		foreach(Post::QAll()->withParent('name')->with('PostTag',array('fields'=>'tag_id')) as $post){
+			foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName)
+				$post->$metaName=$post->{'auto_'.$metaName}();
+			$post->normalized=$post->normalized();
+			$post->updateParent('slug','normalized','meta_title','meta_descr','meta_keywords');
 			PostPost::refind($post->id);
 		}
 	}

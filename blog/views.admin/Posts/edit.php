@@ -2,21 +2,19 @@
 
 <?php $form=HForm::create('Post',array('id'=>'formPostEdit','novalidate'=>true),'div',false); ?>
 <div class="fixed right w200">
-	<div class="content">
-		<div class="center">
-			{=$form->select('status',Post::statusesList())}
-			{iconLink 'delete','Supprimer cet article','/posts/delete/'.$post->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cet article ?')}
-		</div>
-		<div id="PostTags" class="content block4">
-			<b>Tags</b>
-			<? HHtml::ajaxCRDSelectFiltrable('/postTags',PostsTag::findListName(),$post->tags,array('url'=>'/'.$id,'allowNew'=>true,'selectAttributes'=>array('style'=>'width:135px'))) ?>
-		</div>
-		<div id="PostCategories" class="content block4 mt10">
-			<b>Catégories</b>
-			<? HHtml::ajaxCRDSelectFiltrable('/postCategories',PostsCategory::findListName(),$post->categories,array('url'=>'/'.$id,'selectAttributes'=>array('style'=>'width:135px'))) ?>
-		</div>
-		<? $form->submit(true,array(),array('class'=>'submit center')); ?>
+	<div class="content center">
+		{=$form->select('status',Post::statusesList())}
+		{iconLink 'delete','Supprimer cet article','/posts/delete/'.$post->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cet article ?')}
 	</div>
+	<div id="PostTags" class="content block4">
+		<b>Tags</b>
+		<? HHtml::ajaxCRDSelectFiltrable('/postTags',PostsTag::findListName(),$post->tags,array('url'=>'/'.$id,'allowNew'=>true,'selectAttributes'=>array('style'=>'width:135px'))) ?>
+	</div>
+	<div id="PostCategories" class="content block4 mt10">
+		<b>Catégories</b>
+		<? HHtml::ajaxCRDSelectFiltrable('/postCategories',PostsCategory::findListName(),$post->categories,array('url'=>'/'.$id,'selectAttributes'=>array('style'=>'width:135px'))) ?>
+	</div>
+	<? $form->submit(true,array(),array('class'=>'submit center')); ?>
 </div>
 
 <div class="variable padding">

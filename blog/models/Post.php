@@ -57,8 +57,12 @@ class Post extends Searchable{
 		VPost::destroy($this->id);
 	}
 	
-	public function auto_meta_descr(){ return trim(preg_replace('/(\s*\n\s*\n\s*)+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->excerpt),ENT_QUOTES,'UTF-8')))); }
-	public function auto_meta_keywords(){ return empty($this->tags)?'':implode(', ',PostsTag::QValues()->field('name')->byId($this->tags)->orderBy('name')); }
+	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->excerpt),ENT_QUOTES,'UTF-8')))); }
+	public function auto_meta_keywords(){
+		return implode(', ',is_int($this->tags[0])?
+				PostsTag::QValues()->setFields(false)->withParent('name')->byId($this->tags)->orderBy('name')
+				: array_map(function(&$t){return $t->name;},$this->tags));
+	}
 	
 	
 	public function isPublished(){return $this->status!==self::DRAFT;}
@@ -79,8 +83,9 @@ class Post extends Searchable{
 		return $res;
 	}
 	
-	public static function onModified($postId){
-		VPostsLatest::generate(); VPostsLatestMenu::generate(); VPost::generate($postId);
+	public static function onModified($postId,$delete=false){
+		VPostsLatest::generate(); VPostsLatestMenu::generate();
+		$delete ? VPost::destroy($postId) : VPost::generate($postId);
 		ACSitemapPosts::generate();
 	}
 	
@@ -92,7 +97,9 @@ class Post extends Searchable{
 		);
 	}
 	
-	public static function withOptions(){
-		return array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name,slug')));
+	public static function withOptions($options=array()){
+		$options['fields']='id';
+		$options['with']=array('Parent'=>array('fields'=>'name,slug'));
+		return $options;
 	}
 }

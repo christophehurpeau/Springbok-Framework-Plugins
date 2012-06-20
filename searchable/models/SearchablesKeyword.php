@@ -9,12 +9,12 @@ class SearchablesKeyword extends SSqlModel{
 		/** @Unique @SqlType('varchar(100)') @NotNull @MinLenth(3)
 		*/ $slug
 		/* /IF *//* IF(searchable_seo) */,
-		/** @SqlType('varchar(100)') @NotNull
+		/** @SqlType('varchar(100)') @Null
 		*/ $meta_title,
-		/** @SqlType('varchar(200)') @NotNull @Default('""')
+		/** @SqlType('varchar(200)') @Null
 		* @Text
 		*/ $meta_descr,
-		/** @SqlType('varchar(255)') @NotNull @Default('""')
+		/** @SqlType('varchar(255)') @Null
 		*/ $meta_keywords,
 		/** @SqlType('text') @Null
 		*/ $descr
@@ -30,44 +30,22 @@ class SearchablesKeyword extends SSqlModel{
 	public function auto_meta_title(){ return $this->name; }
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->descr),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('term')->withForce('SearchablesKeywordTerm')->addCondition('skt.keyword_id',$this->id)->orderBy('term')); }
+	
+	public function metaTitle(){ return empty($this->meta_title) ? $this->auto_meta_title() : $this->meta_title; }
+	public function metaDescr(){ return empty($this->meta_descr) ? $this->auto_meta_descr() : $this->meta_descr; }
+	public function metaKeywords(){ return empty($this->meta_keywords) ? $this->auto_meta_keywords() : $this->meta_keywords ; }
 	/* /IF */
 	
-	public static function autoEveryKeywords(){
-		foreach(self::QAll() as $keyword){
-			foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName)
-				if(empty($keyword->$metaName)) $keyword->$metaName=$keyword->{'auto_'.$metaName}();
-			$keyword->update('slug','meta_title','meta_descr','meta_keywords');
-		}
-	}
 	
-	public function beforeInsert(){
-		if(!empty($this->name)){
-			/* IF(searchable_slug) */
-			if(empty($this->slug)) $this->slug=$this->auto_slug();
-			/* /IF */
-			/* IF(searchable_seo) */
-			if(empty($this->meta_title)) $this->meta_title=$this->auto_meta_title();
-			/* /IF */
-		}
+	public function beforeSave(){
+		/* IF(searchable_slug) */
+		if(!empty($this->name) && empty($this->slug)) $this->slug=$this->auto_slug();
+		/* /IF */
 		return true;
 	}
 	
 	public function afterInsert(&$data=null){
 		if(!empty($data['name'])) SearchablesKeywordTerm::create($this->id,$data['name']);
-	}
-	
-	
-	public function beforeUpdate(){
-		if(!empty($this->name)){
-			/* IF(searchable_slug) */
-			if(empty($this->slug)) $this->slug=$this->auto_slug();
-			/* /IF */
-			/* IF(searchable_seo) */
-			foreach(array('meta_title','meta_descr','meta_keywords') as $metaName)
-				if(empty($this->$metaName)) $this->$metaName=$this->{'auto_'.$metaName}();
-			/* /IF */
-		}
-		return true;
 	}
 	
 	public static function cleanPhrase($phrase){
