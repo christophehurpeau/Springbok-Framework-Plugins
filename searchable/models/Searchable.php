@@ -57,6 +57,6 @@ class Searchable extends SSqlModel{
 	
 	public function name(){ return $this->name; }
 	public function link(){
-		return array('/:controller/:id-:slug',static::LINK_CONTROLLER,sprintf('%03d',$this->id),$this->slug);
+		return array('/:controller/:id-:slug',_tR(static::LINK_CONTROLLER),sprintf('%03d',$this->id),$this->slug);
 	}
 }

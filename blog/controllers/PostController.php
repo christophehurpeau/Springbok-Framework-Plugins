@@ -1,9 +1,9 @@
 <?php
 class PostController extends AController{
-	/** @ValidParams('/') @Required('slug')
-	* slug > @MinLength(2)
-	*/ function view(int $id,$slug){
-		$post=Post::QOne()->fields(false)->withParent('name,slug')->where(/* IF(blog_slugOnly_enabled) */$id===null ? array('slug'=>$slug) :/* /IF */array('id'=>$id));
+	/** @ValidParams('/') @Id('id') @NotEmpty('slug') */
+	function view(int $id,$slug){
+		$post=Post::QOne()->fields('id')->withParent('name,slug')->where(/* IF(blog_slugOnly_enabled) */$id===null ? array('slug'=>$slug) :/* /IF */array('id'=>$id))
+			->addCondition('status',Post::PUBLISHED);
 		notFoundIfFalse($post);
 		if(/* IF(blog_slugOnly_enabled) */$id!==null && /* /IF*/$post->slug!==$slug) redirect($post->link());
 

@@ -87,11 +87,17 @@ class PostsController extends Controller{
 		render();
 	}
 	
-	/** @ValidParams */
+	/** */
 	function regenerateLatest(){
 		VPostsLatest::generate();
 		redirect('/posts/tools');
 	}
+	/** */
+	function regenerateSitemap(){
+		ACSitemapPosts::generate();
+		redirect('/posts/tools');
+	}
+	
 	
 	/** @ValidParams */
 	function autoEveryPosts(){

@@ -21,6 +21,10 @@ class PostsTag extends SSqlModel{
 		return '/posts/tag/'.$this->slug;
 	}
 	
+	public static function withOptions(){
+		return array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name,slug')));
+	}
+	
 	const MAX_SIZE=20;
 	public static function findAllSize(){
 		$models=self::QListAll()->withParent('name,slug')

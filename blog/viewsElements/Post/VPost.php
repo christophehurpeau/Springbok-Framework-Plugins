@@ -7,11 +7,11 @@ class VPost extends SViewCachedElement{
 	public static function path($id){return DATA.'elementsCache/posts/'.$id;}
 	
 	public static function vars($id){
-		return array('post'=>Post::QOne()->where(array('id'=>$id))
+		return array('post'=>Post::QOne()->withParent()->where(array('id'=>$id))
 			/* IF(blog_ratings_enabled) */->with('Rating')/* /IF */
-			->with('Post',Post::withOptions())
+			->with('Post',Post::withOptions(array('where'=>array('p.status'=>Post::PUBLISHED))))
 			->with('PostImage',array('fields'=>'image_id','onConditions'=>array('in_text'=>true)))
-			->with('PostsTag','name,slug')
+			->with('PostsTag',PostsTag::withOptions())
 			/* IF(blog_comments_enabled) */->with('PostComment',array('where'=>array('status'=>PostComment::VALID)))/* /IF */
 			/* IF(blog_personalizeAuthors_enabled) */->with('PostsAuthor','name,url')/* /IF */
 		);

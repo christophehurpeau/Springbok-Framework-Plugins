@@ -19,14 +19,14 @@
 	<div class="block2 smallinfo">
 		<span itemprop="dateCreated" content="{$post->created}"></span>
 		{t 'plugin.blog.PublishedOn'} <span itemprop="datePublished" content="{=$post->published}"><? HTime::simple($post->published) ?></span>
-	 	{if!null $post->updated}, {t 'plugin.blog.updatedOn'} <span itemprop="dateModified" content="{=$post->updated}"><? HTime::simple($post->updated) ?></span>{/if}</div>
+	 	{if!null $post->updated}, {t 'plugin.blog.updatedOn'} <span itemprop="dateModified" content="{=$post->updated}"><? HTime::simple($post->updated) ?></span>{/if}
 	</div>
 	
 	
 	{if!e $post->posts}
 		<div class="sepTop">
 			<h5>{t 'plugin.blog.postLinked_title'}</h5>
-			<ul>
+			<ul class="compact">
 				{f $post->posts as $lPost}<li>{link $lPost->name,$lPost->link()}</li>{/f}
 			</ul>
 		</div>
