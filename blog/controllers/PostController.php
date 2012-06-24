@@ -16,8 +16,11 @@ class PostController extends AController{
 		$ve=VPost::create($id);
 		set('metas',$ve->metas());
 		mset($post,$ve);
+		self::_beforeRenderPost($post);
 		render();
 	}
+	
+	public static function _beforeRenderPost(&$post){}
 	
 	/* IF(blog_comments_enabled) */
 	/** @Ajax

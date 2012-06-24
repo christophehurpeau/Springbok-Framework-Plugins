@@ -59,7 +59,8 @@ class Post extends Searchable{
 	
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->excerpt),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){
-		return implode(', ',is_int($this->tags[0])?
+		/* DEV */ if(!isset($this->tags)) throw new Exception('Please find post tags'); /* /DEV */
+		return empty($this->tags)?'':implode(', ',is_int($this->tags[0])?
 				PostsTag::QValues()->setFields(false)->withParent('name')->byId($this->tags)->orderBy('name')
 				: array_map(function(&$t){return $t->name;},$this->tags));
 	}

@@ -15,11 +15,11 @@ class SearchablesTerm extends SSqlModel{
 	*/
 	
 	public static function createOrGet($term){
+		$id=self::QValue()->field('id')->where(array('term'=>$term));
+		if($id!==false) return $id;
 		$st=new SearchablesTerm;
 		$st->term=$term;
-		if(!$st->insert())
-			return self::QValue()->field('id')->where(array('term'=>$term));
-		return $st->id;
+		return $st->insert();
 	}
 	
 	
