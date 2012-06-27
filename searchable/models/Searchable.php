@@ -50,7 +50,7 @@ class Searchable extends SSqlModel{
 	}
 	
 	public function afterSave(&$data=null){
-		if(!empty($data['name'])){
+		if(!empty($data['name']) && $this->isVisible()){
 			SearchableWord::add($this->id,$this->name);
 		}
 	}

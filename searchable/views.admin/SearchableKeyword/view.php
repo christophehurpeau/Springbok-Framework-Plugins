@@ -33,7 +33,7 @@
 		.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'
 		.'.addAttr("internalLinks",_.posts.internalLinks).createForId("SearchablesKeywordDescr");'
 	.'$("#formKeywordEdit").ajaxForm(basedir+"searchableKeyword/save/'.$keyword->id.'",false,function(){'
-		.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
+		//.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
 	.'});});') ?>
 /* /IF */
 <br class="clear"/>

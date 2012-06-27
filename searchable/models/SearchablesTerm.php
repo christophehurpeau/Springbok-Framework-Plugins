@@ -15,6 +15,7 @@ class SearchablesTerm extends SSqlModel{
 	*/
 	
 	public static function createOrGet($term){
+		$term=self::cleanTerm($term);
 		$id=self::QValue()->field('id')->where(array('term'=>$term));
 		if($id!==false) return $id;
 		$st=new SearchablesTerm;
