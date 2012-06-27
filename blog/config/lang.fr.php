@@ -19,7 +19,7 @@
 	'plugin.blog.readMore'=>'Lire la suite...',
 	'plugin.blog.permalink'=>'Permalien',
 	'plugin.blog.PublishedOn'=>'Publié le',
-	'plugin.blog.updatedOn'=>' Mis à jour le',
+	'plugin.blog.updatedOn'=>'Mis à jour le',
 	'plugin.blog.LatestPosts'=>'Derniers billets',
 	'plugin.blog.editPost'=>'Modifer ce billet',
 	'plugin.blog.postLinked_title'=>'Billets liés',
