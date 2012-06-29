@@ -14,7 +14,7 @@ class SearchablesKeyword extends SSqlModel{
 		/** @SqlType('varchar(200)') @Null
 		* @Text
 		*/ $meta_descr,
-		/** @SqlType('varchar(255)') @Null
+		/** @SqlType('text') @Null @MaxLength(1000)
 		*/ $meta_keywords,
 		/** @SqlType('text') @Null
 		*/ $descr

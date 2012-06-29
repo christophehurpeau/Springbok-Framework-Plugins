@@ -20,12 +20,12 @@ class Searchable extends SSqlModel{
 		*/ $slug,
 		/** @Boolean @Default(true)
 		*/ $visible/* IF(searchable_seo) */,
-		/** @SqlType('varchar(128)') @Null
+		/** @SqlType('varchar(100)') @Null
 		*/ $meta_title,
 		/** @SqlType('varchar(200)') @Null
 		* @Text
 		*/ $meta_descr,
-		/** @SqlType('varchar(255)') @Null
+		/** @SqlType('text') @Null @MaxLength(1000)
 		*/ $meta_keywords
 		/* /IF */;
 	

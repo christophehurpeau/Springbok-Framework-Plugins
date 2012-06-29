@@ -75,7 +75,6 @@ class Post extends Searchable{
 		return json_encode(array('id'=>$this->id,'value'=>$this->name,'pblsd'=>$this->isPublished()));
 	}
 	
-	
 	public function save(){
 		if($this->status===self::PUBLISHED && !Post::existByIdAndStatus($this->id,self::PUBLISHED)) $this->published=array('NOW()');
 		$res=$this->update();

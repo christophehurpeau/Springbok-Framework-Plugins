@@ -8,5 +8,5 @@
 {$history->content}
 
 <div class="mt10">
-	{iconLink 'time_go','Restaurer cette version','/postHistories/restore/'.$history->id}
+	{iconLink 'timeGo','Restaurer cette version','/postHistories/restore/'.$history->id}
 </div>

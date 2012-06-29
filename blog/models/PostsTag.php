@@ -47,4 +47,8 @@ class PostsTag extends SSqlModel{
 		uksort($models,'strcasecmp');
 		return $models;
 	}
+	
+	public function toJSON_adminAutocomplete(){
+		return json_encode(array('id'=>$this->id,'value'=>$this->name,'url'=>HHtml::url($this->link(),Config::$site_url)));
+	}
 }

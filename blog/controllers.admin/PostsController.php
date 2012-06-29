@@ -16,6 +16,7 @@ class PostsController extends Controller{
 	*/ function add(Post $post){
 		$post->status=Post::DRAFT;
 		$post->author_id=CSecure::connected();
+		$post->visible=false;
 		$post->insert();
 		/* IF(blog_personalizeAuthors_enabled) */PostAuthor::create($post->id,1);/* /IF */
 		redirect('/posts/edit/'.$post->id);
@@ -70,15 +71,16 @@ class PostsController extends Controller{
 	/** @Ajax @ValidParams @Required('term') */
 	function autocomplete($term){
 		self::renderJSON(SModel::json_encode(
-			Post::QAll()->fields('id,name,slug')
-				->where(array('name LIKE'=>'%'.$term.'%'))
+			Post::QAll()->field('id')->withParent('name,slug')
+				->where(array('sb.name LIKE'=>'%'.$term.'%'))
+				->limit(14)
 			,'_autocomplete'
 		));
 	}
 
 	/** @Ajax @ValidParams @Required('val') */
 	function checkId(int $val){
-		$post=Post::QOne()->fields('id,name,slug')->byId($val);
+		$post=Post::QOne()->field('id')->withParent('name,slug')->byId($val);
 		self::renderJSON($post===false?'{"error":"Article inconnu"}':$post->toJSON_autocomplete());
 	}
 	
@@ -118,8 +120,5 @@ class PostsController extends Controller{
 	/** @ValidParams @Required('id') */
 	function test(int $id){
 		$post=Post::QOne()->fields('id,excerpt,text')->withParent('name,slug')->byId($id);
-		renderText(UHtml::transformInternalLinks($post->excerpt,array(
-			'article'=>function($id){$postSlug=Post::findValueSlugById($id); return array('/:controller/:id-:slug','posts',sprintf('%03d',$id),$postSlug);}
-		)));
 	}
 }

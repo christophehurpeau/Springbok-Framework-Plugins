@@ -1,6 +1,34 @@
 includeCore('springbok.jqueryui');
 
 _.posts={
+	internalLinks:{
+		post:{
+			title:'Article',params:{id:{title:'Id',style:'width:45px'}},search:{title:'Nom de l\'article (Recherche)'},
+			checkParam:basedir+'posts/checkId',
+			autocomplete:{
+				source:basedir+'posts/autocomplete',
+				focus:function(){return false;},
+				select:function(event,ui){
+					var div=$(this).closest('div.ui-dialog-content');
+					div.find('#InputPost_id').val(ui.item.id).change();
+					div.find('#InputHref').val(ui.item.url).prop('disabled',true);
+				}
+			}
+		},
+		postsTag:{
+			title:'Mot clé',params:{id:{title:'Id',style:'width:45px'}},search:{title:'Nom du mot clé (Recherche)'},
+			checkParam:basedir+'postsTags/checkId',
+			autocomplete:{
+				source:basedir+'postsTags/autocomplete',
+				focus:function(){return false;},
+				select:function(event,ui){
+					var div=$(this).closest('div.ui-dialog-content');
+					div.find('#InputPostsTag_id').val(ui.item.id).change();
+					div.find('#InputHref').val(ui.item.url).prop('disabled',true);
+				}
+			}
+		},
+	},
 	getGallery:function(){
 		if(this.gallery!==undefined) return this.gallery;
 		return this.gallery=new Gallery($('<div id="PostsGallery" style="width:800px;height:600px;margin-right:20px"/>'),
@@ -9,29 +37,13 @@ _.posts={
 	edit:function(postId){
 		S.ready(function(){
 			$("#editTabs").tabs();
-			
-			var internalLinks={
-				article:{
-					title:'Article',params:{id:{title:'Id',style:'width:45px'}},search:{title:'Nom de l\'article (Recherche)'},
-					checkParam:basedir+'posts/checkId',
-					autocomplete:{
-						source:basedir+'posts/autocomplete',
-						focus:function(){return false;},
-						select:function(event,ui){
-							var div=$(this).closest('div.ui-dialog-content');
-							div.find('#InputArticle_id').val(ui.item.id).change();
-							div.find('#InputHref').val(ui.item.url).prop('disabled',true);
-						}
-					}
-				}
-			};
 			S.tinymce.init("100%","150px",'basicAdvanced',true).addAttr("gallery",_.posts.getGallery()).wordCount().autolink().autoSave().validXHTML()
 				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(inst.getBody().innerHTML.sbStripTags()).change()})
-				.addAttr('internalLinks',internalLinks)
+				.addAttr('internalLinks',_.posts.internalLinks)
 				.createForIds("PostExcerpt");
 			S.tinymce.init("100%","430px",'basicAdvanced',true)
 				.addAttr("gallery",_.posts.gallery)
-				.addAttr('internalLinks',internalLinks)
+				.addAttr('internalLinks',_.posts.internalLinks)
 				.wordCount().autolink().autoSave().validXHTML().createForIds("PostContent");
 			$("#formPostEdit").ajaxForm(basedir+'posts/save/'+postId,false,function(){
 				if($("#PostContent").val()=="" || $("#PostExcerpt").val()==""){alert("Le texte est vide !");return false;}
