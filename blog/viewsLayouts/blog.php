@@ -7,7 +7,7 @@
 				<h4><?= _t('Admin') ?></h4>
 				{if Controller::_isset('post')}
 					<?php $post=Controller::get('post'); ?>
-					{link _t('plugin.blog.editPost'),'/posts/edit/'.$post->id,array('fullUrl'=>Config::$admin_site_url)}
+					{link _t('plugin.blog.editPost'),'/posts/edit/'.$post->id,array('entry'=>'admin')}
 				{/if}
 			</div>
 		{/if}

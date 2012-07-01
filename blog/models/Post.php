@@ -69,7 +69,7 @@ class Post extends Searchable{
 	public function isPublished(){return $this->status!==self::DRAFT;}
 	
 	public function toJSON_autocomplete(){
-		return json_encode(array('id'=>$this->id,'value'=>$this->name,'url'=>HHtml::url($this->link(),Config::$site_url)));
+		return json_encode(array('id'=>$this->id,'value'=>$this->name,'url'=>HHtml::url($this->link(),'index',true)));
 	}
 	public function toJSON_autocomplete_linkedposts(){
 		return json_encode(array('id'=>$this->id,'value'=>$this->name,'pblsd'=>$this->isPublished()));
