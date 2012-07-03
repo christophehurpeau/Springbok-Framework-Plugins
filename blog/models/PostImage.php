@@ -6,7 +6,7 @@ class PostImage extends SSqlModel{
 		* @ForeignKey('Post','id')
 		*/ $post_id,
 		/** @SqlType('int(10) unsigned') @NotNull
-		* @ForeignKey('PostsImage','id')
+		* @ForeignKey('CmsImage','id')
 		*/ $image_id,
 		/** @Boolean @Default(true)
 		*/ $in_text;

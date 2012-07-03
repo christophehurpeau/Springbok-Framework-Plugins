@@ -1,7 +1,7 @@
-<?php new AjaxPageView($layout_title,'ml200') ?>
+<?php new AjaxPageView($layout_title,'ml160') ?>
 
 
-<div class="fixed left w200">
+<div class="fixed left w160">
 	{menuLeft 'startsWith':true/*,'menuAttributes':array('rel'=>'page')*/
 		_t('plugin.blog.Posts')=>array('url'=>'/posts','startsWith'=>false),
 		/* IF(blog_personalizeAuthors_enabled) */
@@ -15,6 +15,12 @@
 		/* /IF */
 		false,
 		_t('plugin.blog.Tools')=>'/posts/tools',
+	}
+	<hr/>
+	{menuLeft 'startsWith':true/*,'menuAttributes':array('rel'=>'page')*/
+		_t('plugin.cms.Pages')=>array('url'=>'/pages','startsWith'=>false),
+		false,
+		_t('plugin.cms.Tools')=>'/pages/tools',
 	}
 </div>
 

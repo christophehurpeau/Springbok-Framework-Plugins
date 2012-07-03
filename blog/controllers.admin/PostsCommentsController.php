@@ -1,5 +1,5 @@
 <?php
-Controller::$defaultLayout='admin/blog';
+Controller::$defaultLayout='admin/cms';
 /** @Check('ASecureAdmin') @Acl('Posts') */
 class PostsCommentsController extends Controller{
 	/** */

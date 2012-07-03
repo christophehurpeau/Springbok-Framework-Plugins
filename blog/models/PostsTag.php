@@ -51,4 +51,10 @@ class PostsTag extends SSqlModel{
 	public function toJSON_adminAutocomplete(){
 		return json_encode(array('id'=>$this->id,'value'=>$this->name,'url'=>HHtml::url($this->link(),'index',true)));
 	}
+	
+	public static function internalLink($id){
+		$tag=new PostsTag; $tag->id=$id;
+		$tag->slug=SearchablesKeyword::QValue()->field('slug')->with('PostsTag',array('fields'=>false))->addCondition('t.id',$id);
+		return $tag->link();
+	}
 }

@@ -1,10 +1,10 @@
 <?php
-Controller::$defaultLayout='admin/blog';
+Controller::$defaultLayout='admin/cms';
 /** @Check('ASecureAdmin') @Acl('Posts') */
 class PostsController extends Controller{
 	/** */
 	function index(){
-		$table=Post::Table()->fields('id,status')->withParent('name,created,updated')
+		Post::Table()->fields('id,status')->withParent('name,created,updated')
 			->where(array('status !='=>Post::DELETED))->orderBy(array('sb.created'=>'DESC'))
 			->allowFilters()
 			->paginate()->fields(array('id','name','status','created','updated'))->actionClick('edit')

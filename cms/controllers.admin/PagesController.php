@@ -1,0 +1,70 @@
+<?php
+Controller::$defaultLayout='admin/cms';
+/** @Check('ASecureAdmin') @Acl('CMS') */
+class PagesController extends Controller{
+	/** */
+	function index(){
+		Page::Table()->fields('id,name,status,created,updated')
+			->where(array('status !='=>Page::DELETED))->orderByCreated()
+			->allowFilters()
+			->paginate()->actionClick('edit')
+			->render('Pages',true);
+	}
+	
+	
+	/** @ValidParams @Required('post')
+	* post > @Valid('name')
+	*/ function add(Post $post){
+		$page->status=Post::DRAFT;
+		$page->author_id=CSecure::connected();
+		$page->insert();
+		redirect('/pages/edit/'.$page->id);
+	}
+	
+	/** @ValidParams @Required('id') */
+	function edit(int $id){
+		$page=Page::ById($id);
+		notFoundIfFalse($page);
+		mset($page,$id);
+		render();
+	}
+	
+	/** @ValidParams @Required('id') */
+	function delete(int $id){
+		Page::updateOneFieldByPk($id,'status',Post::DELETED);
+		Page::onModified($id,true);
+		redirect('/pages');
+	}
+	
+	/** @ValidParams @AllRequired
+	* page > @Valid('name','content') */
+	function save(int $id,Page $page){
+		$page->id=$id;
+		if(empty($page->slug)) $page->slug=$page->auto_slug();
+		$res=$page->save();
+		PageHistory::create($page,PageHistory::SAVE);
+		renderText($res);
+	}
+
+
+	/** @Ajax @ValidParams @Required('term') */
+	function autocomplete($term){
+		self::renderJSON(SModel::json_encode(
+			Page::QAll()->field('id,name,slug')
+				->where(array('name LIKE'=>'%'.$term.'%'))
+				->limit(14)
+			,'_autocomplete'
+		));
+	}
+
+	/** @Ajax @ValidParams @Required('val') */
+	function checkId(int $val){
+		$page=Page::ById($val)->field('id,name,slug');
+		self::renderJSON($page===false?'{"error":"Page inconnue"}':$page->toJSON_autocomplete());
+	}
+	
+	/** @ValidParams */
+	function tools(){
+		render();
+	}
+}

@@ -1,15 +1,13 @@
 <?php
 /** @TableAlias('ph') */
-class PostHistory extends SSqlModel{
+class PageHistory extends SSqlModel{
 	const IMPORT=0,SAVE=1,AUTOSAVE=2;
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
 		/** @SqlType('int(10) unsigned') @NotNull
-		* @ForeignKey('Post','id')
-		*/ $post_id,
-		/** @SqlType('text') @NotNull
-		*/ $excerpt,
+		* @ForeignKey('Page','id')
+		*/ $page_id,
 		/** @SqlType('text') @NotNull
 		*/ $content,
 		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(1)
@@ -18,17 +16,16 @@ class PostHistory extends SSqlModel{
 		/** @Pk @SqlType('datetime') @NotNull
 		*/ $created;
 	
-	public static function last($postId){
-		return self::QOne()->fields('excerpt,content')->byPost_id($postId)->orderByCreated();
+	public static function last($pageId){
+		return self::QOne()->fields('content')->byPost_id($postId)->orderByCreated();
 	}
 	
-	public static function create($post,$type){
-		$lastPostHistory=self::last($post->id);
-		if($lastPostHistory!==false && $lastPostHistory->excerpt===$post->excerpt && $lastPostHistory->content===$post->content) return true;
+	public static function create($page,$type){
+		$lastPageHistory=self::last($page->id);
+		if($lastPageHistory!==false && $lastPageHistory->content===$page->content) return true;
 		return self::QInsert()->set(array(
-			'post_id'=>$post->id,
-			'excerpt'=>$post->excerpt,
-			'content'=>$post->content
+			'page_id'=>$page->id,
+			'content'=>$page->content
 		));
 	}
 	
@@ -41,10 +38,10 @@ class PostHistory extends SSqlModel{
 	}*/
 	
 	public function restore(){
-		$post=new Post;
-		$post->id=$this->post_id;
-		$post->excerpt=$this->excerpt;
-		$post->content=$this->content;
-		return $post->update('excerpt','content');
+		// force using model : afterSave()...
+		$page=new Page;
+		$page->id=$this->page_id;
+		$page->content=$this->content;
+		return $post->update('content');
 	}
 }

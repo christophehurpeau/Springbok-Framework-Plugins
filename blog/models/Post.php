@@ -15,7 +15,7 @@ class Post extends Searchable{
 		/** @SqlType('text') @NotNull
 		*/ $content,
 		/** @SqlType('tinyint(1)') @NotNull
-		* @Enum(1=>'Draft',2=>'Published',3=>'Archived')
+		* @Enum(1=>'Draft',2=>'Published',3=>'Archived',4=>'Deleted')
 		*/ $status,
 		/* IF(blog_comments_enabled) */
 		/** @Boolean @Default(true)
@@ -101,5 +101,11 @@ class Post extends Searchable{
 		$options['fields']='id';
 		$options['with']=array('Parent'=>array('fields'=>'name,slug'));
 		return $options;
+	}
+	
+	public static function internalLink($id){
+		$post=new Post; $post->id=$id;
+		$post->slug=Searchable::QValue()->field('slug')->with('Post',array('fields'=>false))->addCondition('p.id',$id);
+		return $post->link();
 	}
 }
