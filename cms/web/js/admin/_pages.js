@@ -32,7 +32,7 @@ _.pages={
 				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(inst.getBody().innerHTML.sbStripTags()).change()})
 				.addAttr('internalLinks',_.cms.internalLinks)
 				.createForIds("PageContent");
-			$("#formPageEdit").ajaxForm(basedir+'posts/save/'+postId,false,function(){
+			$("#formPageEdit").ajaxForm(basedir+'pages/save/'+postId,false,function(){
 				if($("#PageContent").val()==""){alert("Le texte est vide !");return false;}
 			});
 			_.seo.init($('#PageName'));

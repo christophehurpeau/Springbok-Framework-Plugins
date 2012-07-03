@@ -17,7 +17,7 @@ class PageHistory extends SSqlModel{
 		*/ $created;
 	
 	public static function last($pageId){
-		return self::QOne()->fields('content')->byPost_id($postId)->orderByCreated();
+		return self::QOne()->fields('content')->byPage_id($pageId)->orderByCreated();
 	}
 	
 	public static function create($page,$type){

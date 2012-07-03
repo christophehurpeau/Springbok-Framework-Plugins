@@ -29,6 +29,20 @@ class Page extends SSeoModel{
 		return '';
 	}
 	
+	public function save(){
+		if($this->status===self::PUBLISHED && !Page::existByIdAndStatus($this->id,self::PUBLISHED)) $this->published=array('NOW()');
+		$res=$this->update();
+		if($res && $this->status===self::PUBLISHED)
+			self::onModified($this->id);
+		return $res;
+	}
+	
+	public static function onModified($pageId,$delete=false){
+		$delete ? VPage::destroy($pageId) : VPage::generate($pageId);
+		ACSitemapPages::generate();
+	}
+	
+	
 	public function link(){
 		return array('/:slug',$this->slug);
 	}
