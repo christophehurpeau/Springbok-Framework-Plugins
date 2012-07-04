@@ -12,9 +12,9 @@ class PagesController extends Controller{
 	}
 	
 	
-	/** @ValidParams @Required('post')
-	* post > @Valid('name')
-	*/ function add(Post $post){
+	/** @ValidParams @Required('page')
+	* page > @Valid('name')
+	*/ function add(Page $page){
 		$page->status=Post::DRAFT;
 		$page->author_id=CSecure::connected();
 		$page->insert();

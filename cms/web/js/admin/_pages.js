@@ -28,9 +28,8 @@ _.pages={
 	edit:function(postId){
 		S.ready(function(){
 			$("#editTabs").tabs();
-			S.tinymce.init("100%","430px",'basicAdvanced',true).addAttr("gallery",_.cms.getGallery()).wordCount().autolink().autoSave().validXHTML()
+			S.tinymce.init("100%","430px",'basicAdvanced',true).wordCount().autolink().autoSave().validXHTML()
 				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(inst.getBody().innerHTML.sbStripTags()).change()})
-				.addAttr('internalLinks',_.cms.internalLinks)
 				.createForIds("PageContent");
 			$("#formPageEdit").ajaxForm(basedir+'pages/save/'+postId,false,function(){
 				if($("#PageContent").val()==""){alert("Le texte est vide !");return false;}

@@ -33,13 +33,10 @@ _.posts={
 	edit:function(postId){
 		S.ready(function(){
 			$("#editTabs").tabs();
-			S.tinymce.init("100%","150px",'basicAdvanced',true).addAttr("gallery",_.cms.getGallery()).wordCount().autolink().autoSave().validXHTML()
+			S.tinymce.init("100%","150px",'basicAdvanced',true).wordCount().autolink().autoSave().validXHTML()
 				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(inst.getBody().innerHTML.sbStripTags()).change()})
-				.addAttr('internalLinks',_.cms.internalLinks)
 				.createForIds("PostExcerpt");
 			S.tinymce.init("100%","430px",'basicAdvanced',true)
-				.addAttr("gallery",_.cms.gallery)
-				.addAttr('internalLinks',_.cms.internalLinks)
 				.wordCount().autolink().autoSave().validXHTML().createForIds("PostContent");
 			$("#formPostEdit").ajaxForm(basedir+'posts/save/'+postId,false,function(){
 				if($("#PostContent").val()=="" || $("#PostExcerpt").val()==""){alert("Le texte est vide !");return false;}

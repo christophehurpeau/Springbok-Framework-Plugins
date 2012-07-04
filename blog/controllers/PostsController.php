@@ -14,7 +14,7 @@ class PostsController extends AController{
 		
 		mset($postTag);
 		set('posts',CPagination::create(Post::QListAll()
-			->with('PostTag',array('forceJoin'=>true,'fields'=>false))
+			->with('PostTag',array('join'=>true,'fields'=>false))
 			->addCondition('pt.tag_id',$postTag->id))->pageSize(10)->execute());
 		render();
 	}

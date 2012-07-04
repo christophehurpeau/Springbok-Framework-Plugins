@@ -29,7 +29,7 @@
 {=$form->end(false)}
 
 <? HHtml::jsInline('S.ready(function(){_.seo.init($(\'#SearchablesKeywordName\'),$(\'#linkedTerms ul\'));'
-	.'S.tinymce.init("100%","250px","basicAdvanced",true).wordCount().autolink().autoSave().validXHTML()'
+	.'S.tinymce.init("100%","250px","basicAdvanced",!!_.cms).wordCount().autolink().autoSave().validXHTML()'
 		.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'
 		.'.addAttr("internalLinks",_.posts.internalLinks).createForId("SearchablesKeywordDescr");'
 	.'$("#formKeywordEdit").ajaxForm(basedir+"searchableKeyword/save/'.$keyword->id.'",false,function(){'

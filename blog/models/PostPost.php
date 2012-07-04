@@ -21,7 +21,7 @@ class PostPost extends SSqlModel{
 		if(!empty($tags))
 			self::QInsertSelect()->ignore()->cols('post_id,linked_post_id')->query(
 				Post::QAll()->fields($postId.',id')
-					->with('PostTag',array('forceJoin'=>true,'fields'=>false))
+					->with('PostTag',array('join'=>true,'fields'=>false))
 					->where(array('id !='=>$postId,'pt.tag_id'=>$tags))
 			);
 		Post::onModified($postId);
