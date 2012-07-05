@@ -6,11 +6,11 @@
 		{=$form->select('status',Post::statusesList())}
 		{iconLink 'delete','Supprimer cet article','/posts/delete/'.$post->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cet article ?')}
 	</div>
-	<div id="PostTags" class="content block4">
+	<div id="PostTags" class="block1">
 		<b>Tags</b>
 		<? HHtml::ajaxCRDSelectFiltrable('/postTags',PostsTag::findListName(),$post->tags,array('url'=>'/'.$id,'allowNew'=>true,'selectAttributes'=>array('style'=>'width:135px'))) ?>
 	</div>
-	<div id="PostCategories" class="content block4 mt10">
+	<div id="PostCategories" class="content block1 mt10">
 		<b>Catégories</b>
 		<? HHtml::ajaxCRDSelectFiltrable('/postCategories',PostsCategory::findListName(),$post->categories,array('url'=>'/'.$id,'selectAttributes'=>array('style'=>'width:135px'))) ?>
 	</div>
@@ -24,7 +24,7 @@
 			{=$form->input('name',array('class'=>'wp100'))}
 			
 			/* IF(blog_personalizeAuthors_enabled) */
-			<div class="float_right clearfix mt10 ml10 content block4" style="width:180px">
+			<div class="float_right clearfix mt10 ml10 block1" style="width:180px">
 				<b>Auteurs</b>
 				<? HHtml::ajaxCRDSelectFiltrable('/postAuthors',PostsAuthor::findListName(),$post->authors,array('url'=>'/'.$id,'selectAttributes'=>array('style'=>'width:135px'))) ?>
 				{=$form->submit(true,array(),array('class'=>'submit center'))}
@@ -39,7 +39,7 @@
 				{=$form->submit(true,array(),array('class'=>'submit center'))}
 			</div>
 			
-			<div class="sepTop content block4">
+			<div class="sepTop block1">
 				<? View::element('seo',array('model'=>$post,'form'=>$form)) ?>
 				<? $form->submit(true,array(),array('class'=>'submit center')); ?>
 			</div>

@@ -1,6 +1,6 @@
 <?php
 class VPost extends SViewCachedElement{
-	protected static $views=array('view','tags','metas');
+	protected static $views=array('view','tags','metas','excerpt');
 	
 	/* DEV */ public function exists(){ return false; } /* /DEV */
 	
@@ -15,6 +15,7 @@ class VPost extends SViewCachedElement{
 			/* IF(blog_comments_enabled) */->with('PostComment',array('where'=>array('status'=>PostComment::VALID)))/* /IF */
 			/* IF(blog_personalizeAuthors_enabled) */->with('PostsAuthor','name,url')/* /IF */;
 		$post->content=UHtml::transformInternalLinks($post->content,Config::$internalLinks);
+		$post->excerpt=UHtml::transformInternalLinks($post->excerpt,Config::$internalLinks);
 		
 		return array('post'=>$post);
 	}
