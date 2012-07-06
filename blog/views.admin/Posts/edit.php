@@ -24,7 +24,7 @@
 			{=$form->input('name',array('class'=>'wp100'))}
 			
 			/* IF(blog_personalizeAuthors_enabled) */
-			<div class="float_right clearfix mt10 ml10 block1" style="width:180px">
+			<div class="floatR clearfix mt10 ml10 block1" style="width:180px">
 				<b>Auteurs</b>
 				<? HHtml::ajaxCRDSelectFiltrable('/postAuthors',PostsAuthor::findListName(),$post->authors,array('url'=>'/'.$id,'selectAttributes'=>array('style'=>'width:135px'))) ?>
 				{=$form->submit(true,array(),array('class'=>'submit center'))}

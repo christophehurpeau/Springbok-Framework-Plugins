@@ -1,8 +1,8 @@
 <?php new AjaxContentView('Keyword: '.$keyword->name) ?>
 
-/* IF(searchable_seo) */<div class="float_right w300">/* /IF */
+/* IF(searchable_seo) */<div class="floatR w300">/* /IF */
 
-<div class="/* IF!(searchable_seo) */float_right /* /IF */block2">
+<div class="/* IF!(searchable_seo) */floatR /* /IF */block2">
 	<div>Type : <? _tF($keyword->_type(),'') ?></div>
 	<div>Created : <? HTime::compact($keyword->created) ?></div>
 </div>
