@@ -5,7 +5,7 @@ class PostController extends AController{
 		$post=Post::QOne()->fields('id')->withParent('name,slug')->where(/* IF(blog_slugOnly_enabled) */$id===null ? array('slug'=>$slug) :/* /IF */array('id'=>$id))
 			->addCondition('status',Post::PUBLISHED);
 		notFoundIfFalse($post);
-		if(/* IF(blog_slugOnly_enabled) */$id!==null && /* /IF*/$post->slug!==$slug) redirect($post->link());
+		if(/* IF(blog_slugOnly_enabled) */$id!==null && /* /IF*/$post->slug!==$slug) redirectPermanent($post->link());
 
 		/* IF(blog_comments_enabled) */
 		$userId=CSecure::connected();
