@@ -19,7 +19,7 @@
 	'plugin.blog.readMore'=>'Read more...',
 	'plugin.blog.permalink'=>'Permalink',
 	'plugin.blog.PublishedOn'=>'Published on',
-	'plugin.blog.updatedOn'=>'Updated on',
+	'plugin.blog.updatedOn'=>'updated on',
 	'plugin.blog.LatestPosts'=>'Latest posts',
 	'plugin.blog.editPost'=>'Edit post',
 	'plugin.blog.postLinked_title'=>'Linked posts',
