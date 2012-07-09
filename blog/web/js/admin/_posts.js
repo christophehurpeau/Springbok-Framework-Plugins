@@ -45,7 +45,7 @@ _.posts={
 		});
 	},
 	selectImage:function(postId){
-		var g=this.gallery;
+		var g=_.cms.gallery;
 		g.setOnSelectImage(function(id){
 			g.close();
 			$('#divPostImage').load(basedir+'posts/selectImage/'+postId+'/'+id);
