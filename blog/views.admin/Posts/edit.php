@@ -40,8 +40,9 @@
 			</div>
 			
 			<div class="sepTop block1">
+				<?php $form->_setModelName('Searchable') ?>
 				<? View::element('seo',array('model'=>$post,'form'=>$form)) ?>
-				<? $form->submit(true,array(),array('class'=>'submit center')); ?>
+				<? $form->_setModelName('Post'); $form->submit(true,array(),array('class'=>'submit center')); ?>
 			</div>
 			
 			<br class="clear"/>

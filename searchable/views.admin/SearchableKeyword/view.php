@@ -17,7 +17,7 @@
 <div class="mr300 context">
 	{=$form->input('name',array('class'=>'wp100 biginfo'),array('class'=>'input text mb10'))}
 	
-	<? View::element('seo',array('model'=>&$keyword,'form'=>&$form)) ?>
+	<? View::element('seo',array('model'=>$keyword,'form'=>$form)) ?>
 	{=$form->submit(true,array(),array('class'=>'submit center'))}
 </div>
 
