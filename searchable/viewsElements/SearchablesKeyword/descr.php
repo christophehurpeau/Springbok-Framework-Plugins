@@ -1,7 +1,7 @@
-<article itemscope itemtype="http://schema.org/Article">
+<article itemscope itemtype="http://schema.org/CreativeWork">
 	<h1 itemprop="name">{$sk->name}</h1>
 	
-	<div itemprop="articleBody" class="clearfix">
+	<div itemprop="text" class="clearfix">
 		{=$sk->descr}
 	</div>
 </article>
