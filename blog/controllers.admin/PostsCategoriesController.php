@@ -6,9 +6,10 @@ class PostsCategoriesController extends Controller{
 	function index(){
 		HBreadcrumbs::set(array('Articles'=>'/posts'));
 		
-		PostsCategory::Table()/*->fields('id,name,created,updated')*/->orderBy('created')
+		PostsCategory::Table()->fields('id')->withParent('name,created,updated')->orderBy(array('ssk.created'))
 			->allowFilters()
 			->paginate()->setActionsRU()
+			->fields(array('id','name','created','updated'))
 			->render('Catégories',true);
 	}
 	

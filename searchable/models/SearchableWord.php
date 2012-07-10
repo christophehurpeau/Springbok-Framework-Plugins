@@ -3,7 +3,7 @@
 class SearchableWord extends SSqlModel{
 	public
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
-		* @ForeignKey('Searchable','id')
+		* @ForeignKey('Searchable','id','onDelete'=>'CASCADE')
 		*/ $searchable_id,
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
 		* @ForeignKey('SearchablesWord','id')

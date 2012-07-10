@@ -100,23 +100,6 @@ class PostsController extends Controller{
 		redirect('/posts/tools');
 	}
 	
-	
-	/** @ValidParams */
-	function autoEveryPosts(){
-		foreach(Post::QAll()->withParent('name')->with('PostTag',array('fields'=>'tag_id')) as $post){
-			foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName)
-				$post->$metaName=$post->{'auto_'.$metaName}();
-			$post->normalized=$post->normalized();
-			$post->updateParent('slug','normalized','meta_title','meta_descr','meta_keywords');
-			PostPost::refind($post->id);
-		}
-	}
-	
-	/** @ValidParams */
-	function recountTagsPosts(){
-		
-	}
-	
 	/** @ValidParams @Required('id') */
 	function test(int $id){
 		$post=Post::QOne()->fields('id,excerpt,text')->withParent('name,slug')->byId($id);

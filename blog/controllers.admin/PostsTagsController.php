@@ -5,9 +5,10 @@ class PostsTagsController extends Controller{
 	/** */
 	function index(){
 		HBreadcrumbs::set(array('Articles'=>'/posts'));
-		PostsTag::Table()->fields('id,name,slug,slug_auto,created,updated')->orderBy('created')
+		PostsTag::Table()->fields('id')->withParent('name,slug,created,updated')->orderBy('created')
 			->allowFilters()
-			->paginate()->setActionsRU()
+			->paginate()/*->setActionsRU()*/
+			->fields(array('id','name','slug','created','updated'))
 			->render('Mots clé',true);
 	}
 	
@@ -30,7 +31,7 @@ class PostsTagsController extends Controller{
 	/** @ValidParams('/postsTags') @Id('id') */
 	function edit(int $id){
 		self::_breadcrumbs();
-		CRUD::edit('PostsTag',$id);
+		render();
 	}
 	
 	/** @ValidParams('/postsTags') @Id('id') */

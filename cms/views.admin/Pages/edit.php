@@ -15,7 +15,7 @@
 		<div id="editTab1" class="clearfix">
 			{=$form->input('name',array('class'=>'wp100'))}
 			
-			<div class="sepTop content block4">
+			<div class="sepTop block1">
 				<? View::element('seo',array('model'=>$page,'form'=>$form)) ?>
 				<? $form->submit(true,array(),array('class'=>'submit center')); ?>
 			</div>
