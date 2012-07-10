@@ -48,6 +48,11 @@ class SearchablesKeyword extends SSqlModel{
 		if(!empty($data['name'])) SearchablesKeywordTerm::create($this->id,$data['name']);
 	}
 	
+	public function afterUpdate(){
+		VSearchablesKeyword::generate($this->id);
+		return true;
+	}
+	
 	public static function cleanPhrase($phrase){
 		return trim(preg_replace('/[\s\,\+\-]+/',' ',$phrase));
 	}

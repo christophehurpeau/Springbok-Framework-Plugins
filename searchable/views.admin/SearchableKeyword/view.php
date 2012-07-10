@@ -31,7 +31,7 @@
 <? HHtml::jsInline('S.ready(function(){_.seo.init($(\'#SearchablesKeywordName\'),$(\'#linkedTerms ul\'));'
 	.'S.tinymce.init("100%","250px","basicAdvanced",!!_.cms).wordCount().autolink().autoSave().validXHTML()'
 		.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'
-		.'.addAttr("internalLinks",_.posts.internalLinks).createForId("SearchablesKeywordDescr");'
+		.'.createForId("SearchablesKeywordDescr");'
 	.'$("#formKeywordEdit").ajaxForm(basedir+"searchableKeyword/save/'.$keyword->id.'",false,function(){'
 		//.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
 	.'});});') ?>
