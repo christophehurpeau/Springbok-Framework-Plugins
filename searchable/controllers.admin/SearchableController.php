@@ -14,4 +14,12 @@ class SearchableController extends Controller{
 			->render('Keywords');
 	}
 	
+	/** */
+	function terms(){
+		SearchablesTerm::Table()->noAutoRelations()->fields('id,term,slug,created,updated')
+			->paginate()->controller('searchableTerm')->actionClick('view')
+			->fields(array('id','term','slug','created','updated'))
+			->render('Terms');
+	}
+	
 }
