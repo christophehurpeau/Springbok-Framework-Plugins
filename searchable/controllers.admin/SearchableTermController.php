@@ -27,17 +27,18 @@ class SearchableTermController extends Controller{
 	/** @ValidParams('/searchable') @Id @NotEmpty('term') */
 	function autocomplete(int $id,$term){
 		$termsKeywordsId=SearchablesKeywordTerm::QValues()->field('keyword_id')->byTerm_id($id);
+		$where=array('skmt.term LIKE'=>$term.'%');
+		if(!empty($termsKeywordsId)) $where['id NOTIN']=$termsKeywordsId;
 		self::renderJSON(json_encode(
-			SearchablesKeyword::QRows()->with('MainTerm',false)->setFields(array('id','(term)'=>'name'))
-				->where(array('term LIKE'=>$term.'%','id NOTIN'=>$termsKeywordsId))->limit(14)));
+			SearchablesKeyword::QRows()->with('MainTerm',false)->setFields(array('id','(term)'=>'name'))->where($where)->limit(14)));
 	}
 	
-	/** @ValidParams('/searchable') @Id('id','termId') */
+	/** @ValidParams('/searchable') @Id('id','keywordId') */
 	function add(int $keywordId,int $id){
 		if(SearchablesKeywordTerm::QInsert()->ignore()->set(array('term_id'=>$id,'keyword_id'=>$keywordId)))
 			renderText('1');
 	}
-	/** @ValidParams('/searchable') @Id('id','termId') */
+	/** @ValidParams('/searchable') @Id('id','keywordId') */
 	function del(int $keywordId,int $id){
 		if(SearchablesKeywordTerm::QDeleteOne()->where(array('term_id'=>$id,'keyword_id'=>$keywordId)))
 			renderText('1');

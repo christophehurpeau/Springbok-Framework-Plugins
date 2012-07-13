@@ -30,9 +30,11 @@ class SearchableKeywordController extends Controller{
 	/** @ValidParams('/searchable') @Id @NotEmpty('term') */
 	function autocomplete(int $id,$term){
 		$keywordsTermsId=SearchablesKeywordTerm::QValues()->field('term_id')->byKeyword_id($id);
+		$where=array('term LIKE'=>$term.'%');
+		if(!empty($keywordsTermsId)) $where['id NOTIN']=$keywordsTermsId;
 		self::renderJSON(json_encode(
 			SearchablesTerm::QRows()->setFields(array('id','(term)'=>'name'))
-				->where(array('term LIKE'=>$term.'%','id NOTIN'=>$keywordsTermsId))->limit(14)));
+				->where($where)->limit(14)));
 	}
 	
 	/** @ValidParams('/searchable') @Id('id','termId') */

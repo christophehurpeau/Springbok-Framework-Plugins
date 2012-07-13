@@ -12,18 +12,18 @@
 	<? HHtml::ajaxCRDInputAutocomplete('/searchableTerm',$term->keywords,array('url'=>'/'.$term->id)) ?>
 </div>
 
-/* IF(searchable.keywordTerms.text) */</div>
+/* IF(searchable.keywordTerms.text) */</div>/* /IF */
 <?php $form=HForm::create('SearchablesTerm',array('id'=>'formTermEdit','name'=>'term'),'div',false) ?>
-/* /IF */
 
-/* IF(searchable.keywords.seo) */
+
 <div class="mr300 context">
 	{=$form->input('term',array('class'=>'wp100 biginfo'),array('class'=>'input text mb10'))}
 	
+	/* IF(searchable.keywordTerms.seo) */
 	<? View::element('seo',array('model'=>$term,'form'=>$form)) ?>
 	{=$form->submit(true,array(),array('class'=>'submit center'))}
+	/* /IF */
 </div>
-/* /IF */
 
 /* IF(searchable.keywordTerms.text) */
 <div class="clear">
