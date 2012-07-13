@@ -1,8 +1,8 @@
 <?php new AjaxContentView('Keyword: '.$keyword->name) ?>
 
-/* IF(searchable_seo) */<div class="floatR w300">/* /IF */
+/* IF(searchable.keywords.seo) */<div class="floatR w300">/* /IF */
 
-<div class="/* IF!(searchable_seo) */floatR /* /IF */block2">
+<div class="/* IF!(searchable.keywords.seo) */floatR /* /IF */block2">
 	<div>Type : <? _tF($keyword->_type(),'') ?></div>
 	<div>Created : <? HTime::compact($keyword->created) ?></div>
 </div>
@@ -12,7 +12,7 @@
 	<? HHtml::ajaxCRDInputAutocomplete('/searchableKeyword',$keyword->terms,array('allowNew'=>1,'url'=>'/'.$keyword->id)) ?>
 </div>
 
-/* IF(searchable_seo) */</div>
+/* IF(searchable.keywords.seo) */</div>
 <?php $form=HForm::create('SearchablesKeyword',array('id'=>'formKeywordEdit','name'=>'keyword'),'div',false) ?>
 <div class="mr300 context">
 	{=$form->input('name',array('class'=>'wp100 biginfo'),array('class'=>'input text mb10'))}

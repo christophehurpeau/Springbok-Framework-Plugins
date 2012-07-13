@@ -53,6 +53,7 @@ class SearchableKeywordController extends Controller{
 		//$termId=SearchablesTerm::QInsert()->set(array('term'=>SearchablesTerm::cleanTerm($val)));
 		$term=new SearchablesTerm;
 		$term->term=SearchablesTerm::cleanTerm($val);
+		$term->type=SearchablesTerm::NONE;
 		$term->insert();
 		if(SearchablesKeywordTerm::QInsert()->set(array('term_id'=>$term->id,'keyword_id'=>$id)))
 			renderText('1');

@@ -1,33 +1,37 @@
 <?php
-/** @TableAlias('ssk') @Created @Updated @Parent */
+/** @TableAlias('ssk') @Created @Updated @Parent /* IF(searchable.keywords.seo) *\/ @Seo /* /IF *\/ */
 class SearchablesKeyword extends SSqlModel{
 	public
-		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
-		*/ $id,
-		/** @Unique @SqlType('varchar(100)') @NotNull @MinLenth(3)
-		*/ $name/* IF(searchable_slug) */,
+		/** @Pk @SqlType('int(10) unsigned') @NotNull
+		* @ForeignKey('SearchablesTerm','id')
+		*/ $id/* IF(searchable.keywords.slug) */,
 		/** @Unique @SqlType('varchar(100)') @NotNull @MinLenth(3)
 		*/ $slug
-		/* /IF *//* IF(searchable_seo) */,
-		/** @SqlType('varchar(100)') @Null
-		*/ $meta_title,
-		/** @SqlType('varchar(200)') @Null
-		* @Text
-		*/ $meta_descr,
-		/** @SqlType('text') @Null @MaxLength(1000)
-		*/ $meta_keywords,
-		/** @SqlType('text') @Null
-		*/ $descr
 		/* /IF */;
+	
+	
+	/* IF(searchable.keywords.text) */
+	public /** @SqlType('text') @Null */ $text;
+	public function afterUpdate(){ if(!empty($this->text)) VSeo::generate('SearchablesKeyword',$this->id); }
+	/* /IF */
+	
+	public static $belongsTo=array(
+		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'id','fieldsInModel'=>true,'fields'=>'term,slug','alias'=>'skmt')
+	);
 	
 	public static $hasManyThrough=array(
 		'SearchablesTerm'=>array('joins'=>'SearchablesKeywordTerm')
 	);
 	
+	/* VALUE(searchable.SearchablesKeyword.phpcontent) */
 	
-	public function auto_slug(){ return HString::slug($this->name); }
-	/* IF(searchable_seo) */
-	public function auto_meta_title(){ return $this->name; }
+	public function name(){
+		return $this->term;
+	}
+	
+	public function auto_slug(){ return HString::slug($this->term->name); }
+	/* IF(searchable.keywords.seo) */
+	public function auto_meta_title(){ return $this->term->name; }
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->descr),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('term')->withForce('SearchablesKeywordTerm')->addCondition('skt.keyword_id',$this->id)->orderBy('term')); }
 	
@@ -38,20 +42,17 @@ class SearchablesKeyword extends SSqlModel{
 	
 	
 	public function beforeSave(){
-		/* IF(searchable_slug) */
+		/* IF(searchable.keywords.slug) */
 		if(!empty($this->name) && empty($this->slug)) $this->slug=$this->auto_slug();
 		/* /IF */
 		return true;
 	}
 	
-	public function afterInsert(&$data=null){
-		if(!empty($data['name'])) SearchablesKeywordTerm::create($this->id,$data['name']);
-	}
-	
+	/* IF(searchable.keywords.seo) */
 	public function afterUpdate(){
-		VSearchablesKeyword::generate($this->id);
-		return true;
+		if(!empty($this->text)) VSeo::generate('SearchablesKeyword',$this->id);
 	}
+	/* /IF */
 	
 	public static function cleanPhrase($phrase){
 		return trim(preg_replace('/[\s\,\+\-]+/',' ',$phrase));
