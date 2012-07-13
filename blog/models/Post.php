@@ -43,7 +43,7 @@ class Post extends Searchable{
 	public static function QListAll(){
 		return/* */ Post::QAll()->withParent('name,slug,created,updated')->fields('id,/* IF(blog_comments_enabled) */comments_allowed,/* /IF */published')
 			->with('PostImage','image_id')
-			->with('PostsTag',array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name/* IF(searchable_slug) */,slug/* /IF */'))))
+			->with('PostsTag',PostsTag::withOptions())
 			/* IF(blog_comments_enabled) */->with('PostComment',array('isCount'=>true,'onConditions'=>array('pcom.status'=>PostComment::VALID)))/* /IF */
 			->byStatus(Post::PUBLISHED)
 			->orderBy(array('sb.created'=>'DESC'));

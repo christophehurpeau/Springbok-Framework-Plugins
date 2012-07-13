@@ -5,6 +5,10 @@ class PostsTag extends SSqlModel{
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id;
 	
+	public static $belongsTo=array(
+		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'p_id','fieldsInModel'=>true,'fields'=>array('term'=>'name','slug'),'alias'=>'skmt')
+	);
+	
 	public static function create($name){
 		$t=new PostsTag;
 		$t->name=$name;
@@ -22,12 +26,12 @@ class PostsTag extends SSqlModel{
 	}
 	
 	public static function withOptions(){
-		return array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name,slug')));
+		return array('fields'=>'id','with'=>array('MainTerm'));//array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name/* IF(searchable_slug) */,slug/* /IF */'))
 	}
 	
 	const MAX_SIZE=20;
 	public static function findAllSize(){
-		$models=self::QListAll()->withParent('name,slug')
+		$models=self::QListAll()->setFields(false)->with('MainTerm')
 			->with('PostTag',array('isCount'=>true))
 			->orderBy(array('tags'=>'DESC'))
 			->limit(self::MAX_SIZE);
@@ -49,12 +53,12 @@ class PostsTag extends SSqlModel{
 	}
 	
 	public function toJSON_adminAutocomplete(){
-		return json_encode(array('id'=>$this->id,'value'=>$this->name,'url'=>HHtml::url($this->link(),'index',true)));
+		return json_encode(array('id'=>$this->id,'value'=>$this->name(),'url'=>HHtml::url($this->link(),'index',true)));
 	}
 	
 	public static function internalLink($id){
 		$tag=new PostsTag; $tag->id=$id;
-		$tag->slug=SearchablesKeyword::QValue()->field('slug')->with('PostsTag',array('fields'=>false))->addCondition('t.id',$id);
+		$tag->slug=PostsTag::QValue()->noFields()->with('MainTerm',array('fields'=>'slug'))->addCondition('id',$id);
 		return $tag->link();
 	}
 }
