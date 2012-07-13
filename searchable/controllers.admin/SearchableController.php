@@ -9,7 +9,7 @@ class SearchableController extends Controller{
 	/** */
 	function keywords(){
 		SearchablesKeyword::Table()->noAutoRelations()->fields('id,_type,created,updated')->with('MainTerm')
-			->paginate()->controller('searchableKeyword')->actionClick('view')
+			->allowFilters()->paginate()->controller('searchableKeyword')->actionClick('view')
 			->fields(array('id','term','slug','_type','created','updated'))
 			->render('Keywords');
 	}
@@ -17,7 +17,7 @@ class SearchableController extends Controller{
 	/** */
 	function terms(){
 		SearchablesTerm::Table()->noAutoRelations()->fields('id,term,slug,created,updated')
-			->paginate()->controller('searchableTerm')->actionClick('view')
+			->allowFilters()->paginate()->controller('searchableTerm')->actionClick('view')
 			->fields(array('id','term','slug','created','updated'))
 			->render('Terms');
 	}
