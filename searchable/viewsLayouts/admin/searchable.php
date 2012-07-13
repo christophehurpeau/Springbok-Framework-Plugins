@@ -4,6 +4,7 @@
 	{menuLeft
 		'Searchable'=>'/searchable',
 		'Keywords'=>'/searchable/keywords',
+		'Terms'=>'/searchable/terms',
 	}
 </div>
 

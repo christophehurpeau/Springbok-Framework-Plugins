@@ -29,10 +29,10 @@ class SearchablesKeyword extends SSqlModel{
 		return $this->term;
 	}
 	
-	public function auto_slug(){ return HString::slug($this->term->name); }
+	public function auto_slug(){ return HString::slug($this->term); }
 	/* IF(searchable.keywords.seo) */
-	public function auto_meta_title(){ return $this->term->name; }
-	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->descr),ENT_QUOTES,'UTF-8')))); }
+	public function auto_meta_title(){ return $this->term; }
+	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->text),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('term')->withForce('SearchablesKeywordTerm')->addCondition('skt.keyword_id',$this->id)->orderBy('term')); }
 	
 	public function metaTitle(){ return empty($this->meta_title) ? $this->auto_meta_title() : $this->meta_title; }
@@ -41,9 +41,13 @@ class SearchablesKeyword extends SSqlModel{
 	/* /IF */
 	
 	
+	public function beforeInsert(){
+		return $this->id=SearchablesTerm::createOrGet($this->term,SearchablesTerm::MAIN);
+	}
+	
 	public function beforeSave(){
 		/* IF(searchable.keywords.slug) */
-		if(!empty($this->name) && empty($this->slug)) $this->slug=$this->auto_slug();
+		if(!empty($this->term) && empty($this->slug)) $this->slug=$this->auto_slug();
 		/* /IF */
 		return true;
 	}

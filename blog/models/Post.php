@@ -61,7 +61,7 @@ class Post extends Searchable{
 	public function auto_meta_keywords(){
 		/* DEV */ if(!isset($this->tags)) throw new Exception('Please find post tags'); /* /DEV */
 		return empty($this->tags)?'':implode(', ',is_int($this->tags[0])?
-				PostsTag::QValues()->setFields(false)->withParent('name')->byId($this->tags)->orderBy('name')
+				PostsTag::QValues()->setFields(false)->with('MainTerm','term')->byId($this->tags)->orderBy(array('skmt.term'))
 				: array_map(function(&$t){return $t->name;},$this->tags));
 	}
 	

@@ -5,9 +5,9 @@ class PostsTagsController extends Controller{
 	/** */
 	function index(){
 		HBreadcrumbs::set(array('Articles'=>'/posts'));
-		PostsTag::Table()->fields('id')->withParent('name,slug,created,updated')->orderBy('created')
+		PostsTag::Table()->noAutoRelations()->fields('id')->with('MainTerm')->withParent('id,created,updated')->orderBy(array('ssk.created'))
 			->allowFilters()
-			->paginate()/*->setActionsRU()*/
+			->paginate()->controller('searchableKeyword')->actionClick('view')
 			->fields(array('id','name','slug','created','updated'))
 			->render('Mots clé',true);
 	}

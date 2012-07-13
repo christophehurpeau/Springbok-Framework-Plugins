@@ -2,15 +2,10 @@
 Controller::$defaultLayout='admin/searchable';
 /** @Check('ASecureAdmin') @Acl('Searchable') */
 class SearchableKeywordController extends Controller{
-	/** */
-	function autoEveryKeywords(){
-		SearchablesKeyword::autoEveryKeywords();
-	}
-	
 	/** @ValidParams('/searchable') @Id */
 	function view($id){
 		HBreadcrumbs::set(array('Keywords'=>'/searchable/keywords'));
-		$keyword=SearchablesKeyword::ById($id)->with('SearchablesTerm','id,term');
+		$keyword=SearchablesKeyword::ById($id)->with('MainTerm')->with('SearchablesTerm');
 		notFoundIfFalse($keyword);
 		mset($keyword);
 		render();
@@ -18,13 +13,15 @@ class SearchableKeywordController extends Controller{
 	
 	
 	/** @ValidParams @AllRequired @Id
-	* keyword > @Valid('descr') */
+	* keyword > @Valid('text') */
 	function save(int $id,SearchablesKeyword $keyword){
 		$keyword->id=$id;
 		//foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName)
 		//	if(empty($keyword->$metaName)) $keyword->$metaName=$keyword->{'auto_'.$metaName}();
+		/* IF(searchable.keywords.seo) */
 		foreach(array('meta_title','meta_descr','meta_keywords') as $metaName)
 			if(empty($keyword->$metaName)) $keyword->$metaName=null;
+		/* /IF */
 		$res=$keyword->update();
 		//SearchableKeywordHistory::create($keyword,SearchableKeywordHistory::SAVE);
 		renderText($res);

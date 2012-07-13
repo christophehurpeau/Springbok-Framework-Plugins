@@ -12,8 +12,11 @@
 	<? HHtml::ajaxCRDInputAutocomplete('/searchableTerm',$term->keywords,array('url'=>'/'.$term->id)) ?>
 </div>
 
-/* IF(searchable.keywordTerms.seo) */</div>
+/* IF(searchable.keywordTerms.text) */</div>
 <?php $form=HForm::create('SearchablesTerm',array('id'=>'formTermEdit','name'=>'term'),'div',false) ?>
+/* /IF */
+
+/* IF(searchable.keywords.seo) */
 <div class="mr300 context">
 	{=$form->input('term',array('class'=>'wp100 biginfo'),array('class'=>'input text mb10'))}
 	
@@ -31,11 +34,11 @@
 /* /IF */
 {=$form->end(false)}
 
-<? HHtml::jsInline('/* IF(searchable.keywordTerms.seo) */S.ready(function(){_.seo.init($(\'#SearchablesTermSeo\'),$(\'#linkedTerms ul\'));/* /IF */'
+<? HHtml::jsInline('S.ready(function(){/* IF(searchable.keywordTerms.seo) */_.seo.init($(\'#SearchablesTermSeo\')/*,$(\'#linkedTerms ul\')*/);/* /IF */'
 	.'/* IF(searchable.keywordTerms.text) */S.tinymce.init("100%","330px","basicAdvanced",!!_.cms).wordCount().autolink().autoSave().validXHTML()'
 		/* IF2(searchable.keywordTerms.seo) */.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'/* /IF2 */
 		.'.createForId("SearchablesTermText");/* /IF */'
-	.'$("#formKeywordEdit").ajaxForm(basedir+"searchableKeyword/save/'.$term->id.'",false,function(){'
+	.'$("#formTermEdit").ajaxForm(basedir+"searchableTerm/save/'.$term->id.'",false,function(){'
 		//.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
 	.'});});') ?>
 <br class="clear"/>

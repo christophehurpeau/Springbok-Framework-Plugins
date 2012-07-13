@@ -1,5 +1,5 @@
 <?php
-/** @TableAlias('t') @Child('SearchablesKeyword') */
+/** @TableAlias('t') @Child('SearchablesKeyword') @DisplayField('skmt.term')  */
 class PostsTag extends SSqlModel{
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
@@ -11,7 +11,7 @@ class PostsTag extends SSqlModel{
 	
 	public static function create($name){
 		$t=new PostsTag;
-		$t->name=$name;
+		$t->term=$name;
 		if($t->insertIgnore())
 			return $t->id;
 		return PostsTag::findValueIdByName($name);
@@ -50,6 +50,10 @@ class PostsTag extends SSqlModel{
 			//$model->size=8+round($model->tags / $total * /* EVAL 16-8 */0 ,0);
 		uksort($models,'strcasecmp');
 		return $models;
+	}
+	
+	public static function QListName(){
+		return /**/self::QList()->field('id')->with('MainTerm',array('fields'=>'term'))->orderBy(array('skmt.term'));
 	}
 	
 	public function toJSON_adminAutocomplete(){
