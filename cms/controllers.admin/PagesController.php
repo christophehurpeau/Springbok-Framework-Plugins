@@ -50,7 +50,7 @@ class PagesController extends Controller{
 	/** @Ajax @ValidParams @Required('term') */
 	function autocomplete($term){
 		self::renderJSON(SModel::json_encode(
-			Page::QAll()->field('id,name,slug')
+			Page::QAll()->fields('id,name,slug')
 				->where(array('name LIKE'=>'%'.$term.'%'))
 				->limit(14)
 			,'_autocomplete'
@@ -59,7 +59,7 @@ class PagesController extends Controller{
 
 	/** @Ajax @ValidParams @Required('val') */
 	function checkId(int $val){
-		$page=Page::ById($val)->field('id,name,slug');
+		$page=Page::ById($val)->fields('id,name,slug');
 		self::renderJSON($page===false?'{"error":"Page inconnue"}':$page->toJSON_autocomplete());
 	}
 	

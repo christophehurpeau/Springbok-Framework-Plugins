@@ -76,4 +76,8 @@ class SearchablesTerm extends SSqlModel{
 			SearchableTermWord::add($this->id,$this->term);
 		}
 	}
+	
+	public function toJSON_adminAutocomplete(){
+		return json_encode(array('id'=>$this->id,'value'=>$this->name(),'url'=>HHtml::url(AHGlossary::link($this),'index',true)));
+	}
 }

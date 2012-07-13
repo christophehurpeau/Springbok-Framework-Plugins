@@ -44,8 +44,8 @@ class PostsTagsController extends Controller{
 	/** @Ajax @ValidParams @NotEmpty('term') */
 	function autocomplete($term){
 		self::renderJSON(SModel::json_encode(
-			PostsTag::QAll()->field('id')->withParent('name,slug')
-				->where(array('ssk.name LIKE'=>'%'.$term.'%'))
+			PostsTag::QAll()->field('id')->with('MainTerm')
+				->where(array('skmt.term LIKE'=>'%'.$term.'%'))
 				->limit(14)
 			,'_adminAutocomplete'
 		));
@@ -53,7 +53,7 @@ class PostsTagsController extends Controller{
 
 	/** @Ajax @ValidParams @NotEmpty('val') */
 	function checkId(int $val){
-		$tag=PostsTag::QOne()->field('id')->withParent('name,slug')->byId($val);
+		$tag=PostsTag::QOne()->field('id')->with('MainTerm')->byId($val);
 		self::renderJSON($tag===false?'{"error":"Tag inconnu"}':$tag->toJSON_adminAutocomplete());
 	}
 	

@@ -78,6 +78,9 @@ class Post extends Searchable{
 	public function save(){
 		if($this->status===self::PUBLISHED && !Post::existByIdAndStatus($this->id,self::PUBLISHED)) $this->published=array('NOW()');
 		$res=$this->update();
+		$this->p_id=self::QValue()->field('p_id')->byId($this->id);
+		$this->visible=$this->isPublished();
+		$this->updateParent();
 		if($res && $this->status===self::PUBLISHED)
 			self::onModified($this->id);
 		return $res;
