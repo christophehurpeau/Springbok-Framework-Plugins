@@ -66,7 +66,7 @@ class SearchablesTerm extends SSqlModel{
 	
 	public function beforeSave(){
 		/* IF(searchable.keywordTerms.slug) */
-		if(!empty($this->name) && empty($this->slug)) $this->slug=$this->auto_slug();
+		if(!empty($this->term) && empty($this->slug)) $this->slug=$this->auto_slug();
 		/* /IF */
 		return true;
 	}

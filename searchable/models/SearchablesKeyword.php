@@ -68,4 +68,11 @@ class SearchablesKeyword extends SSqlModel{
 			->withForce('SearchablesTerm')
 			->where(array(self::dbEscape(' '.$phraseCleaned.' ').' LIKE CONCAT("% ",st.term," %")'));
 	}
+	
+	
+	public static function addTerm($keywordId,$term,$type){
+		$termId=SearchablesTerm::createOrGet($term,SearchablesTerm::PLURAL_NOUN);
+		SearchablesKeywordTerm::QInsert()->ignore()->set(array('term_id'=>$termId,'keyword_id'=>$keywordId));
+		return $termId;
+	}
 }
