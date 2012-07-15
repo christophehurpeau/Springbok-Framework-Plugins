@@ -49,6 +49,9 @@ class SearchableKeywordController extends Controller{
 	}
 	/** @ValidParams('/searchable') @Id @NotEmpty('val') */
 	function create(int $id,$val){
+		if(SearchablesKeyword::addTerm($id,$val,SearchablesTerm::NONE))
+			renderText('1');
+		/*
 		//$termId=SearchablesTerm::QInsert()->set(array('term'=>SearchablesTerm::cleanTerm($val)));
 		$term=new SearchablesTerm;
 		$term->term=SearchablesTerm::cleanTerm($val);
@@ -56,5 +59,6 @@ class SearchableKeywordController extends Controller{
 		$term->insert();
 		if(SearchablesKeywordTerm::QInsert()->set(array('term_id'=>$term->id,'keyword_id'=>$id)))
 			renderText('1');
+		 */
 	}
 }
