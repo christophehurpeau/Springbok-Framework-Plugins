@@ -8,7 +8,7 @@ class PostsController extends AController{
 	
 	/** @ValidParams('/') @Required('slug') */
 	function tag($slug,int $id){
-		$postTag=PostsTag::QOne()->withParent('name,slug,descr')->addCondition('ssk.slug',$slug);
+		$postTag=PostsTag::QOne()->with('MainTerm',array('fields'=>array('term'=>'name','slug')))->addCondition('skmt.slug',$slug);
 		notFoundIfFalse($postTag);
 		if($id!==null && $postTag->id != $id) notFound();
 		
