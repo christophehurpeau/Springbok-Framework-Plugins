@@ -14,8 +14,8 @@ class VPost extends SViewCachedElement{
 			->with('PostsTag',PostsTag::withOptions())
 			/* IF(blog_comments_enabled) */->with('PostComment',array('where'=>array('status'=>PostComment::VALID)))/* /IF */
 			/* IF(blog_personalizeAuthors_enabled) */->with('PostsAuthor','name,url')/* /IF */;
-		$post->content=UHtml::transformInternalLinks($post->content,Config::$internalLinks);
-		$post->excerpt=UHtml::transformInternalLinks($post->excerpt,Config::$internalLinks);
+		$post->content=UHtml::transformInternalLinks($post->content,Config::$internalLinks,'index',false);
+		$post->excerpt=UHtml::transformInternalLinks($post->excerpt,Config::$internalLinks,'index',false);
 		
 		return array('post'=>$post);
 	}

@@ -8,7 +8,7 @@ class VSeo extends SViewCachedElement{
 	
 	public static function vars($type,$id,$title=null){
 		$seo=$type::QOne()->where(array('id'=>$id));
-		if(!empty($seo->text)) $seo->text=UHtml::transformInternalLinks($seo->text,Config::$internalLinks);
+		if(!empty($seo->text)) $seo->text=UHtml::transformInternalLinks($seo->text,Config::$internalLinks,'index',false);
 		return array('seo'=>$seo,'title'=>$title);
 	}
 	public function metas(){
