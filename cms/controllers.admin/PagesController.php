@@ -67,4 +67,10 @@ class PagesController extends Controller{
 	function tools(){
 		render();
 	}
+	
+	/** */
+	function regenerateSitemap(){
+		ACSitemapPages::generate();
+		redirect('/pages/tools');
+	}
 }
