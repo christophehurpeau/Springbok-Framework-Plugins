@@ -66,7 +66,13 @@ class SearchablesTerm extends SSqlModel{
 	
 	public function beforeSave(){
 		/* IF(searchable.keywordTerms.slug) */
-		if(!empty($this->term) && empty($this->slug)) $this->slug=$this->auto_slug();
+		if(!empty($this->term) && empty($this->slug)){
+			$this->slug=$this->auto_slug();
+		}
+		if(isset($this->id)){
+			$oldSlug=self::QValue()->field('slug')->byId($this->id);
+			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
+		}
 		/* /IF */
 		return true;
 	}
@@ -75,6 +81,12 @@ class SearchablesTerm extends SSqlModel{
 		if(!empty($data['term'])){
 			SearchableTermWord::add($this->id,$this->term);
 		}
+		/* IF(searchable.keywordTerms.slug) */
+		if(!empty($this->oldSlug)){
+			SearchablesTermSlugRedirect::add($this->oldSlug,$this->slug);
+		}
+		/* /IF */
+		
 	}
 	
 	public function toJSON_adminAutocomplete(){
