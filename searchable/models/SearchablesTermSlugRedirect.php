@@ -25,4 +25,9 @@ class SearchablesTermSlugRedirect extends SSqlModel{
 	public static function get($oldSlug){
 		return self::QValue()->field('slug_new')->byOld_slugAndDirect($oldSlug,true);
 	}
+	
+	public static function findTerm($oldSlug){
+		return SearchablesTerm::QOne()->field('slug')->innerjoin('SearchablesTermSlugRedirect',false,array('stsr.new_slug=st.slug','stsr.direct'=>true))
+					->byText(true)->addCondition('stsr.old_slug LIKE',$oldSlug);
+	}
 }
