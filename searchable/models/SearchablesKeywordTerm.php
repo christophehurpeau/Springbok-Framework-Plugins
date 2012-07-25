@@ -8,6 +8,8 @@ class SearchablesKeywordTerm extends SSqlModel{
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
 		 * @ForeignKey('SearchablesTerm','id')
 		*/ $term_id;
+		
+	/* VALUE(searchable.SearchablesKeywordTerm.phpcontent) */
 	
 	public static function create($keywordId,$term_name){
 		$termId=SearchablesTerm::createOrGet($term_name);

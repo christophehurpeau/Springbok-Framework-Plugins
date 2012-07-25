@@ -8,7 +8,8 @@ class SearchableController extends Controller{
 	}
 	/** */
 	function keywords(){
-		SearchablesKeyword::Table()->noAutoRelations()->fields('id,_type,created,updated')->with('MainTerm')
+		SearchablesKeyword::Table()->noAutoRelations()->fields('id,_type,created,updated')
+			->with('MainTerm','term,slug')
 			->allowFilters()->paginate()->controller('searchableKeyword')->actionClick('view')
 			->fields(array('id','term','slug','_type','created','updated'))
 			->render('Keywords');
