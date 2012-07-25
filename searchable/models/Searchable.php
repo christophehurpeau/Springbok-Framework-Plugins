@@ -32,8 +32,9 @@ class Searchable extends SSeoModel{
 	}
 	
 	public function afterSave(&$data=null){
-		if(!empty($data['name']) && $this->isVisible()){
-			SearchableWord::add($this->id,$this->name);
+		if(!empty($data['name'])){
+			if($this->isVisible()) SearchableWord::add($this->id,$this->name);
+			else SearchableWord::deleteFor($this->id);
 		}
 	}
 	

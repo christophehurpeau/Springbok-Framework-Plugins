@@ -29,7 +29,8 @@ class SearchableWord extends SSqlModel{
 	}
 	
 	public static function deleteFor($searchableId){
-		self::decrementAndDeleteWords($searchableId,self::getWords($searchableId));
+		$words=self::getWords($searchableId);
+		if(!empty($words)) self::decrementAndDeleteWords($searchableId,$words);
 	}
 	
 	private static function decrementAndDeleteWords($searchableId,$words){
