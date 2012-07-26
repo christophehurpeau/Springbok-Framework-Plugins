@@ -27,6 +27,9 @@ class Searchable extends SSeoModel{
 		if(!empty($this->name)){
 			$this->normalized=$this->normalized();
 			if(empty($this->slug)) $this->slug=$this->auto_slug();
+			/* IF(searchable_order_field) */
+			if(empty($this->order)) $this->order=$this->name;
+			/* /IF */
 		}
 		return true;
 	}
