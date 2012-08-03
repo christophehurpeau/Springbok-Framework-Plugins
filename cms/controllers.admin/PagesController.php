@@ -15,7 +15,7 @@ class PagesController extends Controller{
 	/** @ValidParams @Required('page')
 	* page > @Valid('name')
 	*/ function add(Page $page){
-		$page->status=Post::DRAFT;
+		$page->status=Page::DRAFT;
 		$page->author_id=CSecure::connected();
 		$page->insert();
 		redirect('/pages/edit/'.$page->id);
@@ -31,7 +31,7 @@ class PagesController extends Controller{
 	
 	/** @ValidParams @Required('id') */
 	function delete(int $id){
-		Page::updateOneFieldByPk($id,'status',Post::DELETED);
+		Page::updateOneFieldByPk($id,'status',Page::DELETED);
 		Page::onModified($id,true);
 		redirect('/pages');
 	}
@@ -51,7 +51,7 @@ class PagesController extends Controller{
 	function autocomplete($term){
 		self::renderJSON(SModel::json_encode(
 			Page::QAll()->fields('id,name,slug')
-				->where(array('name LIKE'=>'%'.$term.'%'))
+				->where(array('name LIKE'=>'%'.$term.'%','status !='=>Page::DELETED))
 				->limit(14)
 			,'_autocomplete'
 		));
@@ -59,7 +59,7 @@ class PagesController extends Controller{
 
 	/** @Ajax @ValidParams @Required('val') */
 	function checkId(int $val){
-		$page=Page::ById($val)->fields('id,name,slug');
+		$page=Page::ById($val)->fields('id,name,slug')->addCondition('status !=',Page::DELETED);
 		self::renderJSON($page===false?'{"error":"Page inconnue"}':$page->toJSON_autocomplete());
 	}
 	

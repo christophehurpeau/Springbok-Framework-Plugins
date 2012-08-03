@@ -30,8 +30,8 @@ class PageHistory extends SSqlModel{
 	}
 	
 	/*public static function restore($postId,$historyId){
-		return Post::QUpdateSelect()
-			->with('PostHistory',array('onConditions'=>array('id'=>$historyId)))
+		return Page::QUpdateSelect()
+			->with('PageHistory',array('onConditions'=>array('id'=>$historyId)))
 			->set('excerpt','excerpt')
 			->set('content','content')
 			->set('updated','created');

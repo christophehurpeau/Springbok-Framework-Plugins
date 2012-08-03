@@ -21,7 +21,7 @@ class Page extends SSeoModel{
 		*/ $published;
 	
 	public function afterSave(&$data=null){
-		VPost::destroy($this->id);
+		VPage::destroy($this->id);
 	}
 	
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->content),ENT_QUOTES,'UTF-8')))); }
@@ -49,6 +49,10 @@ class Page extends SSeoModel{
 	
 	public function toJSON_autocomplete(){
 		return json_encode(array('id'=>$this->id,'value'=>$this->name,'url'=>HHtml::url($this->link(),'index',true)));
+	}
+	
+	public function toJSON_autocompleteSimple(){
+		return json_encode(array('id'=>$this->id,'name'=>$this->name));
 	}
 	public static function internalLink($id){
 		$page=new Page; $page->id=$id;

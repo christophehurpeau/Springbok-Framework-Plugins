@@ -1,0 +1,1 @@
+<? HMenu::top($links) ?>
