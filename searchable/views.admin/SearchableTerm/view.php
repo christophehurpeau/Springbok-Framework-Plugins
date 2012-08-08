@@ -1,10 +1,19 @@
 <?php new AjaxContentView('Term: '.$term->term) ?>
 
+<?php $form=HForm::create('SearchablesTerm',array('id'=>'formTermEdit','name'=>'term'),'div',false) ?>
+
 /* IF(searchable.keywordTerms.text) */<div class="floatR w300">/* /IF */
+
 
 <div class="/* IF!(searchable.keywordTerms.text) */floatR /* /IF */block2">
 	<div>Created : <? HTime::compact($term->created) ?></div>
-	<div>Type : {$term->type()}</div>
+	<div>
+		{if $term->type===SearchablesTerm::MAIN}Type : {$term->type()}
+		{else}<?php $types=SearchablesTerm::typesList(); unset($types[SearchablesTerm::MAIN]); ?>
+			{=$form->select('type',$types)}
+			{=$form->submit(true,array(),array('class'=>'submit center'))}
+		{/if}
+	</div>
 </div>
 
 <div id="linkedKeywords" class="clear mt10 block1">
@@ -13,7 +22,6 @@
 </div>
 
 /* IF(searchable.keywordTerms.text) */</div>/* /IF */
-<?php $form=HForm::create('SearchablesTerm',array('id'=>'formTermEdit','name'=>'term'),'div',false) ?>
 
 
 <div class="mr300 context">

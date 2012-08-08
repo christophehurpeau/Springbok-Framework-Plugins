@@ -1,14 +1,14 @@
 <?php
-/** @TableAlias('st') @Created @Updated @DisplayField('term') /* IF(searchable.keywordTerms.seo) *\/ @Seo /* /IF *\/ */
+/** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') /* IF(searchable.keywordTerms.seo) *\/ @Seo /* /IF *\/ */
 class SearchablesTerm extends SSqlModel{
-	const NONE=0,MAIN=1,MASCULINE_NOUN=2,FEMININ_NOUN=3,PLURAL_NOUN=4;
+	const NONE=0,MAIN=1,MASCULINE_NOUN=2,FEMININ_NOUN=3,PLURAL_NOUN=4,SPELLING_MISTAKE=5;
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
 		/** @Unique @SqlType('varchar(100)') @NotNull
 		*/ $term,
 		/** @SqlType('tinyint(1) unsigned') @NotNull
-		*  @Enum('None','Main','Masculine noun','Feminin noun','Plural noun'/* VALUE(searchables.terms.types) *\/)
+		*  @Enum('None','Main','Masculine noun','Feminin noun','Plural noun','Spelling mistake'/* VALUE(searchables.terms.types) *\/)
 		*/ $type;
 	/*
 	public static function addKeywords($keywordId,$terms){
@@ -87,10 +87,19 @@ class SearchablesTerm extends SSqlModel{
 			SearchablesTermSlugRedirect::add($this->oldSlug,$this->slug);
 		}
 		/* /IF */
-		
+		/* IF(searchable.keywordTerms.text) */
+		if(empty($this->text) && isset($this->text)) $this->text=null;
+		/* /IF */
 	}
 	
+	public function nameWithType(){
+		return $this->term.' ('.$this->type().')';
+	}
+	
+	public function adminLinkWithType(){
+		return HHtml::link($this->nameWithType(),'/searchableTerm/view/'.$this->id);
+	}
 	public function toJSON_adminAutocomplete(){
-		return json_encode(array('id'=>$this->id,'value'=>$this->name(),'url'=>HHtml::url(AHGlossary::link($this),'index',true)));
+		return json_encode(array('id'=>$this->id,'value'=>$this->nameWithType(),'url'=>HHtml::url(AHGlossary::link($this),'index',true)));
 	}
 }
