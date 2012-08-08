@@ -1,6 +1,8 @@
 <?php return array(
 	'plugin.searchable.LinkedTerms'=>'Termes liés',
 	'plugin.searchable.LinkedKeywords'=>'Mots-clés liés',
+	'models.SearchablesTerm:id'=>'Id',
+	'models.SearchablesTerm:term'=>'Terme',
 	'models.SearchablesTerm:type.Enum.None'=>'Aucun',
 	'models.SearchablesTerm:type.Enum.Main'=>'Principal',
 	'models.SearchablesTerm:type.Enum.Masculine noun'=>'Nom masculin',
