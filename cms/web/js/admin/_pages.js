@@ -20,7 +20,7 @@ _.cms={
 	getGallery:function(){
 		if(this.gallery!==undefined) return this.gallery;
 		return this.gallery=new Gallery($('<div id="CmsGallery" style="width:800px;height:600px;margin-right:20px"/>'),
-										basedir+'cmsAlbum',function(id){return webdir+'files/cms_images/'+id+'-small.jpg';});
+										basedir+'cmsAlbum',function(id){return staticUrl+'files/cms_images/'+id+'-small.jpg';});
 	},
 };
 
