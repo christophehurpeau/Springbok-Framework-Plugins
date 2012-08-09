@@ -9,4 +9,5 @@
 	'models.SearchablesTerm:type.Enum.Feminin noun'=>'Nom féminin',
 	'models.SearchablesTerm:type.Enum.Plural noun'=>'Nom pluriel',
 	'models.SearchablesTerm:type.Enum.Spelling mistake'=>'Erreur orth.',
+	'models.SearchablesTerm:type.Enum.Epicene'=>'Épicène',
 );

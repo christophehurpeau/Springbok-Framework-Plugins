@@ -1,14 +1,14 @@
 <?php
 /** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') /* IF(searchable.keywordTerms.seo) *\/ @Seo /* /IF *\/ */
 class SearchablesTerm extends SSqlModel{
-	const NONE=0,MAIN=1,MASCULINE_NOUN=2,FEMININ_NOUN=3,PLURAL_NOUN=4,SPELLING_MISTAKE=5;
+	const NONE=0,MAIN=1,MASCULINE_NOUN=2,FEMININ_NOUN=3,PLURAL_NOUN=4,SPELLING_MISTAKE=5,EPICENE=6;
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
 		/** @Unique @SqlType('varchar(100)') @NotNull
 		*/ $term,
 		/** @SqlType('tinyint(1) unsigned') @NotNull
-		*  @Enum('None','Main','Masculine noun','Feminin noun','Plural noun','Spelling mistake'/* VALUE(searchables.terms.types) *\/)
+		*  @Enum('None','Main','Masculine noun','Feminin noun','Plural noun','Spelling mistake','Epicene'/* VALUE(searchables.terms.types) *\/)
 		*/ $type;
 	/*
 	public static function addKeywords($keywordId,$terms){
