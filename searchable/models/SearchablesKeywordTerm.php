@@ -13,6 +13,9 @@ class SearchablesKeywordTerm extends SSqlModel{
 	
 	public static function create($keywordId,$term_name){
 		$termId=SearchablesTerm::createOrGet($term_name);
+		return self::add($keywordId,$termId);
+	}
+	public static function add($keywordId,$termId){
 		return self::QInsert()->ignore()->set(array('keyword_id'=>$keywordId,'term_id'=>$termId));
 	}
 }
