@@ -1,7 +1,7 @@
 <?php
 class ACPostSearch extends CSearch{
 	
-	protected static function createQuery(){
+	public static function createQuery(){
 		return /**/Post::QListAll();
 	}
 }
