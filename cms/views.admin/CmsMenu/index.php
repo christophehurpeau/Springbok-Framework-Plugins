@@ -1,13 +1,11 @@
 <?php $v=new AjaxContentView('Menu','admin/cms') ?>
 
 <? HHtml::ajaxCRDInputAutocomplete('/cmsMenu',$menu,array('ulAttributes'=>array('class'=>'nobullets cMt10 mt10 sortable'))) ?>
-<?php HHtml::jsInlineStart() ?>
-S.ready(function(){
-	$( ".sortable" ).sortable({
-		placeholder: "ui-state-highlight",
-		update: function(){
-			$.post(basedir+'cmsMenu/sort',$(this).sortable("serialize",{key:'pages[]',attribute:'rel',expression:'(.*)'}));
-		}
-	}).disableSelection().change(function(){$(this).sortable('refresh')});
-});
-<? HHtml::jsInlineEnd() ?>
+{jsReady}
+$( ".sortable" ).sortable({
+	placeholder: "ui-state-highlight",
+	update: function(){
+		$.post(basedir+'cmsMenu/sort',$(this).sortable("serialize",{key:'pages[]',attribute:'rel',expression:'(.*)'}));
+	}
+}).disableSelection().change(function(){$(this).sortable('refresh')});
+{/jsReady}

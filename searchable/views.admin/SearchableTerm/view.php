@@ -42,11 +42,11 @@
 /* /IF */
 {=$form->end(false)}
 
-<? HHtml::jsInline('S.ready(function(){/* IF(searchable.keywordTerms.seo) */_.seo.init($(\'#SearchablesTermTerm\')/*,$(\'#linkedTerms ul\')*/);/* /IF */'
+<?php HHtml::jsReady('/* IF(searchable.keywordTerms.seo) */_.seo.init($(\'#SearchablesTermTerm\')/*,$(\'#linkedTerms ul\')*/);/* /IF */'
 	.'/* IF(searchable.keywordTerms.text) */S.tinymce.init("100%","330px","basicAdvanced",!!_.cms).wordCount().autolink().autoSave().validXHTML()'
 		/* IF2(searchable.keywordTerms.seo) */.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'/* /IF2 */
 		.'.createForId("SearchablesTermText");/* /IF */'
 	.'$("#formTermEdit").ajaxForm(basedir+"searchableTerm/save/'.$term->id.'",false,function(){'
 		//.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
-	.'});});') ?>
+	.'});') ?>
 <br class="clear"/>

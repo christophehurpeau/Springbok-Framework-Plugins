@@ -35,12 +35,12 @@
 {=$form->end(false)}
 /* /IF */
 
-<? HHtml::jsInline('S.ready(function(){/* IF(searchable.keywords.seo) */_.seo.init($(\'#SearchablesKeywordSeo\'),$(\'#linkedTerms ul\'));/* /IF */'
+<?php HHtml::jsReady('/* IF(searchable.keywords.seo) */_.seo.init($(\'#SearchablesKeywordSeo\'),$(\'#linkedTerms ul\'));/* /IF */'
 	.'/* IF(searchable.keywords.text) */S.tinymce.init("100%","330px","basicAdvanced",!!_.cms).wordCount().autolink().autoSave().validXHTML()'
 		/* IF2(searchable.keywords.seo) */.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'/* /IF2 */
 		.'.createForId("SearchablesKeywordText");'
 	.'$("#formKeywordEdit").ajaxForm(basedir+"searchableKeyword/save/'.$keyword->id.'",false,function(){'
 		//.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
 	.'});/* /IF */'
-	.'});') ?>
+) ?>
 <br class="clear"/>

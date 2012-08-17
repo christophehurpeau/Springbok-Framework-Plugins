@@ -17,5 +17,5 @@ HBreadcrumbs::set(array('Acl Groups'=>'/acl'),'Permissions for "'.AclGroup::find
 	<br/>
 {/f}
 {=$form->end(false)}
-<? HHtml::jsInline('S.ready(function(){$("input:checkbox").change(function(){var $t=$(this);'
-					.'$.get(basedir+"acl/update/'.$groupId.'",{perm:$t.attr("name"),value:$t.is(":checked") ? 1 : 0})})})') ?>
+<?php HHtml::jsReady('$("input:checkbox").change(function(){var $t=$(this);'
+					.'$.get(basedir+"acl/update/'.$groupId.'",{perm:$t.attr("name"),value:$t.is(":checked") ? 1 : 0})})') ?>
