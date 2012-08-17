@@ -1,6 +1,12 @@
 <?php return array(
 	'plugin.searchable.LinkedTerms'=>'Termes liés',
 	'plugin.searchable.LinkedKeywords'=>'Mots-clés liés',
+	'models.Searchables:id'=>'Id',
+	'models.Searchables:name'=>'Nom',
+	'models.Searchables:normalized'=>'Nom normalisé',
+	'models.Searchables:order'=>'Order',
+	'models.Searchables:slug'=>'Slug',
+	'models.Searchables:visible'=>'Visible',
 	'models.SearchablesTerm:id'=>'Id',
 	'models.SearchablesTerm:term'=>'Terme',
 	'models.SearchablesTerm:type.Enum.None'=>'Aucun',
