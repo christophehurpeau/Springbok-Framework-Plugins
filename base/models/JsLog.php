@@ -11,8 +11,6 @@ class JsLog extends SSqlModel{
 		/** @SqlType('varchar(300)') @Null
 		*/ $user_agent,
 		/** @SqlType('varchar(300)') @Null
-		*/ $website,
-		/** @SqlType('varchar(300)') @Null
 		*/ $href,
 		/** @SqlType('varchar(300)') @Null
 		*/ $url,
@@ -31,11 +29,10 @@ class JsLog extends SSqlModel{
 		/** @SqlType('varchar(15)') @Null
 		*/ $minorver;
 		
-	public static function create($website,$href,$jsurl,$message,$line){
+	public static function create($href,$jsurl,$message,$line){
 		$data=CHttpRequest::parseUserAgent();
 		$data['is_mobile']=CHttpRequest::isMobile();
 		$data['is_bot']=CHttpRequest::isBot();
-		$data['website']=$website;
 		$data['href']=$href;
 		$data['url']=$jsurl;
 		$data['message']=$message;
