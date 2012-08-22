@@ -10,12 +10,16 @@ class PostsTag extends SSqlModel{
 	);
 	
 	public static function create($name){
+		if($id=self::QValue()->field('id')->with('MainTerm')->addCondition('skmt.term LIKE',$name))
+			return $id;
 		$t=new PostsTag;
 		$t->term=$name;
-		if($t->insertIgnore())
-			return $t->id;
-		return PostsTag::findValueIdByName($name);
+		if($id=$t->insert())
+			return $id;
+		throw new Exception('Unable to create Tag : ',short_debug_var($t));
 	}
+	
+	
 	
 	public function afterSave(){
 		VPostsTags::generate();
