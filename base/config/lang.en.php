@@ -1,13 +1,13 @@
 <?php return array(
-	'models.User:id'=>'Id',
-	'models.User:email'=>'Email',
-	'models.User:pwd'=>'Password',
-	
-	'models.UserConnection.created'=>'Connection date',
-	'models.UserConnection.type'=>'Connection type',
-	'models.UserConnection.succeed'=>'Connection succeed',
-	'models.UserConnection.login'=>'Login',
-	'models.UserConnection.connected'=>'Connected',
-	'models.UserConnection.ip'=>'IP address',
-	
+	'models.JsLog:id'=>'Id',
+	'models.JsLog:is_mobile'=>'Mobile',
+	'models.JsLog:is_bot'=>'Bot',
+	'models.JsLog:user_agent'=>'User Agent',
+	'models.JsLog:href'=>'Href',
+	'models.JsLog:url'=>'URL',
+	'models.JsLog:message'=>'Message',
+	'models.JsLog:line'=>'Line',
+	'models.JsLog:platform'=>'Platform',
+	'models.JsLog:browser'=>'Browser',
+	'models.JsLog:version'=>'Version',
 );
