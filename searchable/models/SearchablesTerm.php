@@ -44,6 +44,10 @@ class SearchablesTerm extends SSqlModel{
 	}
 	
 	
+	public static function findOneForSeo($id){
+		return self::QOne()->where(array('id'=>$id));
+	}
+	
 	public static function cleanTerm($term){
 		return trim(preg_replace('/[\s\,\+\\\\°]+/',' ',$term));
 	}

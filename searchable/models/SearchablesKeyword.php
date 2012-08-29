@@ -29,7 +29,7 @@ class SearchablesKeyword extends SSqlModel{
 	}
 	
 	public function auto_slug(){ return HString::slug($this->term); }
-	/* IF(searchable.keywords.seo) */
+	
 	public function auto_meta_title(){ return $this->term; }
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->text),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('term')->withForce('SearchablesKeywordTerm')->addCondition('skt.keyword_id',$this->id)->orderBy('term')); }
@@ -37,6 +37,7 @@ class SearchablesKeyword extends SSqlModel{
 	public function metaTitle(){ return empty($this->meta_title) ? $this->auto_meta_title() : $this->meta_title; }
 	public function metaDescr(){ return empty($this->meta_descr) ? $this->auto_meta_descr() : $this->meta_descr; }
 	public function metaKeywords(){ return empty($this->meta_keywords) ? $this->auto_meta_keywords() : $this->meta_keywords ; }
+	/* IF(searchable.keywords.seo) */
 	/* /IF */
 	
 	
@@ -61,6 +62,9 @@ class SearchablesKeyword extends SSqlModel{
 		return trim(preg_replace('/[\s\,\+\-]+/',' ',$phrase));
 	}
 	
+	public static function findOneForSeo($id){
+		return self::QOne()/* IF!(searchable.keywords.seo) */->with('MainTerm')/* /IF */->where(array('id'=>$id));
+	}
 	
 	public static function listKeywordIds($phraseCleaned){
 		return SearchablesKeywordTerm::QValues()->field('DISTINCT keyword_id')

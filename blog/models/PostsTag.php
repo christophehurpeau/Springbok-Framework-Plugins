@@ -35,6 +35,10 @@ class PostsTag extends SSqlModel{
 	public static function withOptions(){
 		return array('fields'=>'id','with'=>array('MainTerm'/* IF(searchable.keywords.slug) */,'Keyword'/* /IF */));//array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name/* IF(searchable_slug) */,slug/* /IF */'))
 	}
+
+	public static function QOne(){
+		return parent::QOne()->with('MainTerm')/* IF(searchable.keywords.slug) */->with('Keyword')/* /IF */;
+	}
 	
 	const MAX_SIZE=20;
 	public static function findAllSize(){

@@ -8,13 +8,12 @@ class PostsController extends AController{
 	
 	/** @ValidParams('/') @Required('slug') */
 	function tag($slug,int $id){
-		$postTag=PostsTag::QOne()->with('MainTerm')->addCondition('skmt.slug',$slug);
+		$postTag=PostsTag::QOne()->addCondition('skmt.slug',$slug);
 		if($postTag===false){
 			if($id!==null){
-				$postTag=PostsTag::QOne()->with('MainTerm')
-					->addCondition('id',$id);
+				$postTag=PostsTag::QOne()->addCondition('id',$id);
 			}else{
-				$postTag=PostsTag::QOne()->with('MainTerm')
+				$postTag=PostsTag::QOne()
 						->innerjoin('SearchablesTermSlugRedirect',false,array('stsr.new_slug=skmt.slug','stsr.direct'=>true))
 						->addCondition('stsr.old_slug LIKE',$slug);
 			}		
@@ -25,7 +24,7 @@ class PostsController extends AController{
 		
 		mset($postTag);
 		set('posts',CPagination::create(Post::QListAll()
-			->with('PostTag',array('join'=>true,'fields'=>false))
+			->withForce('PostTag',false)
 			->addCondition('pt.tag_id',$postTag->id))->pageSize(10)->execute());
 		render();
 	}

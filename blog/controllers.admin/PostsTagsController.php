@@ -53,7 +53,7 @@ class PostsTagsController extends Controller{
 
 	/** @Ajax @ValidParams @NotEmpty('val') */
 	function checkId(int $val){
-		$tag=PostsTag::QOne()->field('id')->with('MainTerm')->byId($val);
+		$tag=PostsTag::QOne()->field('id')->byId($val);
 		self::renderJSON($tag===false?'{"error":"Tag inconnu"}':$tag->toJSON_adminAutocomplete());
 	}
 	
