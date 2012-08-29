@@ -6,7 +6,10 @@ class SearchablesTerm extends SSqlModel{
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
 		/** @Unique @SqlType('varchar(100)') @NotNull
-		*/ $term,
+		*/ $term/* IF(searchable.keywordTerms.slug) */,
+		/** @Unique @SqlType('varchar(100)') @NotNull @MinLength(3)
+		*/ $slug,
+		/* /IF */
 		/** @SqlType('tinyint(1) unsigned') @NotNull
 		*  @Enum('None','Main','Masculine noun','Feminin noun','Plural noun','Spelling mistake','Epicene'/* VALUE(searchables.terms.types) *\/)
 		*/ $type;

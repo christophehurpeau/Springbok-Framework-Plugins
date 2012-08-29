@@ -5,10 +5,9 @@ class SearchablesKeyword extends SSqlModel{
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
 		* @ForeignKey('SearchablesTerm','id')
 		*/ $id/* IF(searchable.keywords.slug) */,
-		/** @Unique @SqlType('varchar(100)') @NotNull @MinLenth(3)
+		/** @Unique @SqlType('varchar(100)') @NotNull @MinLength(3)
 		*/ $slug
 		/* /IF */;
-	
 	
 	/* IF(searchable.keywords.text) */
 	public /** @SqlType('text') @Null */ $text;
