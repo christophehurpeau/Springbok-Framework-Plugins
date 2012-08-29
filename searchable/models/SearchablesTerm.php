@@ -1,5 +1,5 @@
 <?php
-/** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') /* IF(searchable.keywordTerms.seo) *\/ @Seo @IndexUnique('slug') /* /IF *\/ */
+/** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') /* IF(searchable.keywordTerms.seo) *\/ @Seo @Index('slug') /* /IF *\/ */
 class SearchablesTerm extends SSqlModel{
 	const NONE=0,MAIN=1,MASCULINE_NOUN=2,FEMININ_NOUN=3,PLURAL_NOUN=4,SPELLING_MISTAKE=5,EPICENE=6;
 	public
