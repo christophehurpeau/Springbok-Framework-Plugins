@@ -1,7 +1,8 @@
 <?php
 /** @TableAlias('u') @Created @Updated @DisplayField('IF(first_name is null,/* IF(users.pseudo) *\/IF(last_name IS NULL,pseudo,/* /IF *\/last_name/* IF(users.pseudo) *\/)/* /IF *\/,CONCAT(first_name," ",last_name))') */
 class User extends SSqlModel{
-	CONST ADMIN=9,WAITING=0,VALID=1,DISABLED=2,DELETED=3;
+	CONST ADMIN=9,WAITING=0,VALID=1,DISABLED=2,DELETED=3,
+		SITE=1,FACEBOOK=2,GOOGLE=3,YAHOO=4,WLIVE=5,OPENID=9;
 	
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
@@ -18,11 +19,17 @@ class User extends SSqlModel{
 		/** @SqlType('VARCHAR(100)') @NotNull
 		* @MinLength(2)
 		*/ $last_name,
+		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(SConsts::UNKNOWN)
+		* @Enum(SConsts::gender())
+		*/ $gender,
 		/* IF(users.pseudo) */
 		/** @SqlType('varchar(40)') @Null
 		* @Required @Index
 		*/ $pseudo,
-		/* /IF */ 
+		/* /IF */
+		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(1) @Comment("Default type")
+		* @Enum(1=>'Site','Facebook','Google','Yahoo','W. Live','OpenID')
+		*/ $type,
 		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(0)
 		* @Enum('En attente','Valide','Désactivé','Supprimé',9=>'Administrateur')
 		*/ $status;

@@ -2,8 +2,8 @@
 
 <? CSession::flash('user/login') ?>
 <div id="page">
-<div class="content w640 clearfix" style="margin:20px auto 0">
-	<div class="floatL w300 mr20">
+<div class="content w840 clearfix" style="margin:20px auto 0">
+	<div class="floatL w400 mr20">
 		<h3>Connectez-vous</h3>
 		{=$form=User::Form()->attrClass('big')->action('/site/login')}
 		{=$form->fieldsetStart()}
@@ -22,7 +22,7 @@
 			{=$form->end('Renvoyer un nouveau mot de passe')}
 		</div>
 	</div>
-	<div class="floatL w300 ml20">
+	<div class="floatL w400 ml20">
 		<h3>Inscrivez-vous</h3>
 		{=$form=User::Form()->id('formRegister')->attrClass('big')->action('/users/register')}
 		{=$form->fieldsetStart()}
