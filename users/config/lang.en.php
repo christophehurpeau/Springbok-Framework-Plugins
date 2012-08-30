@@ -2,6 +2,8 @@
 	'models.User:id'=>'Id',
 	'models.User:email'=>'Email',
 	'models.User:pwd'=>'Password',
+	'models.User:first_name'=>'First name',
+	'models.User:last_name'=>'Last name',
 	
 	'models.UserConnection.created'=>'Connection date',
 	'models.UserConnection.type'=>'Connection type',

@@ -11,18 +11,31 @@
 		{=$form->input('pwd')->wp100()}
 		{=$form->submit(_tC('Sign in'))->container()->attrClass('center')}
 		{=$form->end(false)}
+		
+		<div id="divLostPassword" class="mt20">
+			<h3>Mot de passe perdu</h3>
+			<div class="smallinfo italic mb10">Vous avez perdu votre mot de passe ?<br/>Nous pouvons vous en renvoyer un nouveau à votre adresse email.</div>
+			{=$form=User::Form(false)->id('formLostPassword')->attrClass('big')->action('/users/ajaxLostPassword')}
+			{=$form->fieldsetStart()}
+			{=$form->input('email')->id('UserEmailLostPassword')}
+			<? $form->input('phoneNumber')->label('Votre numéro de téléphone')->pattern('^0[1-9]([\.\-\s]*[0-9]{2}){4}$') ?>
+			{=$form->end('Renvoyer un nouveau mot de passe')}
+		</div>
 	</div>
 	<div class="floatL w300 ml20">
 		<h3>Inscrivez-vous</h3>
-		<?php
-		$form=HForm::create('User',array('id'=>'formRegister','class'=>'big','action'=>'/site/register'));
-		echo $form->fieldsetStart();
-		echo $form->input('email',array('label'=>'Courriel','id'=>'UserEmailInscription','data-ajaxcheck'=>'email'),array('error'=>isset($_POST['user']['email'])?'Votre courriel n\'est pas valide.':false));
-		echo $form->input('first_name',array('label'=>'Prénom','required'=>true),array('error'=>isset($_POST['user']['first_name'])?'Entrez votre prénom.':false));
-		echo $form->input('last_name',array('label'=>'Nom','required'=>true),array('error'=>isset($_POST['user']['last_name'])?'Entrez votre nom.':false));
-		echo '<br class="clear"/><div class="italic">Le mot de passe sera envoyé à l\'adresse ci-dessus.</div>';
-		$form->end('Inscription');
-		?>
+		{=$form=User::Form()->id('formRegister')->attrClass('big')->action('/users/register')}
+		{=$form->fieldsetStart()}
+		{=$form->input('first_name')->wp100()}
+		{=$form->input('last_name')->wp100()}
+		{=$form->input('email')->wp100()->id('UserEmailRegister')->attr('data-ajaxcheck','email')}
+		{=$form->input('confirm_email')->label("Confirmation de l'adresse email")->noName()->wp100()->id('UserEmailRegisterConfirm')->attr('data-same','#UserEmailRegister')}
+		<br class="clear"/>
+		<div class="italic">Le mot de passe sera envoyé à l'adresse ci-dessus.</div>
+		{=$form->submit(_tC('Register'))->container()->attrClass('center')}
+		{=$form->end(false)}
 	</div>
 </div>
 </div>
+
+<?php HHtml::jsReady('users.loginRegister()'); ?>
