@@ -62,10 +62,7 @@ class User extends SSqlModel{
 				else{
 					$this->$field=trim($this->$field);
 					if(empty($this->$field)) $this->$field=null;
-					else{
-						if($this->$field===strtolower($this->$field)) $this->$field=ucfirst($this->$field);
-						elseif($this->$field===strtoupper($this->$field)) $this->$field=ucfirst(strtolower($this->$field));
-					}
+					else $this->$field=UString::checkAllLowerOrAllUpperCase($this->$field);
 				}
 			}
 		}

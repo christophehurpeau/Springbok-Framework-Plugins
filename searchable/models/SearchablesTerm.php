@@ -24,6 +24,10 @@ class SearchablesTerm extends SSqlModel{
 	/* IF(searchable.keywordTerms.text) */
 	public /** @SqlType('text') @Null */ $text;
 	public function afterUpdate(){ if(!empty($this->text)) VSeo::generate('SearchablesTerm',$this->id); }
+	
+	public static function findOneForSeo($id){
+		return self::QOne()->where(array('id'=>$id));
+	}
 	/* /IF */
 	
 	public static $hasManyThrough=array(
@@ -41,11 +45,6 @@ class SearchablesTerm extends SSqlModel{
 		$st->term=$term;
 		$st->type=$type;
 		return $st->insert();
-	}
-	
-	
-	public static function findOneForSeo($id){
-		return self::QOne()->where(array('id'=>$id));
 	}
 	
 	public static function cleanTerm($term){

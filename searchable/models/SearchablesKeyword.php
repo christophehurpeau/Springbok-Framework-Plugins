@@ -12,6 +12,10 @@ class SearchablesKeyword extends SSqlModel{
 	/* IF(searchable.keywords.text) */
 	public /** @SqlType('text') @Null */ $text;
 	public function afterUpdate(){ if(!empty($this->text)) VSeo::generate('SearchablesKeyword',$this->id); }
+	
+	public static function findOneForSeo($id){
+		return parent::QOne()/* IF!(searchable.keywords.seo) */->with('MainTerm')/* /IF */->where(array('id'=>$id));
+	}
 	/* /IF */
 	
 	public static $belongsTo=array(
@@ -62,9 +66,6 @@ class SearchablesKeyword extends SSqlModel{
 		return trim(preg_replace('/[\s\,\+\-]+/',' ',$phrase));
 	}
 	
-	public static function findOneForSeo($id){
-		return self::QOne()/* IF!(searchable.keywords.seo) */->with('MainTerm')/* /IF */->where(array('id'=>$id));
-	}
 	
 	public static function listKeywordIds($phraseCleaned){
 		return SearchablesKeywordTerm::QValues()->field('DISTINCT keyword_id')
