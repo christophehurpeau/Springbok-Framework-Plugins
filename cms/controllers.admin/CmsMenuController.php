@@ -1,5 +1,5 @@
 <?php
-/** @Check('ASecureAdmin') @Acl('CMS') */
+/** @Check('ACSecureAdmin') @Acl('CMS') */
 class CmsMenuController extends Controller{
 	/** */
 	function index(){

@@ -1,5 +1,5 @@
 <?php
-/** @Check('ASecureAdmin') @Acl('Posts') */
+/** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostTagsController extends Controller{
 	/** @Ajax @ValidParams @AllRequired */
 	function add(int $tag_id,int $post_id){

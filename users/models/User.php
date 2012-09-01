@@ -38,6 +38,7 @@ class User extends SSqlModel{
 		return $this->first_name===null ? (/* IF(users.pseudo) */$this->last_name === null ? $this->pseudo :/* /IF */ $this->last_name) : $this->first_name.' '.$this->last_name;
 	}
 	
+	
 	/* IF(users.pseudo) */
 	
 	public function publicName(){
@@ -115,5 +116,15 @@ class User extends SSqlModel{
 		UserHistory::add(UserHistory::LOST_PWD,$uphId,$user->id);
 		User::updateOneFieldByPk($user->id,'pwd',$pwd);
 		CMail::send('user_lostPassword',array('user'=>$user,'password'=>$password),'Mot de passe perdu - '.Config::$projectName.'.',$user->email);
+	}
+	
+	/* -- - -- */
+	
+	
+	public function isAdmin(){
+		return $this->status===self::ADMIN;
+	}
+	public function isAllowed(){
+		return $this->isAdmin();
 	}
 }

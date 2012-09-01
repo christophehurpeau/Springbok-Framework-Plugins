@@ -1,6 +1,6 @@
 <?php
 Controller::$defaultLayout='admin/cms';
-/** @Check('ASecureAdmin') @Acl('CMS') */
+/** @Check('ACSecureAdmin') @Acl('CMS') */
 class PagesController extends Controller{
 	/** */
 	function index(){

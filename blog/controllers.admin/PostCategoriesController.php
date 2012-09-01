@@ -1,5 +1,5 @@
 <?php
-/** @Check('ASecureAdmin') @Acl('Posts') */
+/** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostCategoriesController extends Controller{
 	/** @Ajax @AllRequired */
 	function add(int $cat_id,int $post_id){

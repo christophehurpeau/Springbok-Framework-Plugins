@@ -1,5 +1,5 @@
 <?php
-/** @Check('ASecureAdmin') @Acl('Posts') */
+/** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostPostsController extends Controller{
 	/** @Ajax @ValidParams @Required('id') */
 	function view(int $id){

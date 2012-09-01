@@ -1,6 +1,6 @@
 <?php
 Controller::$defaultLayout='admin/cms';
-/** @Check('ASecureAdmin') @Acl('Posts') */
+/** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostsCommentsController extends Controller{
 	/** */
 	function index(){

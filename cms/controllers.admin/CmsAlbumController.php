@@ -1,5 +1,5 @@
 <?php
-/** @Check('ASecureAdmin') @Acl('CMS') */
+/** @Check('ACSecureAdmin') @Acl('CMS') */
 class CmsAlbumController extends Controller{
 	/** @Ajax */
 	function index(int $id){

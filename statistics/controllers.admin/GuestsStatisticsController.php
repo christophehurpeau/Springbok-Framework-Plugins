@@ -1,5 +1,5 @@
 <?php
-/** @Check('SSecureAdmin') */
+/** @Check('ACSecureAdmin') */
 class GuestsStatisticsController extends Controller{
 	/**
 	*/ function index($scriptname){

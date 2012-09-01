@@ -1,6 +1,6 @@
 <?php
 Controller::$defaultLayout='admin/searchable';
-/** @Check('ASecureAdmin') @Acl('Searchable') */
+/** @Check('ACSecureAdmin') @Acl('Searchable') */
 class SearchableKeywordController extends Controller{
 	/** @ValidParams('/searchable') @Id */
 	function view($id){

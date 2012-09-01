@@ -1,7 +1,7 @@
 <?php
 /* IF(blog_personalizeAuthors_enabled) */
 Controller::$defaultLayout='admin/cms';
-/** @Check('ASecureAdmin') @Acl('Posts') */
+/** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostsAuthorsController extends Controller{
 	/** */
 	function index(){

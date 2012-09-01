@@ -1,6 +1,6 @@
 <?php
 Controller::$defaultLayout='admin/searchable';
-/** @Check('ASecureAdmin') @Acl('Searchable') */
+/** @Check('ACSecureAdmin') @Acl('Searchable') */
 class SearchableController extends Controller{
 	/** */
 	function index(){
