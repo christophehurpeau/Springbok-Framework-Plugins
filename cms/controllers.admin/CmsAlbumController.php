@@ -12,7 +12,7 @@ class CmsAlbumController extends Controller{
 	function upload(int $albumId){
 		$image=new CmsImage();
 		if($albumId!==0) $image->album_id=$albumId;
-		CImages::plupload($image,true,'cms_');
+		ACCmsImages::plupload($image);
 		/* DEV */
 		if(!empty($image->id)){
 			copy(dirname(APP).'/data/cms_images/'.$image->id.'.jpg',APP.'web/files/cms_images/'.$image->id.'.jpg');

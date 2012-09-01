@@ -18,7 +18,6 @@
 			{=$form=User::Form(false)->id('formLostPassword')->attrClass('big')->action('/users/ajaxLostPassword')}
 			{=$form->fieldsetStart()}
 			{=$form->input('email')->id('UserEmailLostPassword')}
-			<? $form->input('phoneNumber')->label('Votre numéro de téléphone')->pattern('^0[1-9]([\.\-\s]*[0-9]{2}){4}$') ?>
 			{=$form->end('Renvoyer un nouveau mot de passe')}
 		</div>
 	</div>

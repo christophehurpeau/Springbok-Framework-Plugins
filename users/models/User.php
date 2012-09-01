@@ -55,6 +55,10 @@ class User extends SSqlModel{
 	/* /IF */
 	
 	
+	public static function findValidUserByEmail($email){
+		return self::QOne()->field('id')->where(array('email LIKE'=>$email,'status'=>array(User::VALID,User::ADMIN)));
+	}
+	
 	public static function checkEmail($email){
 		if(empty($email)) return '20';
 		if(User::QExist()->where(array('email LIKE'=>$email))) return '21';
