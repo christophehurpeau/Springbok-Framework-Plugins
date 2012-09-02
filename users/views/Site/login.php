@@ -3,7 +3,7 @@
 <? CSession::flash('user/login') ?>
 <div id="page">
 <div class="clear mt20">
-<?php $form=HForm::create('User',array('class'=>'w600 centered big','action'=>'/site/login'));
+<?php $form=HForm::create('User',array('class'=>'w400 centered big','action'=>'/site/login'));
 echo '<h2>'._tC('Sign in').'</h2>';
 echo $form->fieldsetStart();
 echo '<br/>';
