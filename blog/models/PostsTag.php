@@ -37,7 +37,7 @@ class PostsTag extends SSqlModel{
 	}
 
 	public static function QOne(){
-		return parent::QOne()->with('MainTerm')/* IF(searchable.keywords.slug) */->with('Keyword')/* /IF */;
+		return /**/parent::QOne()->with('MainTerm')/* IF(searchable.keywords.slug) */->with('Keyword')/* /IF */;
 	}
 	
 	const MAX_SIZE=20;

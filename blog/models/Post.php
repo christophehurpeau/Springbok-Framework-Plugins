@@ -103,6 +103,7 @@ class Post extends Searchable{
 	public static function withOptions($options=array()){
 		$options['fields']='id';
 		$options['with']=array('Parent'=>array('fields'=>'name,slug'));
+		$options['orderBy']=array('sb.created'=>'DESC');
 		return $options;
 	}
 	

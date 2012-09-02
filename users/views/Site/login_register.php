@@ -1,7 +1,6 @@
-<?php new PageView(_tC('Sign in')) ?>
+<?php new AjaxPageView(_tC('Sign in'),'') ?>
 
 <? CSession::flash('user/login') ?>
-<div id="page">
 <div class="content w840 clearfix" style="margin:20px auto 0">
 	<div class="floatL w400 mr20">
 		<h3>Connectez-vous</h3>
@@ -34,7 +33,6 @@
 		{=$form->submit(_tC('Register'))->container()->attrClass('center')}
 		{=$form->end(false)}
 	</div>
-</div>
 </div>
 
 <?php HHtml::jsReady('users.loginRegister()'); ?>
