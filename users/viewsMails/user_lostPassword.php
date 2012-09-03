@@ -1,5 +1,5 @@
 <p>Récupération du mot de passe :</p>
-<p>Vous avez demandé un nouveau mot de passe.</p></p>
+<p>Vous avez demandé un nouveau mot de passe.</p>
 <p>Votre email : <b>{$user->email}</b><br />
 		Votre mot de passe : {$password}
 </p>
