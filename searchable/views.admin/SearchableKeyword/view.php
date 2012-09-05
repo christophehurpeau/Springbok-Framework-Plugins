@@ -9,7 +9,8 @@
 
 <div id="linkedTerms" class="clear mt10 block1">
 	<h5 class="noclear">{t 'plugin.searchable.LinkedTerms'}</h5>
-	<? HHtml::ajaxCRDInputAutocomplete('/searchableKeyword',$keyword->terms,array('allowNew'=>1,'url'=>'/'.$keyword->id,'modelFunctionName'=>'adminLinkWithType','escape'=>false)) ?>
+	<? HHtml::ajaxCRDInputAutocomplete('/searchableKeyword',$keyword->terms,
+			array('js'=>'{allowNew:1,url:"/'.$keyword->id.'"}','modelFunctionName'=>'adminLinkWithType','escape'=>false)) ?>
 </div>
 
 
