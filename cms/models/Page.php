@@ -11,6 +11,10 @@ class Page extends SSeoModel{
 		/** @SqlType('int(10) unsigned') @NotNull
 		*  @ForeignKey('User','id')
 		*/ $author_id,
+		/* IF(cms.multisite) */
+		/** @Index @SqlType('tinyint(3) unsigned') @NotNull
+		*/ $site,
+		/* /IF */
 		/** @SqlType('text') @NotNull
 		*/ $content,
 		/** @SqlType('tinyint(1)') @NotNull
@@ -20,7 +24,7 @@ class Page extends SSeoModel{
 		* @NotBindable
 		*/ $published;
 	
-	public function afterSave(&$data=null){
+	public function afterSave($data=null){
 		VPage::destroy($this->id);
 	}
 	
