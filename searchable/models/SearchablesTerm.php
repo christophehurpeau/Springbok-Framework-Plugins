@@ -81,6 +81,9 @@ class SearchablesTerm extends SSqlModel{
 			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
 		}
 		/* /IF */
+		/* IF(searchable.keywordTerms.text) */
+		if(empty($this->text) && isset($this->text)) $this->text=null;
+		/* /IF */
 		return true;
 	}
 	
@@ -92,9 +95,6 @@ class SearchablesTerm extends SSqlModel{
 		if(!empty($this->oldSlug)){
 			SearchablesTermSlugRedirect::add($this->oldSlug,$this->slug);
 		}
-		/* /IF */
-		/* IF(searchable.keywordTerms.text) */
-		if(empty($this->text) && isset($this->text)) $this->text=null;
 		/* /IF */
 	}
 	

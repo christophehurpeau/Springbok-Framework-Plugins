@@ -53,14 +53,11 @@ class SearchablesKeyword extends SSqlModel{
 		/* IF(searchable.keywords.slug) */
 		if(!empty($this->term) && empty($this->slug)) $this->slug=$this->auto_slug();
 		/* /IF */
+		/* IF(searchable.keywords.text) */
+		if(empty($this->text) && isset($this->text)) $this->text=null;
+		/* /IF */
 		return true;
 	}
-	
-	/* IF(searchable.keywords.seo) */
-	public function afterUpdate(){
-		if(!empty($this->text)) VSeo::generate('SearchablesKeyword',$this->id);
-	}
-	/* /IF */
 	
 	public static function cleanPhrase($phrase){
 		return trim(preg_replace('/[\s\,\+\-]+/',' ',$phrase));
