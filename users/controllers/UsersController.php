@@ -77,7 +77,7 @@ class UsersController extends AController{
 				User::updateOneFieldByPk($userId,'status',User::VALID);
 				UserHistory::add(UserHistory::VALID_USER,$uheId,$userId);
 				
-				$message='Votre compte utilisateur a bien été validé, vous pouvez maintenant vous connecter.';
+				$message='Votre compte utilisateur a bien été validé'.(CSecure::isConnected()?'':', vous pouvez maintenant vous connecter').'.';
 				$classMessage='success';
 			}else{
 				User::updateOneFieldByPk($userId,'email',$email);
