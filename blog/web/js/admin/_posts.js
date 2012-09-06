@@ -39,6 +39,8 @@ _.posts={
 			S.tinymce.init("100%","430px",'basicAdvanced',true)
 				.wordCount().autolink().autoSave().validXHTML().createForIds("PostContent");
 			$("#formPostEdit").ajaxForm(basedir+'posts/save/'+postId,false,function(){
+				S.tinymce.switchtoVisual("PostContent");
+				S.tinymce.switchtoVisual("PostExcerpt");
 				if($("#PostContent").val()=="" || $("#PostExcerpt").val()==""){alert("Le texte est vide !");return false;}
 			});
 			_.seo.init($('#PostTitle'),$('#PostTags ul'));

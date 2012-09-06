@@ -1,5 +1,13 @@
 includeCore('springbok.jqueryui');
 
+includeLib('codemirror/codemirror');
+includeLib('codemirror/overlay');
+
+includeLib('codemirror/modes/xml/xml');
+includeLib('codemirror/modes/javascript/javascript');
+includeLib('codemirror/modes/css/css');
+includeLib('codemirror/modes/htmlmixed/htmlmixed');
+
 _.cms={
 	internalLinks:{
 		page:{
@@ -32,6 +40,7 @@ _.pages={
 				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(inst.getBody().innerHTML.sbStripTags()).change()})
 				.createForIds("PageContent");
 			$("#formPageEdit").ajaxForm(basedir+'pages/save/'+postId,false,function(){
+				S.tinymce.switchtoVisual("PageContent");
 				if($("#PageContent").val()==""){alert("Le texte est vide !");return false;}
 			});
 			_.seo.init($('#PageName'));
