@@ -1,6 +1,6 @@
 <?php
 Controller::$defaultLayout='admin';
-/** @Check @Acl */
+/** @Check('ACSecureAdmin') @Acl */
 class AclController extends Controller{
 	/** @Acl('AclGroup') */
 	function index(){

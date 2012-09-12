@@ -18,4 +18,8 @@ class UserConnection extends SSqlModel{
 		 */ $connected,
 		/** @SqlType('VARCHAR(39)') @NotNull
 		 */ $ip;
+	
+	public function details(){
+		return $this->type().' ('.$this->ip.')';
+	}
 }

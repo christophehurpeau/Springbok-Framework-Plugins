@@ -20,10 +20,12 @@ class UserHistory extends SSqlModel{
 		'type'=>array(
 			'dataName'=>'details',
 			'types'=>array(
+				05=>'UserConnection',
 				06=>'UserHistoryPassword', 07=>'UserHistoryPassword',
 				10=>'UserHistoryEmail', 11=>'UserHistoryEmail', 12=>'UserHistoryEmail',
 			),
 			'relations'=>array(
+				'UserConnection'=>array(),
 				'UserHistoryPassword'=>array(),
 				'UserHistoryEmail'=>array()
 			)
