@@ -99,7 +99,7 @@ class SearchablesTerm extends SSqlModel{
 	}
 	
 	public function nameWithType(){
-		return $this->term.' ('.$this->type().')';
+		return $this->term.(isset($this->type)?' ('.$this->type().')':'');
 	}
 	
 	public function adminLinkWithType(){

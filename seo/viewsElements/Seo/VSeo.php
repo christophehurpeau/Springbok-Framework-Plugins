@@ -1,6 +1,6 @@
 <?php
 class VSeo extends SViewCachedElement{
-	protected static $views=array('text','metas');
+	protected static $views=array('view','metas');
 	
 	/* DEV */ public function exists(){ return false; } /* /DEV */
 	

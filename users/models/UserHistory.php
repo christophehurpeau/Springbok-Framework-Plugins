@@ -43,8 +43,8 @@ class UserHistory extends SSqlModel{
 	}
 	
 	private static $_detailsOperation=array(self::CREATE=>'Création du compte',self::DELETE=>'Suppression du compte',self::UPDATE=>'Modification des informations',
-		self::CONNECT=>'Connexion',self::LOST_PWD=>'Demande d\un nouveau mot de passe (perte)',self::CHANGE_PWD=>'Changement de mot de passe',
-		self::CHANGE_EMAIL=>'Changement d\'email',self::VALID_CHANGE_EMAIL=>'Validation du changement d\'email',self::CANCEL_CHANGE_EMAIL=>'Annulation du changement d\'email'
+		self::CONNECT=>'Connexion',self::LOST_PWD=>'Demande d\un nouveau mot de passe (perte)',self::CHANGE_PWD=>'Changement de mot de passe',self::VALID_USER=>"Validation de l'utilisateur",
+		self::CHANGE_EMAIL=>"Changement d'email",self::VALID_CHANGE_EMAIL=>"Validation du changement d'email",self::CANCEL_CHANGE_EMAIL=>"Annulation du changement d'email"
 	);
 	public function detailOperation(){
 		return self::$_detailsOperation[$this->type];
