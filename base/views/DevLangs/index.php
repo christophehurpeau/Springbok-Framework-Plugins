@@ -1,0 +1,1 @@
+<?php new AjaxContentView('Langs','Dev/default') ?>

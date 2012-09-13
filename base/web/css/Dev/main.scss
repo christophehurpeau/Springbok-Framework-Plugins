@@ -1,0 +1,18 @@
+$PAGE_FIXED:true;
+@includeCore 'colors/darkblue.scss';
+@includeCore 'default.scss';
+@includeCore 'base/ajax.scss';
+
+
+ul.devtools_colors{
+	list-style: none;
+	margin:0;padding:0;
+}
+
+ul.devtools_colors li{
+	text-align:center;
+	/*line-height:22px;
+	height:22px;*/
+	padding:1px 0;
+	width:70px;
+}
