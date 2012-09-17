@@ -2,7 +2,7 @@
 class PostsController extends AController{
 	/** */
 	function index(){
-		set('posts',CPagination::create(Post::QListAll())->pageSize(10)->execute());
+		set('posts',Post::QListAll()->paginate()->pageSize(10)->execute());
 		render();
 	}
 	
@@ -23,9 +23,10 @@ class PostsController extends AController{
 		if($id!==null && $postTag->id != $id) notFound();
 		
 		mset($postTag);
-		set('posts',CPagination::create(Post::QListAll()
+		set('posts',Post::QListAll()
 			->withForce('PostTag',false)
-			->addCondition('pt.tag_id',$postTag->id))->pageSize(10)->execute());
+			->addCondition('pt.tag_id',$postTag->id)
+			->paginate()->pageSize(10)->execute());
 		render();
 	}
 }

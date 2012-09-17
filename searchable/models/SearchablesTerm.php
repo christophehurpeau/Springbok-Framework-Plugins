@@ -72,6 +72,7 @@ class SearchablesTerm extends SSqlModel{
 	
 	public function beforeSave(){
 		if(!empty($this->term)) $this->term=trim($this->term);
+		
 		/* IF(searchable.keywordTerms.slug) */
 		if(!empty($this->term) && empty($this->slug)){
 			$this->slug=$this->auto_slug();
@@ -81,6 +82,18 @@ class SearchablesTerm extends SSqlModel{
 			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
 		}
 		/* /IF */
+		
+		/* IF(searchable.keywordTerms.seo) */ /* COPY */
+		if(!empty($this->term) && empty($this->slug)){
+			$this->slug=$this->auto_slug();
+		}
+		if(isset($this->id)){
+			$oldSlug=self::QValue()->field('slug')->byId($this->id);
+			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
+		}
+		/* /IF */
+		
+		
 		/* IF(searchable.keywordTerms.text) */
 		if(empty($this->text) && isset($this->text)) $this->text=null;
 		/* /IF */

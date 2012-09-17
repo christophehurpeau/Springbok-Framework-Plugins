@@ -31,7 +31,7 @@ class PostController extends AController{
 		set('userId',$userId=CSecure::connected());
 		$queryOptions=PostComment::_paginationQueryCommentsOptions($userId);
 		$query->setAllWith($queryOptions['with']); $query->where($queryOptions['where']);
-		$pagination=CPagination::create($query)->pageSize(5)->page($page)->execute(); /* Don't forget lgs_post.js ! */
+		$pagination=CPagination::_create($query)->pageSize(5)->page($page)->execute(); /* Don't forget lgs_post.js ! */
 		
 		if($forceLastPage!==null && $forceLastPage){
 			if(($totalPages=$pagination->getTotalPages()) !== $page) $pagination->refindResults($totalPages);

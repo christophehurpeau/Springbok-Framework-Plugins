@@ -105,7 +105,7 @@ class UsersController extends AController{
 			if($uhe->status===UserHistoryEmail::WAITING){
 				$uhe->status=UserHistoryEmail::CANCELED;
 				$uhe->update();
-				UserHistory::add(UserHistory::CANCEL_CHANGE_EMAIL,$uhe->id);
+				UserHistory::add(UserHistory::CANCEL_CHANGE_EMAIL,$uhe->id,$userId);
 				CMail::send('user_cancelChangeEmail',array('email'=>$email),'Demande de nouveau courriel rejetée - '.Config::$projectName.'.',$email);
 				$message='La demande de nouveau courriel a bien été rejetée.';
 				$classMessage='success';
@@ -119,7 +119,7 @@ class UsersController extends AController{
 						$uhe->status=UserHistoryEmail::CANCELED_VALID;
 						$uhe->update();
 						User::updateOneFieldByPk($userId,'email',$lastEmailValid);
-						UserHistory::add(UserHistory::CANCEL_CHANGE_EMAIL,$uhe->id);
+						UserHistory::add(UserHistory::CANCEL_CHANGE_EMAIL,$uhe->id,$userId);
 						CMail::send('user_cancelChangedEmail',array('email'=>$email),'Demande de nouveau courriel rejetée - '.Config::$projectName.'.',$lastEmailValid);
 						
 						$message='La demande de nouveau courriel a bien été rejetée et l\'email restauré.';

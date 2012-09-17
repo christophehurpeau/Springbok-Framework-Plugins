@@ -26,7 +26,7 @@ class UserHistoryEmail extends SSqlModel{
 		$uph->user_id=$userId;
 		$uph->email=$email;
 		if(!$valid) $uph->code=UGenerator::randomCode(14);
-		else $uph->valid=self::VALID;
+		else $uph->status=self::VALID;
 		$uph->insert();
 		return $uph;
 	}

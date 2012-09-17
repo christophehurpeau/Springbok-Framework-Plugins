@@ -50,7 +50,7 @@ class DevLangsController extends Controller{
 			$statement->execute();
 		}
 		
-		redirect(['/dev/:controller(/:action/*)?','devLangs','lang',$lang]);
+		redirect(['/dev/:controller(/:action/*)?','langs','lang',$lang]);
 	}
 	
 	/** @ValidParams @NotEmpty('lang') */
@@ -83,7 +83,7 @@ class DevLangsController extends Controller{
 			$statementPlural->bindValue(':t',$d['plural']);
 			$statementPlural->execute();
 		}
-		redirect(['/dev/:controller(/:action/*)?','devLangs','sp',$lang]);
+		redirect(['/dev/:controller(/:action/*)?','langs','sp',$lang]);
 	}
 	
 	/** @ValidParams @NotEmpty('lang') */
@@ -220,7 +220,7 @@ class DevLangsController extends Controller{
 		
 		file_put_contents($projectPath.'i18n-'.$lang.'.js',$content);
 		
-		redirect(['/dev/:controller(/:action/*)?','devLangs','js',$lang]);
+		redirect(['/dev/:controller(/:action/*)?','langs','js',$lang]);
 	}
 	
 	
