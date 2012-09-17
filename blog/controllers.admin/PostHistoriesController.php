@@ -4,7 +4,7 @@ Controller::$defaultLayout='admin/cms';
 class PostHistoriesController extends Controller{
 	/** @Ajax @ValidParams @Required('id') */
 	function view(int $id){
-		set('history',PostHistory::QAll()->fields('id,created')->byPost_id($id)->orderByCreated()->paginate()->execute());
+		set('history',PostHistory::QAll()->fields('id,created')->byPost_id($id)->orderByCreated()->paginate());
 		render();
 	}
 	

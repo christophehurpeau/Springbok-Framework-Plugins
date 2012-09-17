@@ -2,7 +2,7 @@
 class PostsController extends AController{
 	/** */
 	function index(){
-		set('posts',Post::QListAll()->paginate()->pageSize(10)->execute());
+		set('posts',Post::QListAll()->paginate()->pageSize(10));
 		render();
 	}
 	
@@ -26,7 +26,7 @@ class PostsController extends AController{
 		set('posts',Post::QListAll()
 			->withForce('PostTag',false)
 			->addCondition('pt.tag_id',$postTag->id)
-			->paginate()->pageSize(10)->execute());
+			->paginate()->pageSize(10));
 		render();
 	}
 }
