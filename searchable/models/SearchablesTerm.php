@@ -109,6 +109,11 @@ class SearchablesTerm extends SSqlModel{
 			SearchablesTermSlugRedirect::add($this->oldSlug,$this->slug);
 		}
 		/* /IF */
+		/* IF(searchable.keywordTerms.seo) */ /* COPY */
+		if(!empty($this->oldSlug)){
+			SearchablesTermSlugRedirect::add($this->oldSlug,$this->slug);
+		}
+		/* /IF */
 	}
 	
 	public function nameWithType(){
