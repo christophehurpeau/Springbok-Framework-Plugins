@@ -10,6 +10,8 @@ class JsLog extends SSqlModel{
 		*/ $is_bot,
 		/** @SqlType('varchar(300)') @Null
 		*/ $user_agent,
+		/** @SqlType('VARCHAR(39)') @Null
+		*/ $ip,
 		/** @SqlType('varchar(300)') @Null
 		*/ $href,
 		/** @SqlType('varchar(300)') @Null
@@ -33,6 +35,7 @@ class JsLog extends SSqlModel{
 		$data=CHttpRequest::parseUserAgent();
 		$data['is_mobile']=CHttpRequest::isMobile();
 		$data['is_bot']=CHttpRequest::isBot();
+		$data['ip']=CHttpRequest::getClientIP();
 		$data['href']=$href;
 		$data['url']=$jsurl;
 		$data['message']=$message;
