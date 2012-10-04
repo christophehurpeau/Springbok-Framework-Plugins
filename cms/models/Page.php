@@ -24,8 +24,21 @@ class Page extends SSeoModel{
 		* @NotBindable
 		*/ $published;
 	
+	
+	public function beforeSave(){
+		if(!empty($this->name)){
+			$this->name=trim($this->name);
+			if(empty($this->slug)) $this->slug=$this->auto_slug();
+		}
+		if(isset($this->id)){
+			$oldSlug=self::QValue()->field('slug')->byId($this->id);
+			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
+		}
+		return true;
+	}
 	public function afterSave($data=null){
 		VPage::destroy($this->id);
+		if(!empty($this->oldSlug)) PageSlugRedirect::add($this->oldSlug,$this->slug);
 	}
 	
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->content),ENT_QUOTES,'UTF-8')))); }

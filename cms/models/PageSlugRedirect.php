@@ -1,6 +1,6 @@
 <?php
-/** @TableAlias('stsr') */
-class SearchablesTermSlugRedirect extends SSqlModel{
+/** @TableAlias('psr') */
+class PageSlugRedirect extends SSqlModel{
 	public
 		/** @Pk @SqlType('varchar(100)') @NotNull
 		*/ $old_slug,
@@ -23,11 +23,6 @@ class SearchablesTermSlugRedirect extends SSqlModel{
 	
 	
 	public static function get($oldSlug){
-		return self::QValue()->field('new_slug')->byOld_slugAndDirect($oldSlug,true);
-	}
-	
-	public static function findTerm($oldSlug){
-		return SearchablesTerm::QOne()->field('slug')->innerjoin('SearchablesTermSlugRedirect',false,array('stsr.new_slug=st.slug','stsr.direct'=>true))
-					->byText(true)->addCondition('stsr.old_slug LIKE',$oldSlug);
+		return self::QValue()->field('new_slug')->where(array('old_slug LIKE'=>$oldSlug,'direct'=>true));
 	}
 }

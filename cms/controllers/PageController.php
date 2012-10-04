@@ -4,7 +4,11 @@ class PageController extends AController{
 	function view($slug){
 		if($slug===null) $pageId=1;
 		else $pageId=Page::QValue()->field('id')->where(array('slug'=>$slug,'status'=>Page::PUBLISHED));
-		notFoundIfFalse($pageId);
+		if($pageId===false){
+			$newSlug=PageSlugRedirect::get($slug);
+			notFoundIfFalse($newSlug);
+			redirect(array('/:slug',$newSlug));
+		}
 		
 		$ve=VPage::create($pageId);
 		set('metas',$ve->metas());
