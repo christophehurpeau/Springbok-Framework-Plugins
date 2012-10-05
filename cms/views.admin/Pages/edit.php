@@ -5,6 +5,7 @@
 	<div class="content center">
 		{=$form->select('status',Page::statusesList())}
 		{iconLink 'delete','Supprimer cet article','/pages/delete/'.$page->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cette page ?')}
+		<p>{if $page->isPublished()}{link 'Page en ligne',$page->link(),array('entry'=>'index','target'=>'_blank')}{/if}</p>
 	</div>
 	<? $form->submit(true,array(),array('class'=>'submit center')); ?>
 </div>

@@ -64,6 +64,8 @@ class Page extends SSeoModel{
 		return array('/:slug',$this->slug);
 	}
 	
+	public function isPublished(){return $this->status!==self::DRAFT;}
+	
 	public function toJSON_autocomplete(){
 		return json_encode(array('id'=>$this->id,'value'=>$this->name,'url'=>HHtml::url($this->link(),'index',true)));
 	}
