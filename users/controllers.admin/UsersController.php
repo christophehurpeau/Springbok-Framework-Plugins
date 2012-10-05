@@ -29,4 +29,15 @@ class UsersController extends Controller{
 					'ip'))
 			->render('Connexions');
 	}
+
+	/** */
+	function sendValidMail(int $id){
+		$user=User::ById($id);
+		if($user===false) redirect('/users');
+		$uhe=UserHistoryEmail::findOneByUser_idAndStatusAndEmail($id,UserHistoryEmail::WAITING,$user->email);
+		if($uhe===false) redirect('/users/view/'.$id);
+		CMail::init('');
+		CMail::send('user_validation_link',array('user'=>$user,'uhe'=>$uhe),'Validation du compte - '.Config::$projectName,$user->email);
+		redirect('/users/view/'.$id);
+	}
 }
