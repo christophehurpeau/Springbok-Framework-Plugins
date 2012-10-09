@@ -12,13 +12,14 @@ class SearchablesTermSlugRedirect extends SSqlModel{
 		*/ $created;
 	
 	public static function add($oldSlug,$newSlug){
+		if(empty($oldSlug) || empty($newSlug)) return;
 		$psr=new self;
 		$psr->old_slug=$oldSlug;
 		$psr->new_slug=$newSlug;
 		$psr->direct=true;
 		$psr->insertIgnore();
 		if(self::QUpdateOneField('direct',false)->byNew_slug($oldSlug))
-			self::QInsertSelect()->query(self::QAll()->setFields(array('old_slug','('.UPhp::exportString($newSlug).')','("")','NOW()'))->byNew_slug($oldSlug));
+			self::QInsertSelect()->ignore()->query(self::QAll()->setFields(array('old_slug','('.UPhp::exportString($newSlug).')','("")','NOW()'))->byNew_slug($oldSlug));
 	}
 	
 	
