@@ -21,6 +21,7 @@ class User extends SSqlModel{
 		*/ $last_name,
 		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(SConsts::UNKNOWN)
 		* @Enum(SConsts::gender())
+		* @Icons(SConsts::genderIcons())
 		*/ $gender,
 		/* IF(users.pseudo) */
 		/** @SqlType('varchar(40)') @Null
@@ -29,9 +30,11 @@ class User extends SSqlModel{
 		/* /IF */
 		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(1) @Comment("Default type")
 		* @Enum(1=>'Site','Facebook','Google','Yahoo','W. Live','OpenID')
+		* @Icons(1=>'pageWww','facebook','google','yahoo','wlive','openid')
 		*/ $type,
 		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(0)
 		* @Enum('En attente','Valide','Désactivé','Supprimé',9=>'Administrateur')
+		* @Icons('userDisable','userEnable','userDisabled','userSilhouette',9=>'userAdmin')
 		*/ $status;
 		
 	public function name(){
