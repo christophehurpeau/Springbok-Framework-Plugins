@@ -21,7 +21,7 @@ class Searchable extends SSeoModel{
 		/** @Boolean @Default(true)
 		*/ $visible;
 	
-	public function normalized(){ return trim(preg_replace('/[ \-\'\"]+/',' ',$this->name)); }
+	public function normalized(){ return UString::normalize($this->name); }
 	
 	public function beforeSave(){
 		if(!empty($this->name)){
