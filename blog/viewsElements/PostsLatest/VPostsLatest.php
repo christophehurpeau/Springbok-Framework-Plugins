@@ -1,5 +1,7 @@
 <?php
 class VPostsLatest extends SViewCachedElement{
+	protected static $views=array('view','titles');
+	
 	/* DEV */ public function exists(){ return false; } /* /DEV */
 	public static function path(){return DATA.'elementsCache/posts/latest-list';}
 	public static function vars(){
