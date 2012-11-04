@@ -61,7 +61,7 @@ class Page extends SSeoModel{
 	
 	
 	public function link(){
-		return array('/:slug',$this->slug);
+		return $this->id===1?'/':array('/:slug',$this->slug);
 	}
 	
 	public function isPublished(){return $this->status!==self::DRAFT;}
