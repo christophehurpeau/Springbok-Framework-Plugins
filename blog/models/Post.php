@@ -88,7 +88,7 @@ class Post extends Searchable{
 	}
 	
 	public static function onModified($postId,$delete=false){
-		VPostsLatest::generate(); VPostsLatestMenu::generate();
+		VPostsLatest::destroy(); VPostsLatestMenu::destroy();
 		$delete ? VPost::destroy($postId) : VPost::generate($postId);
 		ACSitemapPosts::generate();
 	}

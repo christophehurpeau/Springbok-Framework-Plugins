@@ -21,6 +21,7 @@ class CmsMenuController extends Controller{
 	
 	/** @Ajax @ValidParams @AllRequired */
 	function add(int $pageId){
+		if(empty($pageId)) exit;
 		$res=CmsMenu::add($pageId);
 		if($res) VCmsMenu::generate();
 		renderText($res ? '1' : '0');

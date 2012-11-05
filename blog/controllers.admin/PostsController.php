@@ -91,7 +91,7 @@ class PostsController extends Controller{
 	
 	/** */
 	function regenerateLatest(){
-		VPostsLatest::generate();
+		VPostsLatest::destroy();
 		redirect('/posts/tools');
 	}
 	/** */

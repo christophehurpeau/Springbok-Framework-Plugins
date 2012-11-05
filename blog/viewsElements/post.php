@@ -9,6 +9,6 @@
 		<span itemprop="dateCreated" content="{$post->created}"></span>
 		<span itemprop="datePublished" content="{$post->published}"></span>
 		{if!null $post->updated}<span itemprop="dateModified" content="{$post->updated}"></span>{/if}
-		{=$post->excerpt}
+		{if isset($post->excerpt)}{=$post->excerpt}{else}<? VPost::create($post->id)->render('excerpt') ?>{/if}
 	</article>
 </li>
