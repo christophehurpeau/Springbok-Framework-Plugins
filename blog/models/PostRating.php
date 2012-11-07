@@ -1,6 +1,6 @@
 <?php
 /** @TableAlias('prat')
-* @Unique('post_id','user_id')
+* @IndexUnique('post_id','user_id')
 */
 class PostRating extends SSqlModel{
 	public
