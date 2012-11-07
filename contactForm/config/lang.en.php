@@ -10,4 +10,5 @@
 	'plugin.contactForm.Captcha:'=>'Captcha:',
 	'plugin.contactForm.ChangeCaptcha'=>'Change captcha',
 	'plugin.contactForm.Send'=>'Send',
+	'plugin.contactForm.success'=>'Thank you for contacting us. We will respond as quickly as possible.',
 );
