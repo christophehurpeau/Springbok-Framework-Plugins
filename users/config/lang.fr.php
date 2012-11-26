@@ -13,4 +13,6 @@
 	'models.UserConnection.login'=>'Login',
 	'models.UserConnection.connected'=>'Connecté',
 	'models.UserConnection.ip'=>'Adresse IP',
+	
+	'plugin.users.My account'=>'Mon compte',
 );
