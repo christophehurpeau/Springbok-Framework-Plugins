@@ -5,8 +5,8 @@
 
 @includePlugin 'seo/_seo';
 
-@includeLib 'codemirror/codemirror.css';
-@includeLib 'codemirror/themes/elegant.css';
+@includeCore 'codemirror/codemirror.css';
+@includeCore 'codemirror/themes/springbok.css';
 
 body #container .fullscreen{
 	display: block;

@@ -1,12 +1,12 @@
 includeCore('springbok.jqueryui');
 
-includeLib('codemirror/codemirror');
-includeLib('codemirror/overlay');
+includeCore('codemirror/codemirror');
+includeCore('codemirror/util/overlay');
 
-includeLib('codemirror/modes/xml/xml');
-includeLib('codemirror/modes/javascript/javascript');
-includeLib('codemirror/modes/css/css');
-includeLib('codemirror/modes/htmlmixed/htmlmixed');
+includeCore('codemirror/modes/xml/xml');
+includeCore('codemirror/modes/javascript/javascript');
+includeCore('codemirror/modes/css/css');
+includeCore('codemirror/modes/htmlmixed/htmlmixed');
 
 _.cms={
 	internalLinks:{
