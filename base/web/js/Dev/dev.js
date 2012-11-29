@@ -1,4 +1,4 @@
-includeCore('libs/jquery-1.8.1.min');
+includeCore('libs/jquery-1.8.3');
 
 includeCore('springbok.base');
 includeCore('springbok.forms');
