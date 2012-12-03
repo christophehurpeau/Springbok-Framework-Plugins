@@ -36,9 +36,13 @@ class Searchable extends SSeoModel{
 	
 	public function afterSave(&$data=null){
 		if(!empty($data['name'])){
-			if($this->isVisible()) SearchableWord::add($this->id,$this->name);
-			else SearchableWord::deleteFor($this->id);
+			$this->reindex();
 		}
+	}
+	
+	public function reindex(){
+		if($this->isVisible()) SearchableWord::add($this->id,$this->name);
+		else SearchableWord::deleteFor($this->id);
 	}
 	
 	public function link($action=null,$more=''){
