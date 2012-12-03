@@ -34,7 +34,7 @@ class Searchable extends SSeoModel{
 		return true;
 	}
 	
-	public function afterSave(&$data=null){
+	public function afterSave($data=null){
 		if(!empty($data['name'])){
 			$this->reindex();
 		}

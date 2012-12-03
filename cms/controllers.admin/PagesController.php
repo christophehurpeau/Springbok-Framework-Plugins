@@ -17,6 +17,7 @@ class PagesController extends Controller{
 	*/ function add(Page $page){
 		$page->status=Page::DRAFT;
 		$page->author_id=CSecure::connected();
+		$page->visible=false;
 		$page->insert();
 		redirect('/pages/edit/'.$page->id);
 	}
