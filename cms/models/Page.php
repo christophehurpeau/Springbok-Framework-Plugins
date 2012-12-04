@@ -1,6 +1,6 @@
 <?php
-/** @TableAlias('pg') @DisplayField('name') @Seo @Created @Updated */
-class Page extends SSeoModel{
+/** @TableAlias('pg') @DisplayField('name') @Child('Searchable','created,updated') @Seo @Created @Updated */
+class Page extends Searchable{
 	const DRAFT=1,PUBLISHED=2,DELETED=4;
 		
 	public
@@ -26,10 +26,7 @@ class Page extends SSeoModel{
 	
 	
 	public function beforeSave(){
-		if(!empty($this->name)){
-			$this->name=trim($this->name);
-			if(empty($this->slug)) $this->slug=$this->auto_slug();
-		}
+		parent::beforeSave();
 		if(isset($this->id)){
 			$oldSlug=self::QValue()->field('slug')->byId($this->id);
 			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
@@ -49,6 +46,9 @@ class Page extends SSeoModel{
 	public function save(){
 		if($this->status===self::PUBLISHED && !Page::existByIdAndStatus($this->id,self::PUBLISHED)) $this->published=array('NOW()');
 		$res=$this->update();
+		$this->visible=$this->status===self::PUBLISHED;
+		if(empty($this->p_id)) $this->p_id=Page::findValueP_idById($this->id);
+		$resP=$this->updateParent();
 		if($res && $this->status===self::PUBLISHED)
 			self::onModified($this->id);
 		return $res;
@@ -60,7 +60,7 @@ class Page extends SSeoModel{
 	}
 	
 	
-	public function link(){
+	public function link($action=null,$more=''){
 		return $this->id===1?'/':array('/:slug',$this->slug);
 	}
 	

@@ -2,6 +2,7 @@
 	'plugin.cms.Pages:'=>'Pages:',
 	'plugin.cms.Pages'=>'Pages',
 	'plugin.cms.Page'=>'Page',
+	'plugin.cms.HardCodedPages'=>'Hard Coded Pages',
 	'plugin.cms.Menu'=>'Menu',
 	'plugin.cms.Tools'=>'Tools',
 	
@@ -13,4 +14,8 @@
 	'models.Page:content'=>'Content',
 	'models.Page:status'=>'Status',
 	'models.Page:published'=>'Published',
+	
+	
+	'models.CmsHardCodedPage:New'=>'New Hard Coded Page',
+	'models.CmsHardCodedPage:link'=>'Link',
 );

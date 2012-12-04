@@ -4,8 +4,30 @@ Controller::$defaultLayout='admin/searchable';
 class SearchableController extends Controller{
 	/** */
 	function index(){
-		Searchable::Table()->paginate()->actionClick('view')->render('Searchable');
+		Searchable::Table()->allowFilters()->paginate()->actionClick('view')->render('Searchable');
 	}
+	
+	/** */
+	function view(int $id){
+		HBreadcrumbs::set(array('Searchables'=>'/searchable'));
+		$table=Searchable::TableOne()->byId($id)->end();
+		if(!$table->hasResult()) exit("Aucun résultat trouvé");
+		$tableWords=$table->rel('SearchablesWord')->noAutoRelations()//->belongsToFields(array('insee'=>'City'))
+			->fields('id,word,length')->paginate()->actionClick('/searchableWord/view')->actionView();
+		$tableKeywords=$table->rel('SearchablesKeyword')->paginate()->actionClick('/searchableKeyword/view')->actionView();
+		$sb=$table->getResult();
+		mset($sb,$table,$tableWords,$tableKeywords);
+		render();
+	}
+	
+	/** */
+	function reindex(int $id){
+		$sb=Searchable::ById($id);
+		notFoundIfFalse($sb);
+		$sb->reindex();
+		redirect('/searchable/view/'.$id);
+	}
+	
 	/** */
 	function keywords(){
 		SearchablesKeyword::Table()->noAutoRelations()->fields('id,_type,created,updated')

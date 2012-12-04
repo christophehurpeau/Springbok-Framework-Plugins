@@ -34,7 +34,7 @@ _.seo={
 		});
 	},
 	tinymceChanged_metaKeywords:function(inst){
-		$("#SeoMeta_descrAuto").val(inst.getBody().innerHTML.sbStripTags().replace(/[\s\r\n]+/g,' ').sbTrim()).change();
+		$("#SeoMeta_descrAuto").val(inst.getBody().innerHTML.sbStripTags().replace(/[\s\r\n]+/g,' ').trim()).change();
 	},
 	meta:function(t){
 		var tr=$(t).closest('tr');

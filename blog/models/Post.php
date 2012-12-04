@@ -54,7 +54,7 @@ class Post extends Searchable{
 	
 	public function beforeSave(){ return true; }
 	
-	public function afterSave(&$data=null){
+	public function afterSave($data=null){
 		VPost::destroy($this->id);
 	}
 	
