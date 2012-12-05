@@ -6,7 +6,7 @@ class VCmsMenu extends SViewCachedElement{
 	public static function path(){return DATA.'elementsCache/cmsMenu';}
 	
 	public static function vars(){
-		if(Springbok::$inError) return array('links'=>array());
+		if(Springbok::$inError!==null) return array('links'=>array());
 		$pages=Page::QAll()->fields('id,name,slug')
 			->with('CmsMenu',array('fields'=>false,'type'=>QSelect::INNER))
 			->addCondition('status',Page::PUBLISHED)
