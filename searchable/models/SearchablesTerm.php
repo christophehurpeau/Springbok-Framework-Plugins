@@ -46,6 +46,10 @@ class SearchablesTerm extends SSqlModel{
 		$st->type=$type;
 		return $st->insert();
 	}
+	public static function get($term){
+		$term=self::cleanTerm($term);
+		return self::QValue()->field('id')->where(array('term LIKE'=>$term));
+	}
 	
 	public static function cleanTerm($term){
 		return trim(preg_replace('/[\s\,\+\\\\°]+/',' ',$term));
