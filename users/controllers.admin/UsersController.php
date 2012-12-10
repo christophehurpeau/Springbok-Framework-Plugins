@@ -8,7 +8,7 @@ class UsersController extends Controller{
 			->allowFilters()->paginate()->actionClick('view')->render('Utilisateurs');
 	}
 	
-	/** @ValidParams @Required('id') */
+	/** @ValidParams @Id('id') */
 	function view(int $id){
 		$user=User::ById($id);
 		notFoundIfFalse($user);
@@ -16,6 +16,12 @@ class UsersController extends Controller{
 		$paginate=$user->findWithPaginate('UserHistory',array('with'=>array('type'),'orderBy'=>array('created'=>'DESC')));
 		$paginate->pageSize(25)->execute();
 		render();
+	}
+	/** @ValidParams @Id('id') */
+	function disable(int $id){
+		User::QUpdateOneField('status',User::DISABLED)->byIdAndStatus($id,User::VALID);
+		UserHistory::add(UserHistory::DISABLE_USER,CSecure::connected(),$id);
+		redirect('/users/view/'.$id);
 	}
 	
 	

@@ -14,7 +14,7 @@ window.users={
 	},
 	ht5ifvRestrictions:function(){
 		var registerDivHelp={Pseudo:{20:'Le pseudo est vide.',21:'Le pseudo est déjà utilisé.',22:'Le pseudo n\'est pas conforme.'},
-			Email:{20:'L\'adresse est vide.',21:'Cette adresse email est déjà utilisée par un compte.'}},
+			Email:{20:'L\'adresse est vide.',21:'Cette adresse email est déjà utilisée par un compte.',22:'Le nom de domaine n\'est pas valide.'}},
 			registerDivInvalidChecks={},registerPreviousValidity={},registerCachedValidity={},registerDivPseudoInvalid=false,pseudoPreviousValidity=true;
 		return {
 			'data-ajaxcheck':function($node,$ignoreEmpty){
