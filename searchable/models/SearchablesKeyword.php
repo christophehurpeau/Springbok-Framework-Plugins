@@ -60,7 +60,8 @@ class SearchablesKeyword extends SSqlModel{
 	}
 	
 	public static function cleanPhrase($phrase){
-		return trim(preg_replace('/[\s\,\+\-]+/',' ',$phrase));
+		//return trim(preg_replace('/[\s\,\+\-]+/',' ',$phrase));
+		return SearchablesTerm::cleanTerm($phrase);
 	}
 	
 	

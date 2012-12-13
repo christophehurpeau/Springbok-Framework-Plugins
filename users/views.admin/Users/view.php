@@ -2,6 +2,8 @@
 HBreadcrumbs::set(array('Utilisateurs'=>'/users'),$name) ?>
 <h1>{$name}</h1>
 
+<div class="faR">{if $user->isValid()}{iconLink 'userDisable',_tC('Disable'),'/users/disable/'.$user->id}{/if}</div>
+
 <div class="content">
 	Id : <b>{$user->id}</b><br/>
 	Email : <b>{$user->email}</b><br/>

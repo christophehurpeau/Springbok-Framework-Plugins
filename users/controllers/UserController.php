@@ -18,6 +18,7 @@ class UserController extends AController{
 				if($user->pseudo===$currentUser->pseudo || User::checkPseudo($user->pseudo)!==true) unset($user->pseudo);
 				/* /IF */
 				if(isset($user->email) && $user->email!==$currentUser->email){
+					$user->email=strtolower($user->email);
 					if(User::checkEmail($user->email)===true){
 						$uhe=UserHistoryEmail::create($user->id,$user->email);
 						UserHistory::add(UserHistory::CHANGE_EMAIL,$uhe->id);
