@@ -14,6 +14,8 @@
 	'models.SearchablesTerm:type.Enum.Masculine noun'=>'Nom masculin',
 	'models.SearchablesTerm:type.Enum.Feminin noun'=>'Nom féminin',
 	'models.SearchablesTerm:type.Enum.Plural noun'=>'Nom pluriel',
-	'models.SearchablesTerm:type.Enum.Spelling mistake'=>'Erreur orth.',
 	'models.SearchablesTerm:type.Enum.Epicene'=>'Épicène',
+	'models.SearchablesTerm:type.Enum.Abbreviation'=>'Abréviation',
+	'models.SearchablesTerm:type.Enum.Acronym'=>'Acronyme',
+	'models.SearchablesTerm:type.Enum.Spelling mistake'=>'Erreur orth.',
 );
