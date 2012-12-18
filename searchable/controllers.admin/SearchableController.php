@@ -4,7 +4,7 @@ Controller::$defaultLayout='admin/searchable';
 class SearchableController extends Controller{
 	/** */
 	function index(){
-		Searchable::Table()->allowFilters()->paginate()->actionClick('view')->render('Searchable');
+		Searchable::Table()->allowFilters()->paginate()->actionView()->render('Searchable');
 	}
 	
 	/** */
@@ -32,7 +32,7 @@ class SearchableController extends Controller{
 	function keywords(){
 		SearchablesKeyword::Table()->noAutoRelations()->fields('id,_type,created,updated')
 			->with('MainTerm','term,slug')
-			->allowFilters()->paginate()->controller('searchableKeyword')->actionClick('view')
+			->allowFilters()->paginate()->controller('searchableKeyword')->actionView()
 			->fields(array('id','term','slug','_type','created','updated'))
 			->render('Keywords');
 	}
@@ -40,7 +40,7 @@ class SearchableController extends Controller{
 	/** */
 	function terms(){
 		SearchablesTerm::Table()->noAutoRelations()->fields('id,term,slug,created,updated')
-			->allowFilters()->paginate()->controller('searchableTerm')->actionClick('view')
+			->allowFilters()->paginate()->controller('searchableTerm')->actionView()
 			->fields(array('id','term','slug','created','updated'))
 			->render('Terms');
 	}
