@@ -1,7 +1,10 @@
 <?php
 /** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') /* IF(searchable.keywordTerms.seo) *\/ @Seo @Index('slug') /* /IF *\/ */
 class SearchablesTerm extends SSqlModel{
-	const NONE=0,MAIN=1,MASCULINE_NOUN=2,FEMININ_NOUN=3,PLURAL_NOUN=4,SPELLING_MISTAKE=5,EPICENE=6;
+	/* http://en.wikipedia.org/wiki/Category:Types_of_words */
+	const NONE=0,MAIN=1,MASCULINE_NOUN=20,FEMININ_NOUN=21,PLURAL_NOUN=22,EPICENE=23,
+			ABBREVIATION=30,ACRONYM=31,
+			SPELLING_MISTAKE=5;
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
@@ -10,8 +13,8 @@ class SearchablesTerm extends SSqlModel{
 		/** @Unique @SqlType('varchar(100)') @NotNull @MinLength(3)
 		*/ $slug,
 		/* /IF */
-		/** @SqlType('tinyint(1) unsigned') @NotNull
-		*  @Enum('None','Main','Masculine noun','Feminin noun','Plural noun','Spelling mistake','Epicene'/* VALUE(searchables.terms.types) *\/)
+		/** @SqlType('tinyint(2) unsigned') @NotNull
+		*  @Enum('None','Main',20=>'Masculine noun',21=>'Feminin noun',22=>'Plural noun',23=>'Epicene',30=>'Abbreviation',31=>'Acronym',5=>'Spelling mistake'/* VALUE(searchables.terms.types) *\/)
 		*/ $type;
 	/*
 	public static function addKeywords($keywordId,$terms){
