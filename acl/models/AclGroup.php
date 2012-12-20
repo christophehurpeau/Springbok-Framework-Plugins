@@ -1,6 +1,8 @@
 <?php
 /** @TableAlias('aclg') */
-class AclGroup extends STreeModel{
+class AclGroup extends SSqlModel{
+	use BTree;
+	
 	const GUEST=1,BASIC_USER=2;
 	
 	public
