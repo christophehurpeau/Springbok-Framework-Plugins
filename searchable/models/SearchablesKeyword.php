@@ -1,6 +1,8 @@
 <?php
 /** @TableAlias('ssk') @Created @Updated @Parent /* IF(searchable.keywords.seo) *\/ @Seo /* /IF *\/ */
 class SearchablesKeyword extends SSqlModel{
+	use BParent,BSeo/* IF(searchable.keywords.text) */,BTextContent/* /IF */;
+	
 	public
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
 		* @ForeignKey('SearchablesTerm','id')
@@ -10,9 +12,6 @@ class SearchablesKeyword extends SSqlModel{
 		/* /IF */;
 	
 	/* IF(searchable.keywords.text) */
-	public /** @SqlType('text') @Null */ $text;
-	public function afterUpdate(){ if(!empty($this->text)) VSeo::generate('SearchablesKeyword',$this->id); }
-	
 	public static function findOneForSeo($id){
 		return parent::QOne()/* IF!(searchable.keywords.seo) */->with('MainTerm')/* /IF */->where(array('id'=>$id));
 	}
@@ -37,12 +36,6 @@ class SearchablesKeyword extends SSqlModel{
 	public function auto_meta_title(){ return $this->term; }
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->text),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('term')->withForce('SearchablesKeywordTerm')->addCondition('skt.keyword_id',$this->id)->orderBy('term')); }
-	
-	public function metaTitle(){ return empty($this->meta_title) ? $this->auto_meta_title() : $this->meta_title; }
-	public function metaDescr(){ return empty($this->meta_descr) ? $this->auto_meta_descr() : $this->meta_descr; }
-	public function metaKeywords(){ return empty($this->meta_keywords) ? $this->auto_meta_keywords() : $this->meta_keywords ; }
-	/* IF(searchable.keywords.seo) */
-	/* /IF */
 	
 	
 	public function beforeInsert(){

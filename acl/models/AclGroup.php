@@ -1,5 +1,5 @@
 <?php
-/** @TableAlias('aclg') */
+/** @TableAlias('aclg') @Created */
 class AclGroup extends SSqlModel{
 	use BTree;
 	
@@ -8,13 +8,8 @@ class AclGroup extends SSqlModel{
 	public
 		/** @Pk @AutoIncrement @SqlType('tinyint(3) unsigned') @NotNull
 		*/ $id,
-		/** @SqlType('tinyint(3) unsigned') @Null
-		* @ForeignKey('AclGroup','id','onDelete'=>'CASCADE')
-		*/ $parent_id,
 		/** @SqlType('varchar(50)') @Null
-		*/ $name,
-		/** @SqlType('datetime') @NotNull
-		*/ $created;
+		*/ $name;
 	
 	
 	public static function afterCreateTable(){

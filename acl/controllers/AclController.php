@@ -2,11 +2,12 @@
 Controller::$defaultLayout='admin';
 /** @Check('ACSecureAdmin') @Acl */
 class AclController extends Controller{
-	/** @Acl('AclGroup') */
-	function index(){
-		AclGroup::Table()->paginate()->actionClick('permissions')
-			->render('Acl Groups',array('modelName'=>'AclGroup','form'=>array('action'=>'/acl/add')));
-	}
+	const MODEL='AclGroup';
+	
+	use TreeController;
+	
+	/*AclGroup::Table()->paginate()->actionClick('permissions')
+		->render('Acl Groups',array('modelName'=>'AclGroup','form'=>array('action'=>'/acl/add')));*/
 	
 	/** @ValidParams @Acl('Acl') */
 	function permissions(int $groupId){
@@ -17,11 +18,6 @@ class AclController extends Controller{
 			'perms'=>AclGroupPerm::QList()->fields('permission,granted')->byGroup_id($groupId),
 		));
 		render();
-	}
-	/** @ValidParams @Required('aclGroup') @Acl('AclGroup') */
-	function add(AclGroup $aclGroup){
-		$aclGroup->insert();
-		redirect('/acl');
 	}
 	
 	/** @ValidParams @Required('perm') @Acl('Acl') */
