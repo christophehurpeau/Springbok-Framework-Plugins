@@ -22,7 +22,11 @@ class SearchablesKeyword extends SSqlModel{
 	);
 	
 	public static $hasManyThrough=array(
-		'SearchablesTerm'=>array('joins'=>'SearchablesKeywordTerm')
+		'SearchablesTerm'=>array('joins'=>'SearchablesKeywordTerm'),
+		'Keywords'=>array('modelName'=>'SearchablesKeyword','joins'=>array('KeywordsIds'=>array('associationForeignKey'=>'keyword_id')),'with'=>array('MainTerm'))
+	);
+	public static $hasMany=array(
+		'KeywordsIds'=>array('modelName'=>'SearchablesKeywordKeyword','associationForeignKey'=>'rel_keyword_id'),
 	);
 	
 	/* VALUE(searchable.SearchablesKeyword.phpcontent) */
@@ -69,5 +73,9 @@ class SearchablesKeyword extends SSqlModel{
 		$termId=SearchablesTerm::createOrGet($term,$type);
 		SearchablesKeywordTerm::QInsert()->ignore()->set(array('term_id'=>$termId,'keyword_id'=>$keywordId));
 		return $termId;
+	}
+	
+	public function adminLink(){
+		return HHtml::link($this->name(),'/searchableKeyword/view/'.$this->id);
 	}
 }

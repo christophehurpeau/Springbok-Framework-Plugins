@@ -13,6 +13,12 @@
 			array('js'=>'{allowNew:1,url:"/'.$keyword->id.'"}','modelFunctionName'=>'adminLinkWithType','escape'=>false)) ?>
 </div>
 
+<div id="linkedKeywords" class="clear mt10 block1">
+	<h5 class="noclear">{t 'plugin.searchable.LinkedKeywords'}</h5>
+	<? HHtml::ajaxCRDInputAutocomplete('/searchableKeywordKeyword',$keyword->keywords,
+			array('js'=>'{url:"/'.$keyword->id.'"}','modelFunctionName'=>'adminLink','escape'=>false)) ?>
+</div>
+
 
 /* IF(searchable.keywords.text) */</div>/* /IF */
 <?php $form=HForm::create('SearchablesKeyword',array('id'=>'formKeywordEdit','name'=>'keyword'),'div',false) ?>
@@ -25,14 +31,16 @@
 	<? View::element('seo',array('model'=>$keyword,'form'=>$form)) ?>
 	/* /IF */
 	{=$form->submit(true,array(),array('class'=>'submit center'))}
+	
+	
+	/* IF(searchable.keywords.text) */
+	<div class="mt10">
+		<h4>Description du mot clé</h4>
+		{=$form->textarea('text',array('class'=>'wp100'))}
+		{=$form->submit(true,array(),array('class'=>'submit center'))}
+	</div>
 </div>
 
-/* IF(searchable.keywords.text) */
-<div class="clear">
-	<h4>Description du mot clé</h4>
-	{=$form->textarea('text',array('class'=>'wp100'))}
-	{=$form->submit(true,array(),array('class'=>'submit center'))}
-</div>
 {=$form->end(false)}
 /* /IF */
 
