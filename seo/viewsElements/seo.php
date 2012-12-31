@@ -6,9 +6,12 @@
 		<th class="alignLeft w1">{$val}</th>
 		<td class="state center w160"><a href="#" onclick="return _.seo.meta(this)" class="italic">{if $auto}Automatique{else}Manuel{/if}</a></td>
 		<td>
-			<? $form->text($k,array('name'=>false,'label'=>false,'autocomplete'=>'off','id'=>'Seo'.ucFirst($k).'Auto','readonly'=>true,'value'=>$model->{'auto_'.$k}(),'class'=>'wp100 auto'),false) ?>
-			<?php $attrs=array('id'=>'Seo'.ucFirst($k),'value'=>$model->$k,'label'=>false,'autocomplete'=>'off','class'=>'wp100 manuel'.($auto?' autoOnLoad':''));
-				if($auto) $attrs['disabled']=true; echo $form->text($k,$attrs,false) ?>
+			<? $form->text($k)->noName()->noLabel()->attr('autocomplete','off')->id('Seo'.ucFirst($k).'Auto')
+					->readOnly()->value($model->{'auto_'.$k}())->attrClass('wp100 auto')->noContainer() ?>
+			<?php $text=$form->text($k)->id('Seo'.ucFirst($k))->value($model->$k)->noLabel()->attr('autocomplete','off')
+									->attrClass('wp100 manuel'.($auto?' autoOnLoad':''));
+				if($auto) $text->disabled();
+				echo $text->noContainer() ?>
 		</td>
 		<td class="smallinfo alignRight" style="width:80px">
 			<span class="manuel"><span class="words"></span> mots<br /><span class="chars"></span> caractères</span>

@@ -1,10 +1,6 @@
 <?php
 /** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') /* IF(searchable.keywordTerms.seo) *\/ @Seo @Index('slug') /* /IF *\/ */
 class SearchablesTerm extends SSqlModel{
-	/* http://en.wikipedia.org/wiki/Category:Types_of_words */
-	const NONE=0,MAIN=1,MASCULINE_NOUN=20,FEMININ_NOUN=21,PLURAL_NOUN=22,EPICENE=23,
-			ABBREVIATION=30,ACRONYM=31,
-			SPELLING_MISTAKE=5;
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
@@ -14,7 +10,6 @@ class SearchablesTerm extends SSqlModel{
 		*/ $slug,
 		/* /IF */
 		/** @SqlType('tinyint(2) unsigned') @NotNull
-		*  @Enum('None','Main',20=>'Masculine noun',21=>'Feminin noun',22=>'Plural noun',23=>'Epicene',30=>'Abbreviation',31=>'Acronym',5=>'Spelling mistake'/* VALUE(searchables.terms.types) *\/)
 		*/ $type;
 	/*
 	public static function addKeywords($keywordId,$terms){
@@ -25,14 +20,12 @@ class SearchablesTerm extends SSqlModel{
 	*/
 	
 	/* IF(searchable.keywordTerms.text) */
-	public /** @SqlType('text') @Null */ $text;
-	public function afterUpdate(){ if(!empty($this->text)) VSeo::generate('SearchablesTerm',$this->id); }
-	
-	public static function findOneForSeo($id){
-		return self::QOne()->where(array('id'=>$id));
-	}
+	use BTextContent;
 	/* /IF */
 	
+	public static $hasMany=array(
+		'Types'=>array('modelName'=>'SearchablesTypedTerm','associationForeignKey'=>'term_id','fields'=>'type'),
+	);
 	public static $hasManyThrough=array(
 		'SearchablesKeyword'=>array('joins'=>'SearchablesKeywordTerm'),
 	);
@@ -43,11 +36,16 @@ class SearchablesTerm extends SSqlModel{
 	public static function createOrGet($term,$type){
 		$term=self::cleanTerm($term);
 		$id=self::QValue()->field('id')->where(array('term LIKE'=>$term));
-		if($id!==false) return $id;
+		if($id!==false){
+			SearchablesTypedTerm::addIgnore($id,$type);
+			return $id;
+		}
 		$st=new SearchablesTerm;
 		$st->term=$term;
 		$st->type=$type;
-		return $st->insert();
+		$id=$st->insert();
+		SearchablesTypedTerm::addIgnore($id,$type);
+		return $id;
 	}
 	public static function get($term){
 		$term=self::cleanTerm($term);
@@ -123,12 +121,8 @@ class SearchablesTerm extends SSqlModel{
 		/* /IF */
 	}
 	
-	public function nameWithType(){
-		return $this->term.(isset($this->type)?' ('.$this->type().')':'');
-	}
-	
-	public function adminLinkWithType(){
-		return HHtml::link($this->nameWithType(),'/searchableTerm/view/'.$this->id);
+	public function adminLink(){
+		return HHtml::link($this->term,'/searchableTerm/view/'.$this->id);
 	}
 	public function toJSON_adminAutocomplete(){
 		return json_encode(array('id'=>$this->id,'value'=>$this->nameWithType(),'url'=>HHtml::url(AHGlossary::link($this),'index',true)));

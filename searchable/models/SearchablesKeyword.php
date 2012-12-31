@@ -21,12 +21,17 @@ class SearchablesKeyword extends SSqlModel{
 		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'id','fieldsInModel'=>true,'fields'=>'term,slug','alias'=>'skmt')
 	);
 	
+	public static $hasMany=array(
+		'TermWithType'=>array('modelName'=>'SearchablesKeywordTerm','dataName'=>'terms','associationForeignKey'=>'keyword_id',
+									'with'=>array('SearchablesTerm'=>['fields'=>'term','fieldsInModel'=>true])),
+		'Types'=>array('modelName'=>'SearchablesTypedTerm','foreignKey'=>'id','associationForeignKey'=>'term_id','fields'=>'type'),
+	);
+	
 	public static $hasManyThrough=array(
 		'SearchablesTerm'=>array('joins'=>'SearchablesKeywordTerm'),
+		//'TermWithType'=>array('modelName'=>'SearchablesTerm','dataName'=>'terms','joins'=>'SearchablesKeywordTerm','withOptions'=>array('SearchablesKeywordTerm'=>array('fields'=>'type'))),
+		'SearchablesTypedTerm'=>array('joins'=>'SearchablesKeywordTerm'),
 		'Keywords'=>array('modelName'=>'SearchablesKeyword','joins'=>array('KeywordsIds'=>array('associationForeignKey'=>'keyword_id')),'with'=>array('MainTerm'))
-	);
-	public static $hasMany=array(
-		'KeywordsIds'=>array('modelName'=>'SearchablesKeywordKeyword','associationForeignKey'=>'rel_keyword_id'),
 	);
 	
 	/* VALUE(searchable.SearchablesKeyword.phpcontent) */
@@ -43,7 +48,7 @@ class SearchablesKeyword extends SSqlModel{
 	
 	
 	public function beforeInsert(){
-		return $this->id=SearchablesTerm::createOrGet($this->term,SearchablesTerm::MAIN);
+		return $this->id=SearchablesTerm::createOrGet($this->term,SearchablesTypedTerm::KEYWORD);
 	}
 	
 	public function beforeSave(){
@@ -71,8 +76,8 @@ class SearchablesKeyword extends SSqlModel{
 	
 	public static function addTerm($keywordId,$term,$type){
 		$termId=SearchablesTerm::createOrGet($term,$type);
-		SearchablesKeywordTerm::QInsert()->ignore()->set(array('term_id'=>$termId,'keyword_id'=>$keywordId));
-		return $termId;
+		SearchablesKeywordTerm::add($keywordId,$termId,$type);
+		return $termTypedId;
 	}
 	
 	public function adminLink(){
