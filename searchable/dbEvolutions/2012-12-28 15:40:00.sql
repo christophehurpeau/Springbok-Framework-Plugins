@@ -1,0 +1,2 @@
+default=>CREATE TABLE `searchables_typed_terms` ( `id` int(10) unsigned NOT NULL AUTO_INCREMENT, `term_id` int(10) unsigned NOT NULL, `type` tinyint(2) unsigned NOT NULL, `created` datetime NOT NULL, PRIMARY KEY (`id`), KEY `created` (`created`), CONSTRAINT `unique_term_id|type` UNIQUE (`term_id`,`type`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci
+default=>INSERT IGNORE INTO searchables_typed_terms(id,term_id,type) SELECT id,id,type FROM searchables_terms
