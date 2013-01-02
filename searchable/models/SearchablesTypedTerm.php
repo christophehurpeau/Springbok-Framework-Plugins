@@ -3,7 +3,7 @@
 class SearchablesTypedTerm extends SSqlModel{ /* EXTENDED by SearchablesKeywordTerm */
 	/* http://en.wikipedia.org/wiki/Category:Types_of_words */
 	/* !!! searchables/web/js/_admin.js */
-	const NONE=0,KEYWORD=1,MASCULINE_NOUN=20,FEMININ_NOUN=21,PLURAL_NOUN=22,EPICENE=23,
+	const NONE=0,KEYWORD=1,MASCULINE_TERM=20,FEMININE_TERM=21,PLURAL_TERM=22,EPICENE=23,
 			ABBREVIATION=30,ACRONYM=31,
 			SPELLING_MISTAKE=5;
 	
@@ -14,7 +14,7 @@ class SearchablesTypedTerm extends SSqlModel{ /* EXTENDED by SearchablesKeywordT
 		* @ForeignKey('SearchablesTerm','id')
 		*/ $term_id,
 		/** @SqlType('tinyint(2) unsigned') @NotNull
-		*  @Enum('None','Keyword',20=>'Masculine noun',21=>'Feminin noun',22=>'Plural noun',23=>'Epicene',30=>'Abbreviation',31=>'Acronym',5=>'Spelling mistake'/* VALUE(searchables.terms.types) *\/)
+		*  @Enum('None','Keyword',20=>'Masculine term',21=>'Feminin term',22=>'Plural term',23=>'Epicene',30=>'Abbreviation',31=>'Acronym',5=>'Spelling mistake'/* VALUE(searchables.terms.types) *\/)
 		*/ $type;
 	
 	
