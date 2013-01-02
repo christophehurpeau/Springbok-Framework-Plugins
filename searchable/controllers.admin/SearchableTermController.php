@@ -5,7 +5,7 @@ class SearchableTermController extends Controller{
 	/** @ValidParams('/searchable') @Id */
 	function view($id){
 		HBreadcrumbs::set(array('Terms'=>'/searchable/terms'));
-		$term=SearchablesTerm::ById($id)->with('SearchablesKeyword',array('fields'=>'id','with'=>array('MainTerm')));
+		$term=SearchablesTerm::ById($id)->with('SearchablesKeyword',array('fields'=>'id','with'=>array('MainTerm')))->with('Types');
 		notFoundIfFalse($term);
 		mset($term);
 		render();
@@ -24,8 +24,9 @@ class SearchableTermController extends Controller{
 		renderText($res);
 	}
 	
-	/** @ValidParams('/searchable') @Id @NotEmpty('term') */
-	function autocomplete(int $id,$term){
+	/*
+	/** @ValidParams('/searchable') @Id @NotEmpty('term') * /
+	private function autocomplete(int $id,$term){
 		$termsKeywordsId=SearchablesKeywordTerm::QValues()->field('keyword_id')->byTerm_id($id);
 		$where=array('skmt.term LIKE'=>$term.'%');
 		if(!empty($termsKeywordsId)) $where['id NOTIN']=$termsKeywordsId;
@@ -33,14 +34,14 @@ class SearchableTermController extends Controller{
 			SearchablesKeyword::QRows()->with('MainTerm',false)->setFields(array('id','(term)'=>'name'))->where($where)->limit(14)));
 	}
 	
-	/** @ValidParams('/searchable') @Id('id','keywordId') */
-	function add(int $keywordId,int $id){
+	/** @ValidParams('/searchable') @Id('id','keywordId') * /
+	private function add(int $keywordId,int $id){
 		if(SearchablesKeywordTerm::QInsert()->ignore()->set(array('term_id'=>$id,'keyword_id'=>$keywordId)))
 			renderText('1');
 	}
-	/** @ValidParams('/searchable') @Id('id','keywordId') */
-	function del(int $keywordId,int $id){
+	/** @ValidParams('/searchable') @Id('id','keywordId') * /
+	private function del(int $keywordId,int $id){
 		if(SearchablesKeywordTerm::QDeleteOne()->where(array('term_id'=>$id,'keyword_id'=>$keywordId)))
 			renderText('1');
-	}
+	}*/
 }

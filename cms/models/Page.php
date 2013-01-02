@@ -1,6 +1,8 @@
 <?php
 /** @TableAlias('pg') @DisplayField('name') @Child('Searchable','created,updated') @Seo @Created @Updated */
 class Page extends Searchable{
+	use BChild;
+	
 	const DRAFT=1,PUBLISHED=2,DELETED=4;
 		
 	public

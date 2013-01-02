@@ -2,37 +2,42 @@
 
 /* IF(searchable.keywords.text) */<div class="floatR w300">/* /IF */
 
+{=$form=SearchablesKeyword::Form('keyword')->id('formKeywordEdit')->noDefaultLabel()}
+
 <div class="/* IF!(searchable.keywords.seo) */floatR /* /IF */block2">
 	<div>Created : <? HTime::compact($keyword->created) ?></div>
-	<div>Type : <? _tF($keyword->_type(),'') ?></div>
+	<div>Types: <?php $types=SearchablesTypedTerm::typesList(); ?>
+		{f $keyword->types as $type}
+			{$types[$type]}, 
+		{/f}
+	</div>
+	<div class="mt6">{link 'Go to the term','/searchableTerm/view/'.$keyword->id}</div>
 </div>
 
-<div id="linkedTerms" class="clear mt10 block1">
-	<h5 class="noclear">{t 'plugin.searchable.LinkedTerms'}</h5>
-	<? HHtml::ajaxCRDInputAutocomplete('/searchableKeyword',$keyword->terms,
-			array('js'=>'{allowNew:1,url:"/'.$keyword->id.'"}','modelFunctionName'=>'adminLinkWithType','escape'=>false)) ?>
-</div>
-
+{include _linkedTerms}
 
 /* IF(searchable.keywords.text) */</div>/* /IF */
-<?php $form=HForm::create('SearchablesKeyword',array('id'=>'formKeywordEdit','name'=>'keyword'),'div',false) ?>
 
 
 <div class="mr300 context">
-	{=$form->input('term',array('class'=>'wp100 biginfo'),array('class'=>'input text mb10'))}
+	{=$form->input('term')->attrClass('wp100 biginfo')->container()->addClass('mb10')}
 	
 	/* IF(searchable.keywords.seo) */
 	<? View::element('seo',array('model'=>$keyword,'form'=>$form)) ?>
 	/* /IF */
-	{=$form->submit(true,array(),array('class'=>'submit center'))}
+	{=$form->submit(true)->container()->addClass('center')}
+	
+	
+	/* IF(searchable.keywords.text) */
+	<div class="mt10">
+		<h4>Description du mot clé</h4>
+		{=$form->textarea('text')->wp100()}
+		{=$form->submit(true)->container()->addClass('center')}
+	</div>
+	/* /IF */
 </div>
 
 /* IF(searchable.keywords.text) */
-<div class="clear">
-	<h4>Description du mot clé</h4>
-	{=$form->textarea('text',array('class'=>'wp100'))}
-	{=$form->submit(true,array(),array('class'=>'submit center'))}
-</div>
 {=$form->end(false)}
 /* /IF */
 

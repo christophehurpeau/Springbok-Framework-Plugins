@@ -1,6 +1,6 @@
 <?php HBreadcrumbs::set(array('Articles'=>'/posts')); $v=new AjaxBreadcrumbsPageView('Edition article','mr200'); ?>
 
-<?php $form=HForm::create('Post',array('id'=>'formPostEdit','novalidate'=>true),'div',false); ?>
+{=$form=Post::Form()->noDefaultLabel()->id('formPostEdit')->attr('novalidate',true)}
 <div class="fixed right w200">
 	<div class="content center">
 		{=$form->select('status',Post::statusesList())}
@@ -15,20 +15,20 @@
 		<b>Catégories</b>
 		<? HHtml::ajaxCRDSelectFiltrable('/postCategories',PostsCategory::findListName(),$post->categories,array('url'=>'/'.$id,'selectAttributes'=>array('style'=>'width:135px'))) ?>
 	</div>
-	<? $form->submit(true,array(),array('class'=>'submit center')); ?>
+	{=$form->submit(true)->container()->addClass('center')}
 </div>
 
 <div class="variable padding">
 	<div id="editTabs" class="tabs">
 		<ul><li>{iconLink 'page','Article','#editTab1'}</li><li>{iconLink 'pageEdit','Contenu','#editTab2'}</li><li>{iconLink 'time','Historique','/postHistories/view/'.$id}</li><li>{iconLink 'pageLink','Articles liés','/postPosts/view/'.$id}</li></ul>
 		<div id="editTab1" class="clearfix">
-			{=$form->input('name',array('class'=>'wp100'))}
+			{=$form->input('name')->wp100()}
 			
 			/* IF(blog_personalizeAuthors_enabled) */
 			<div class="floatR clearfix mt10 ml10 block1" style="width:180px">
 				<b>Auteurs</b>
 				<? HHtml::ajaxCRDSelectFiltrable('/postAuthors',PostsAuthor::findListName(),$post->authors,array('url'=>'/'.$id,'selectAttributes'=>array('style'=>'width:135px'))) ?>
-				{=$form->submit(true,array(),array('class'=>'submit center'))}
+				{=$form->submit(true)->container()->addClass('center')}
 			</div>
 			/* /IF */
 			
@@ -37,13 +37,14 @@
 					{ifnull $post->image->image_id} Pas d'image associée. {link 'Sélectionner une image','#',array('onclick'=>'return _.posts.selectImage('.$id.')')}
 					{else}<?php $image=$post->image ?>{include post_image.php}{/if}
 				</div>
-				{=$form->submit(true,array(),array('class'=>'submit center'))}
+				{=$form->submit(true)->container()->addClass('center')}
 			</div>
 			
 			<div class="sepTop block1">
-				<?php $form->_setModelName('Searchable') ?>
+				<?php $form->setModelName('Searchable') ?>
 				<? View::element('seo',array('model'=>$post,'form'=>$form)) ?>
-				<? $form->_setModelName('Post'); $form->submit(true,array(),array('class'=>'submit center')); ?>
+				<?php $form->setModelName('Post') ?>
+				{=$form->submit(true)->container()->addClass('center')}
 			</div>
 			
 			<br class="clear"/>

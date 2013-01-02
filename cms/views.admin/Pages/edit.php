@@ -1,24 +1,24 @@
 <?php HBreadcrumbs::set(array('Pages'=>'/pages')); $v=new AjaxBreadcrumbsPageView('Edition page','mr200'); ?>
 
-<?php $form=HForm::create('Page',array('id'=>'formPageEdit','novalidate'=>true),'div',false); ?>
+{=$form=Page::Form()->id('formPageEdit')->attr('novalidate',true)->noDefaultLabel()}
 <div class="fixed right w200">
 	<div class="content center">
 		{=$form->select('status',Page::statusesList())}
 		{iconLink 'delete','Supprimer cet article','/pages/delete/'.$page->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cette page ?')}
 		<p>{if $page->isPublished()}{link 'Page en ligne',$page->link(),array('entry'=>'index','target'=>'_blank')}{/if}</p>
 	</div>
-	<? $form->submit(true,array(),array('class'=>'submit center')); ?>
+	<? $form->submit(true)->container()->addClass('center'); ?>
 </div>
 
 <div class="variable padding">
 	<div id="editTabs" class="tabs">
 		<ul><li>{iconLink 'page','Page','#editTab1'}</li><li>{iconLink 'pageEdit','Contenu','#editTab2'}</li><li>{iconLink 'time','Historique','/pageHistories/view/'.$id}</li></ul>
 		<div id="editTab1" class="clearfix">
-			{=$form->input('name',array('class'=>'wp100'))}
+			{=$form->input('name')->wp100()}
 			
 			<div class="sepTop block1">
 				<? View::element('seo',array('model'=>$page,'form'=>$form)) ?>
-				<? $form->submit(true,array(),array('class'=>'submit center')); ?>
+				<? $form->submit(true)->container()->addClass('center'); ?>
 			</div>
 			
 			<br class="clear"/>

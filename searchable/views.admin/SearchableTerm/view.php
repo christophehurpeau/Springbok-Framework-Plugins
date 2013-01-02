@@ -1,43 +1,63 @@
 <?php new AjaxContentView('Term: '.$term->term) ?>
 
-<?php $form=HForm::create('SearchablesTerm',array('id'=>'formTermEdit','name'=>'term'),'div',false) ?>
+{=$form=SearchablesTerm::Form('term')->id('formTermEdit')->noDefaultLabel()}
 
 /* IF(searchable.keywordTerms.text) */<div class="floatR w300">/* /IF */
 
 
 <div class="/* IF!(searchable.keywordTerms.text) */floatR /* /IF */block2">
 	<div>Created : <? HTime::compact($term->created) ?></div>
+	
+	<?php $types=$typesDefault=SearchablesTypedTerm::typesList(); ?>
+	
 	<div>
-		{if $term->type===SearchablesTerm::MAIN}Type : {$term->type()}
-		{else}<?php $types=SearchablesTerm::typesList(); unset($types[SearchablesTerm::MAIN]); ?>
-			{=$form->select('type',$types)}
-			{=$form->submit(true,array(),array('class'=>'submit center'))}
-		{/if}
+		<?php unset($typesDefault[SearchablesTypedTerm::KEYWORD]); if($term->type!==0) unset($typesDefault[0]); ?>
+		{=$form->select('type',$typesDefault,$term->type)->label('Default type:')}
+		{=$form->submit(true,array(),array('class'=>'submit center'))}
 	</div>
+	
+	<div>
+		Types: 
+		{f $term->types as $type}
+			{$types[$type]}, 
+			<?php unset($types[$type]) ?>
+		{/f}
+		<?php unset($types[SearchablesTypedTerm::KEYWORD]); if($term->type!==0) unset($types[0]); ?>
+		{* {if!e $types}
+			{=$form->select('type',$types,$term->type)->label('Add a type:')}
+			{=$form->submit()->container()->addClass('center')}
+		{/if} *}
+	</div>
+	
+	{if in_array(SearchablesTypedTerm::KEYWORD,$term->types)}<div class="mt6">{link 'Go to the keyword','/searchableKeyword/view/'.$term->id}</div>{/if}
 </div>
 
 <div id="linkedKeywords" class="clear mt10 block1">
 	<h5 class="noclear">{t 'plugin.searchable.LinkedKeywords'}</h5>
-	<? HHtml::ajaxCRDInputAutocomplete('/searchableTerm',$term->keywords,array('url'=>'/'.$term->id)) ?>
+	<ul class="compact">
+	{f $term->keywords as $keyword}
+		<li>{=$keyword->adminLink()}</li>
+	{/f}
+	</ul>
 </div>
 
 /* IF(searchable.keywordTerms.text) */</div>/* /IF */
 
 
 <div class="mr300 context">
-	{=$form->input('term',array('class'=>'wp100 biginfo'),array('class'=>'input text mb10'))}
+	{=$form->input('term')->attrClass('wp100 biginfo')->container()->addClass('mb10')}
 	
 	/* IF(searchable.keywordTerms.seo) */
 	<? View::element('seo',array('model'=>$term,'form'=>$form)) ?>
-	{=$form->submit(true,array(),array('class'=>'submit center'))}
+	{=$form->submit()->container()->addClass('center')}
 	/* /IF */
 </div>
 
 /* IF(searchable.keywordTerms.text) */
 <div class="clear">
 	<h4>Description du terme</h4>
-	{=$form->textarea('text',array('class'=>'wp100'))}
-	{=$form->submit(true,array(),array('class'=>'submit center'))}
+	{=$form->textarea('text')->wp100()}
+	{=$form->submit()->container()->addClass('center')}
 </div>
 /* /IF */
 {=$form->end(false)}

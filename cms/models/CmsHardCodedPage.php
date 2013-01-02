@@ -1,6 +1,8 @@
 <?php
 /** @TableAlias('hcp') @Child('Searchable','created,updated') */
 class CmsHardCodedPage extends Searchable{
+	use BChild;
+	
 	const VALID=2,ARCHIVED=3,DELETED=4;
 	public
 		/** @SqlType('varchar(255)') @NotNull

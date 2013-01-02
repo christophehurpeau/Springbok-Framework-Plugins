@@ -1,6 +1,8 @@
 <?php
 /** @TableAlias('p') @DisplayField('name') @Child('Searchable','name,slug,created,updated') */
 class Post extends Searchable{
+	use BChild;
+	
 	const LINK_CONTROLLER='post',
 		DRAFT=1,PUBLISHED=2,ARCHIVED=3,DELETED=4;
 	

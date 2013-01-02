@@ -1,6 +1,8 @@
 <?php
 /** @TableAlias('ssk') @Created @Updated @Parent /* IF(searchable.keywords.seo) *\/ @Seo /* /IF *\/ */
 class SearchablesKeyword extends SSqlModel{
+	use BParent,BSeo/* IF(searchable.keywords.text) */,BTextContent/* /IF */;
+	
 	public
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
 		* @ForeignKey('SearchablesTerm','id')
@@ -10,9 +12,6 @@ class SearchablesKeyword extends SSqlModel{
 		/* /IF */;
 	
 	/* IF(searchable.keywords.text) */
-	public /** @SqlType('text') @Null */ $text;
-	public function afterUpdate(){ if(!empty($this->text)) VSeo::generate('SearchablesKeyword',$this->id); }
-	
 	public static function findOneForSeo($id){
 		return parent::QOne()/* IF!(searchable.keywords.seo) */->with('MainTerm')/* /IF */->where(array('id'=>$id));
 	}
@@ -22,8 +21,17 @@ class SearchablesKeyword extends SSqlModel{
 		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'id','fieldsInModel'=>true,'fields'=>'term,slug','alias'=>'skmt')
 	);
 	
+	public static $hasMany=array(
+		'TermWithType'=>array('modelName'=>'SearchablesKeywordTerm','dataName'=>'terms','associationForeignKey'=>'keyword_id',
+									'with'=>array('SearchablesTerm'=>['fields'=>'term','fieldsInModel'=>true])),
+		'Types'=>array('modelName'=>'SearchablesTypedTerm','foreignKey'=>'id','associationForeignKey'=>'term_id','fields'=>'type'),
+	);
+	
 	public static $hasManyThrough=array(
-		'SearchablesTerm'=>array('joins'=>'SearchablesKeywordTerm')
+		'SearchablesTerm'=>array('joins'=>'SearchablesKeywordTerm'),
+		//'TermWithType'=>array('modelName'=>'SearchablesTerm','dataName'=>'terms','joins'=>'SearchablesKeywordTerm','withOptions'=>array('SearchablesKeywordTerm'=>array('fields'=>'type'))),
+		'SearchablesTypedTerm'=>array('joins'=>'SearchablesKeywordTerm'),
+		'Keywords'=>array('modelName'=>'SearchablesKeyword','joins'=>array('KeywordsIds'=>array('associationForeignKey'=>'keyword_id')),'with'=>array('MainTerm'))
 	);
 	
 	/* VALUE(searchable.SearchablesKeyword.phpcontent) */
@@ -38,15 +46,9 @@ class SearchablesKeyword extends SSqlModel{
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->text),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('term')->withForce('SearchablesKeywordTerm')->addCondition('skt.keyword_id',$this->id)->orderBy('term')); }
 	
-	public function metaTitle(){ return empty($this->meta_title) ? $this->auto_meta_title() : $this->meta_title; }
-	public function metaDescr(){ return empty($this->meta_descr) ? $this->auto_meta_descr() : $this->meta_descr; }
-	public function metaKeywords(){ return empty($this->meta_keywords) ? $this->auto_meta_keywords() : $this->meta_keywords ; }
-	/* IF(searchable.keywords.seo) */
-	/* /IF */
-	
 	
 	public function beforeInsert(){
-		return $this->id=SearchablesTerm::createOrGet($this->term,SearchablesTerm::MAIN);
+		return $this->id=SearchablesTerm::createOrGet($this->term,SearchablesTypedTerm::KEYWORD);
 	}
 	
 	public function beforeSave(){
@@ -74,7 +76,11 @@ class SearchablesKeyword extends SSqlModel{
 	
 	public static function addTerm($keywordId,$term,$type){
 		$termId=SearchablesTerm::createOrGet($term,$type);
-		SearchablesKeywordTerm::QInsert()->ignore()->set(array('term_id'=>$termId,'keyword_id'=>$keywordId));
-		return $termId;
+		SearchablesKeywordTerm::add($keywordId,$termId,$type);
+		return $termTypedId;
+	}
+	
+	public function adminLink(){
+		return HHtml::link($this->name(),'/searchableKeyword/view/'.$this->id);
 	}
 }

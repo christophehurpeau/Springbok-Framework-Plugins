@@ -1,6 +1,8 @@
 <?php
 /** @TableAlias('sb') @Created @Updated @Parent /* IF(searchable_seo) *\/ @Seo /* /IF *\/ */
 class Searchable extends SSeoModel{
+	use BParent;
+	
 	const INVALID=0,VALID=1,DELETED=2;
 	
 	public

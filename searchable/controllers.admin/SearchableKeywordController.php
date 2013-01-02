@@ -5,7 +5,8 @@ class SearchableKeywordController extends Controller{
 	/** @ValidParams('/searchable') @Id */
 	function view($id){
 		HBreadcrumbs::set(array('Keywords'=>'/searchable/keywords'));
-		$keyword=SearchablesKeyword::ById($id)->with('MainTerm')->with('SearchablesTerm');
+		$keyword=SearchablesKeyword::ById($id)->with('MainTerm')->with('TermWithType')->with('Types');
+						/*->with('SearchablesTypedTerm',array('with'=>array('SearchablesTerm'=>array('fieldsInModel'=>true,'fields'=>'term'))))*/
 		notFoundIfFalse($keyword);
 		mset($keyword);
 		render();
@@ -30,16 +31,18 @@ class SearchableKeywordController extends Controller{
 	/** @ValidParams('/searchable') @Id @NotEmpty('term') */
 	function autocomplete(int $id,$term){
 		$keywordsTermsId=SearchablesKeywordTerm::QValues()->field('term_id')->byKeyword_id($id);
-		$where=array('term LIKE'=>$term.'%');
-		if(!empty($keywordsTermsId)) $where['id NOTIN']=$keywordsTermsId;
+		$where=array('st.term LIKE'=>$term.'%');
+		if(!empty($keywordsTermsId)) $where['term_id NOTIN']=$keywordsTermsId;
 		self::renderJSON(json_encode(
-			SearchablesTerm::QRows()->setFields(array('id','(term)'=>'name'))
-				->where($where)->limit(14)));
+			SearchablesTypedTerm::QAll()->withField('SearchablesTerm','term')->where($where)->limit(16)));
 	}
 	
-	/** @ValidParams('/searchable') @Id('id','termId') */
-	function add(int $termId,int $id){
-		if(SearchablesKeywordTerm::QInsert()->ignore()->set(array('term_id'=>$termId,'keyword_id'=>$id)))
+	/** @ValidParams('/searchable') @Id('id') @NotEmpty('termId') */
+	function add($termId,int $id){
+		list($termId,$type)=explode('-',$termId);
+		if(empty($termId) || empty($type) || !($termId=(int)$termId) || !($type=(int)$type)) notFound();
+		
+		if(SearchablesKeywordTerm::add($id,$termId,$type))
 			renderText('1');
 	}
 	/** @ValidParams('/searchable') @Id('id','termId') */
@@ -47,9 +50,9 @@ class SearchableKeywordController extends Controller{
 		if(SearchablesKeywordTerm::QDeleteOne()->where(array('term_id'=>$termId,'keyword_id'=>$id)))
 			renderText('1');
 	}
-	/** @ValidParams('/searchable') @Id @NotEmpty('val') */
-	function create(int $id,$val){
-		if(SearchablesKeyword::addTerm($id,$val,SearchablesTerm::NONE))
+	/** @ValidParams('/searchable') @Id @NotEmpty('name','type') */
+	function create(int $id,$name,int $type){
+		if(SearchablesKeyword::addTerm($id,$name,$type))
 			renderText('1');
 		/*
 		//$termId=SearchablesTerm::QInsert()->set(array('term'=>SearchablesTerm::cleanTerm($val)));

@@ -1,6 +1,8 @@
 <?php
 /** @TableAlias('c') @Child('SearchablesKeyword') @DisplayField('skmt.term') */
 class PostsCategory extends SSqlModel{
+	use BChild;
+	
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
