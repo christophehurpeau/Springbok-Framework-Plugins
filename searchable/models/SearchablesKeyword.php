@@ -77,7 +77,7 @@ class SearchablesKeyword extends SSqlModel{
 	public static function addTerm($keywordId,$term,$type){
 		$termId=SearchablesTerm::createOrGet($term,$type);
 		SearchablesKeywordTerm::add($keywordId,$termId,$type);
-		return $termTypedId;
+		return $termId;
 	}
 	
 	public function adminLink(){
