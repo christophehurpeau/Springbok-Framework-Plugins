@@ -3,7 +3,7 @@
 class SearchablesTypedTerm extends SSqlModel{ /* EXTENDED by SearchablesKeywordTerm */
 	/* http://en.wikipedia.org/wiki/Category:Types_of_words */
 	/* !!! searchables/web/js/_admin.js */
-	const NONE=0,KEYWORD=1,MASCULINE_TERM=20,FEMININE_TERM=21,PLURAL_TERM=22,EPICENE=23,
+	const NONE=0,ITSELF=1,MASCULINE_TERM=20,FEMININE_TERM=21,PLURAL_TERM=22,EPICENE=23,
 			ABBREVIATION=30,ACRONYM=31,
 			SPELLING_MISTAKE=5;
 	
@@ -24,7 +24,8 @@ class SearchablesTypedTerm extends SSqlModel{ /* EXTENDED by SearchablesKeywordT
 		return self::addIgnore($termId,$type);
 	}
 	public static function addIgnore($termId,$type){
-		return self::QInsert()->ignore()->set(array('term_id'=>$termId,'type'=>$type));
+		if($type !== SearchablesTypedTerm::NONE)
+			return self::QInsert()->ignore()->set(array('term_id'=>$termId,'type'=>$type));
 	}
 	
 	public function jsonSerialize(){
@@ -41,7 +42,7 @@ class SearchablesTypedTerm extends SSqlModel{ /* EXTENDED by SearchablesKeywordT
 		return h($this->term).' '.$this->typeHtml();
 	}
 	public function typeHtml(){
-		return '<span style="color:gray">['.($this->type===self::KEYWORD?'<b>':'').h($this->type()).($this->type===self::KEYWORD?'</b>':'').']</span>';
+		return '<span class="typeTerm" rel="'.$this->type.'" style="color:gray">['.($this->type===self::ITSELF?'<b>':'').h($this->type()).($this->type===self::ITSELF?'</b>':'').']</span>';
 	}
 	
 	public function adminLink(){

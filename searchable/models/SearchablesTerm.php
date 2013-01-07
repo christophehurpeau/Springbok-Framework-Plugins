@@ -35,6 +35,7 @@ class SearchablesTerm extends SSqlModel{
 	
 	public static function createOrGet($term,$type){
 		$term=self::cleanTerm($term);
+		if(empty($term)) throw new Exception('term is empty');
 		$id=self::QValue()->field('id')->where(array('term LIKE'=>$term));
 		if($id!==false){
 			SearchablesTypedTerm::addIgnore($id,$type);
@@ -74,6 +75,10 @@ class SearchablesTerm extends SSqlModel{
 	public function metaKeywords(){ return empty($this->meta_keywords) ? $this->auto_meta_keywords() : $this->meta_keywords ; }
 	/* /IF */
 	
+	
+	public function beforeUpdate(){
+		if(!empty($this->type)) SearchablesTypedTerm::addIgnore($this->id,$this->type);
+	}
 	
 	public function beforeSave(){
 		if(!empty($this->term)) $this->term=trim($this->term);
