@@ -11,7 +11,7 @@
 	<?php $types=$typesDefault=SearchablesTypedTerm::typesList(); ?>
 	
 	<div>
-		<?php unset($typesDefault[SearchablesTypedTerm::KEYWORD]); if($term->type!==0) unset($typesDefault[0]); ?>
+		<?php if($term->type!==0) unset($typesDefault[0]); ?>
 		{=$form->select('type',$typesDefault,$term->type)->label('Default type:')}
 		{=$form->submit(true,array(),array('class'=>'submit center'))}
 	</div>
@@ -22,14 +22,14 @@
 			{$types[$type]}, 
 			<?php unset($types[$type]) ?>
 		{/f}
-		<?php unset($types[SearchablesTypedTerm::KEYWORD]); if($term->type!==0) unset($types[0]); ?>
+		<?php if($term->type!==0) unset($types[0]); ?>
 		{* {if!e $types}
 			{=$form->select('type',$types,$term->type)->label('Add a type:')}
 			{=$form->submit()->container()->addClass('center')}
 		{/if} *}
 	</div>
 	
-	{if in_array(SearchablesTypedTerm::KEYWORD,$term->types)}<div class="mt6">{link 'Go to the keyword','/searchableKeyword/view/'.$term->id}</div>{/if}
+	{if SearchablesKeyword::existById($term->id)}<div class="mt6">{link 'Go to the keyword','/searchableKeyword/view/'.$term->id}</div>{/if}
 </div>
 
 <div id="linkedKeywords" class="clear mt10 block1">

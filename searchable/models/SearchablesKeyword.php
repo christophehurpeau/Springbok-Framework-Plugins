@@ -23,7 +23,9 @@ class SearchablesKeyword extends SSqlModel{
 	
 	public static $hasMany=array(
 		'TermWithType'=>array('modelName'=>'SearchablesKeywordTerm','dataName'=>'terms','associationForeignKey'=>'keyword_id',
-									'with'=>array('SearchablesTerm'=>['fields'=>'term','fieldsInModel'=>true])),
+									'with'=>array('SearchablesTerm'=>['fields'=>'term','fieldsInModel'=>true],
+													'TermKeyword'=>array('fields'=>'id')),
+									'orderBy'=>array('skt.proximity','IF(keyword_id=term_id,0,1)')),
 		'Types'=>array('modelName'=>'SearchablesTypedTerm','foreignKey'=>'id','associationForeignKey'=>'term_id','fields'=>'type'),
 	);
 	
@@ -48,7 +50,7 @@ class SearchablesKeyword extends SSqlModel{
 	
 	
 	public function beforeInsert(){
-		return $this->id=SearchablesTerm::createOrGet($this->term,SearchablesTypedTerm::KEYWORD);
+		return $this->id=SearchablesTerm::createOrGet($this->term,SearchablesTypedTerm::NONE);
 	}
 	
 	public function beforeSave(){
@@ -74,9 +76,9 @@ class SearchablesKeyword extends SSqlModel{
 	}
 	
 	
-	public static function addTerm($keywordId,$term,$type){
+	public static function addTerm($keywordId,$term,$proximity,$type){
 		$termId=SearchablesTerm::createOrGet($term,$type);
-		SearchablesKeywordTerm::add($keywordId,$termId,$type);
+		SearchablesKeywordTerm::add($keywordId,$termId,$type,$proximity);
 		return $termId;
 	}
 	
