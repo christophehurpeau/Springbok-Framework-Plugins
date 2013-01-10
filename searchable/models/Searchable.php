@@ -37,7 +37,7 @@ class Searchable extends SSeoModel{
 	}
 	
 	public function afterSave($data=null){
-		if(!empty($data['name'])){
+		if(!empty($data['name']) || (!empty($this->name) && array_key_exists('visible',$data))){ /* isset will return false if $data['visible']===null */
 			$this->reindex();
 		}
 	}
