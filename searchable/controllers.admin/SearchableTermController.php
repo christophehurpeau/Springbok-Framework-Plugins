@@ -15,12 +15,9 @@ class SearchableTermController extends Controller{
 	* keyword > @Valid('descr') */
 	function save(int $id,SearchablesTerm $term){
 		$term->id=$id;
-		//foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName)
-		//	if(empty($keyword->$metaName)) $keyword->$metaName=$keyword->{'auto_'.$metaName}();
 		foreach(array('meta_title','meta_descr','meta_keywords') as $metaName)
 			if(empty($term->$metaName)) $term->$metaName=null;
 		$res=$term->update();
-		//SearchableKeywordHistory::create($keyword,SearchableKeywordHistory::SAVE);
 		renderText($res);
 	}
 	

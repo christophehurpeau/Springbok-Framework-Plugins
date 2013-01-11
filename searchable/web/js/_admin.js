@@ -2,13 +2,13 @@ includePlugin('seo/_seo');
 includeCore('ui/dialogs');
 includeCore('springbok.jqueryui');
 window.searchable={
-	proximities:{0:'0: Identique',1:'1: Synonyme',2:'2: Lien direct',4:'4: Très proche',5:'5: Proche',7:'7: Eloigné',9:'9: Lointain'},
+	proximities:{0:'0: Identique',1:'1: Synonyme',2:'2: Lien direct',3:'3: Lien indirect',4:'4: Très proche',5:'5: Proche',7:'7: Eloigné',9:'9: Lointain'},
 	form:function(type,proximity){
 		var createSelect=function(params,selected){ return S.oImplode(params,function(k,v){
 						return '<option value="'+k+'"'+(k==selected?' selected="selected"':'')+'>'+S.escape(v)+'</option>'; }) };
 		return 'Type : <select class="type wp100">'
 				+createSelect({
-					'20':'Terme Masculin','21':'Terme Féminin','22':'Terme Pluriel','23':'Epicène',
+					'20':'Terme Masculin','21':'Terme Féminin','22':'Terme Pluriel','23':'Epicène','25':'Adjectif',
 					'30':'Abbréviation','31':'Acronyme',
 					'5':'Erreur orthographique'
 				},type)

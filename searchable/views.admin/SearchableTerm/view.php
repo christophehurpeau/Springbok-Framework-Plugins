@@ -11,7 +11,7 @@
 	<?php $types=$typesDefault=SearchablesTypedTerm::typesList(); ?>
 	
 	<div>
-		<?php if($term->type!==0) unset($typesDefault[0]); ?>
+		<?php if($term->type!==0) unset($typesDefault[0]); unset($typesDefault[SearchablesTypedTerm::ITSELF]) ?>
 		{=$form->select('type',$typesDefault,$term->type)->label('Default type:')}
 		{=$form->submit(true,array(),array('class'=>'submit center'))}
 	</div>
@@ -19,7 +19,7 @@
 	<div>
 		Types: 
 		{f $term->types as $type}
-			{$types[$type]}, 
+			{if isset($types[$type])}{$types[$type]}{else}{$type}{/if}, 
 			<?php unset($types[$type]) ?>
 		{/f}
 		<?php if($term->type!==0) unset($types[0]); ?>
