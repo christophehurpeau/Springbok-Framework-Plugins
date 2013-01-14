@@ -15,6 +15,7 @@
 	'models.SearchablesTypedTerm:type.Enum.Feminin term'=>'Feminin term',
 	'models.SearchablesTypedTerm:type.Enum.Plural term'=>'Plural term',
 	'models.SearchablesTypedTerm:type.Enum.Epicene'=>'Epicene',
+	'models.SearchablesTypedTerm:type.Enum.Adjective'=>'Adjective',
 	'models.SearchablesTypedTerm:type.Enum.Abbreviation'=>'Abbreviation',
 	'models.SearchablesTypedTerm:type.Enum.Acronym'=>'Acronym',
 	'models.SearchablesTypedTerm:type.Enum.Spelling mistake'=>'Spelling mistake',
