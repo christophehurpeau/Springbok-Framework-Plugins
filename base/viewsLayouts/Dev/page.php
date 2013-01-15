@@ -3,7 +3,8 @@
 	<div id="logo"><?= Config::$projectName ?></div> 
 	{menuTop 'startsWith':true
 		'Retour':false,
-		'Langs':[['/dev/:controller(/:action/*)?','langs',null,'']]
+		'Langs':[['/dev/:controller(/:action/*)?','langs',null,'']],
+		'Dbs':[['/dev/:controller(/:action/*)?','db',null,'']]
 	}
 </header>
 {=$layout_content}
