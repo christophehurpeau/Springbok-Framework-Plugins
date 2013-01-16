@@ -1,6 +1,6 @@
 <?php
-class SearchableWordsCli{
-	public static function doCli(){
+class SearchableTermsWordsCli{
+	public static function main(){
 		$db=SearchableWord::$__modelDb;
 		$db->doUpdate('SET FOREIGN_KEY_CHECKS=0');
 		SearchableTermWord::truncate();
@@ -12,4 +12,3 @@ class SearchableWordsCli{
 		}
 	}
 }
-SearchableWordsCli::doCli();
