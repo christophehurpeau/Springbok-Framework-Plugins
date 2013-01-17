@@ -22,7 +22,7 @@ class DevDbController extends AController{
 	/** */
 	function model($modelName){
 		self::beforeRender();
-		$modelName::Table()
+		$modelName::Table()->noAutoRelations()
 			->paginate()
 			->render($modelName);
 	}
