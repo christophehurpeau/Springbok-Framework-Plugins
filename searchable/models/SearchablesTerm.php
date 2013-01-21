@@ -131,6 +131,6 @@ class SearchablesTerm extends SSqlModel{
 		return HHtml::link($this->term,'/searchableTerm/view/'.$this->id);
 	}
 	public function toJSON_adminAutocomplete(){
-		return json_encode(array('id'=>$this->id,'value'=>$this->nameWithType(),'url'=>HHtml::url(AHGlossary::link($this),'index',true)));
+		return json_encode(array('id'=>$this->id,'value'=>$this->name(),'url'=>HHtml::url(AHGlossary::link($this),'index',true)));
 	}
 }
