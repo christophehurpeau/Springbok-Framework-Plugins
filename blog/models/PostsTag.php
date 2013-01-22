@@ -21,7 +21,7 @@ class PostsTag extends SSqlModel{
 		$t->term=$name;
 		if($id=$t->insert())
 			return $id;
-		throw new Exception('Unable to create Tag : ',short_debug_var($t));
+		throw new Exception('Unable to create Tag : ',UVarDump::dump($t));
 	}
 	
 	

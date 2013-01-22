@@ -1,0 +1,24 @@
+<?php new AjaxPageView($layout_title,'ml280','Dev/page') ?>
+<div class="fixed left w280">
+	<ul class="simpleDouble ml10">
+	<?php $len=strlen($tests->getPath())+1;
+	UPhp::recursive(function($callback,$tests) use($len){ ?>
+		{f $tests as $path=>$file}
+			{if $file->isDir()}
+			<li>
+				<h5>{$file->getFilename()}</h5>
+				<ul>
+					<?php $callback($callback,new RecursiveDirectoryIterator($path,FilesystemIterator::SKIP_DOTS)) ?>
+				</ul>
+			</li>
+			{else}
+				<li>{link $file->getFilename(),['/dev/:controller(/:action/*)?','tests','view','','?'=>'file='.urlencode(substr($path,$len))]}</li>
+			{/if}
+		{/f}
+	<?php },$tests) ?>
+	</ul>
+</div>
+<div class="variable padding">
+	<h1>{$layout_title}</h1>
+	{=$layout_content}
+</div>

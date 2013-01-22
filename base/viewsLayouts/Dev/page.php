@@ -4,7 +4,8 @@
 	{menuTop 'startsWith':true
 		'Retour':false,
 		'Langs':[['/dev/:controller(/:action/*)?','langs',null,'']],
-		'Dbs':[['/dev/:controller(/:action/*)?','db',null,'']]
+		'Dbs':[['/dev/:controller(/:action/*)?','db',null,'']],
+		'Tests':[['/dev/:controller(/:action/*)?','tests',null,'']]
 	}
 </header>
 {=$layout_content}
