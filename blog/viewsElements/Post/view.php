@@ -12,7 +12,7 @@
 	
 	/* IF(blog_personalizeAuthors_enabled) */
 	<div class="alignRight">
-		© {t 'plugin.blog.Authors:'} <? implode(', ',array_map(function(&$author){return '<span itemprop="author">'.HHtml::link($author->name,$author->url).'</span>';},$post->authors)) ?>
+		© {t 'plugin.blog.Authors:'} <? implode(', ',array_map(function(&$author){return '<span itemprop="author">'.HHtml::link($author->name,$author->url,array('rel'=>'author')).'</span>';},$post->authors)) ?>
 	</div>
 	/* /IF */
 	
