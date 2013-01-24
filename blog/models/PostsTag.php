@@ -7,7 +7,7 @@ class PostsTag extends SSqlModel{
 		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'id','fieldsInModel'=>true,
 			'fields'=>array('term'=>'name'/* IF(searchable.keywordTerms.seo) */,'slug'/* /IF */ /* IF(searchable.keywordTerms.slug) */,'slug'/* /IF */),'alias'=>'skmt'),
 		'Keyword'=>array('modelName'=>'SearchablesKeyword','dataName'=>'keyword','foreignKey'=>'id','fieldsInModel'=>true,
-			'fields'=>array('slug'))
+			'fields'=>array('slug')),
 	);
 	
 	public static function create($name){

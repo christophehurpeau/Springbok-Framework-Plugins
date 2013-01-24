@@ -11,6 +11,10 @@ class PostTag extends SSqlModel{
 		/** @SqlType('datetime') @NotNull
 		*/ $created;
 	
+	public static $hasOne=array(
+		'SearchablesKeywordTerm'=>array('foreignKey'=>'tag_id','associationForeignKey'=>'keyword_id'),
+	);
+	
 	public static function create($postId,$tagId){
 		$res=self::QInsert()->set(array('post_id'=>$postId,'tag_id'=>$tagId));
 		if($res) PostPost::refind($postId);
