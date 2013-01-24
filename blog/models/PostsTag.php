@@ -3,14 +3,10 @@
 class PostsTag extends SSqlModel{
 	use BChild;
 	
-	public
-		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
-		*/ $id;
-	
 	public static $belongsTo=array(
-		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'p_id','fieldsInModel'=>true,
+		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'id','fieldsInModel'=>true,
 			'fields'=>array('term'=>'name'/* IF(searchable.keywordTerms.seo) */,'slug'/* /IF */ /* IF(searchable.keywordTerms.slug) */,'slug'/* /IF */),'alias'=>'skmt'),
-		'Keyword'=>array('modelName'=>'SearchablesKeyword','dataName'=>'keyword','foreignKey'=>'p_id','fieldsInModel'=>true,
+		'Keyword'=>array('modelName'=>'SearchablesKeyword','dataName'=>'keyword','foreignKey'=>'id','fieldsInModel'=>true,
 			'fields'=>array('slug'))
 	);
 	
@@ -21,7 +17,7 @@ class PostsTag extends SSqlModel{
 		$t->term=$name;
 		if($id=$t->insert())
 			return $id;
-		throw new Exception('Unable to create Tag : ',UVarDump::dump($t));
+		throw new Exception('Unable to create Tag : '.UVarDump::dump($t));
 	}
 	
 	
