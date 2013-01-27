@@ -1,11 +1,11 @@
 <?php
-/** @TableAlias('cmsa') @Created @Updated */
-class CmsAlbum extends SSqlModel{
+/** @TableAlias('lfd') @Created @Updated */
+class LibraryFolder extends SSqlModel{
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
 		/** @SqlType('int(10) unsigned') @Null
-		* @ForeignKey('CmsAlbum','id','onDelete'=>'CASCADE')
+		* @ForeignKey('LibraryFolder','id','onDelete'=>'CASCADE')
 		*/ $parent_id,
 		/** @SqlType('varchar(128)') @NotNull
 		*/ $name;
