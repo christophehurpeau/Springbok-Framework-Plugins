@@ -10,16 +10,13 @@ class PageHistoriesController extends Controller{
 	
 	/** @ValidParams @Required('id') */
 	function history(int $id){
-		$history=PageHistory::QOne()->byId($id);
-		notFoundIfFalse($history);
-		mset($history);
+		set('history',PageHistory::QOne()->byId($id)->notFoundIfFalse());
 		render();
 	}
 	
 	/** @Ajax @ValidParams @Required('id') */
 	function restore(int $id){
-		$history=PageHistory::QOne()->byId($id);
-		notFoundIfFalse($history);
+		$history=PageHistory::QOne()->byId($id)->notFoundIfFalse();
 		$history->restore();
 		Page::onModified($history->page_id);
 		redirect('/pages/edit/'.$history->page_id);

@@ -34,10 +34,10 @@ class LibraryFile extends SSqlModel{
 			.' src="'.self::linkImage($id,'-'.$size).'"/>';
 	}
 	public static function linkImage($id,$suffix='') {
-		return HHtml::staticUrl('/files/library/'.$id.$suffix.'.jpg');
+		return STATIC_URL.'files/library/'.$id.$suffix.'.jpg';
 	}
 	
 	public static function linkFile($id,$ext){
-		return HHtml::staticUrl('/files/library/'.$id.'.'.$ext);
+		return STATIC_URL.'files/library/'.$id.'.'.$ext;
 	}
 }

@@ -7,8 +7,7 @@ class VPage extends SViewCachedElement{
 	public static function path($id){return DATA.'elementsCache/pages/'.$id;}
 	
 	public static function vars($id){
-		$page=Page::QOne()->where(array('id'=>$id));
-		notFoundIfFalse($page);
+		$page=Page::QOne()->where(array('id'=>$id))->notFoundIfFalse();
 		$page->content=UHtml::transformInternalLinks($page->content,Config::$internalLinks,'index',false);
 		
 		return array('page'=>$page);

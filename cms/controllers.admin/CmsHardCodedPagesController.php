@@ -22,8 +22,7 @@ class CmsHardCodedPagesController extends AController{
 	
 	/** @ValidParams @Required('id') */
 	function edit(int $id){
-		$page=CmsHardCodedPage::ById($id);
-		notFoundIfFalse($page);
+		$page=CmsHardCodedPage::ById($id)->notFoundIfFalse();
 		mset($page,$id);
 		render();
 	}

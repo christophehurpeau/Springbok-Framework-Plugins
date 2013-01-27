@@ -10,8 +10,7 @@ class UsersController extends Controller{
 	
 	/** @ValidParams @Id('id') */
 	function view(int $id){
-		$user=User::ById($id);
-		notFoundIfFalse($user);
+		$user=User::ById($id)->notFoundIfFalse();
 		mset($user);
 		$paginate=$user->findWithPaginate('UserHistory',array('with'=>array('type'),'orderBy'=>array('created'=>'DESC')));
 		$paginate->pageSize(25)->execute();
