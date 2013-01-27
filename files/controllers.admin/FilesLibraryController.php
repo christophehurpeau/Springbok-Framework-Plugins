@@ -1,6 +1,30 @@
 <?php
+Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('CMS') */
 class FilesLibraryController extends Controller{
+	/** */
+	function index(){
+		LibraryFile::Table()->allowFilters()
+			->paginate()
+			->fields(array('id',
+					'image'=>array('widthPx'=>1,'function'=>function($o){ return $o->type===LibraryFile::IMAGE ? $o->show('mini') : ''; },'escape'=>false),
+					'name'=>array(
+						'escape'=>false,
+						'function'=>function($o){ return h($o->name).'<br/>'.HHtml::link(substr($link=$o->link(),0,1)==='/'?'\\'.$link:$link,false,array('target'=>'_blank')); }
+					),
+					'type'=>array('widthPx'=>1),
+					'created','updated'
+			))
+			->render(_t('plugins.files.FilesLibrary'));
+	}
+	/** */
+	function tools(){
+		/* TODO : regenerate thumbnails,... */
+		redirect('/filesLibrary');
+	}
+	
+	
+	
 	/** @Ajax */
 	function images(int $id){
 		if($id===0) $id=false;

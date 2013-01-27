@@ -20,4 +20,24 @@ class LibraryFile extends SSqlModel{
 		*/ $width,
 		/** @SqlType('float') @Null
 		*/ $height;
+	
+	public function show($size='small'){
+		return self::display($this->id,$this->name,$size);
+	}
+	public function link(){
+		return self::linkFile($this->id,$this->ext);
+	}
+	
+	public static function display($id,$alt='photo',$size='small'){
+		$thumb=Config::$images['library_thumbnails'][$size];
+		return '<img width="'.$thumb['width'].'" height="'.$thumb['height'].'" alt="'.h($alt).'"'
+			.' src="'.self::linkImage($id,'-'.$size).'"/>';
+	}
+	public static function linkImage($id,$suffix='') {
+		return HHtml::staticUrl('/files/library/'.$id.$suffix.'.jpg');
+	}
+	
+	public static function linkFile($id,$ext){
+		return HHtml::staticUrl('/files/library/'.$id.'.'.$ext);
+	}
 }

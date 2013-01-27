@@ -1,5 +1,5 @@
 {menuLeft
-	_t('plugin.files.Files')=>array('/filesGallery','startsWith'=>true),
+	_t('plugins.files.FilesLibrary')=>array('/filesLibrary','startsWith'=>true),
 	false,
-	_t('plugin.files.Tools')=>'/filesGallery/tools',
+	_t('plugins.files.Tools')=>'/filesLibrary/tools',
 }
