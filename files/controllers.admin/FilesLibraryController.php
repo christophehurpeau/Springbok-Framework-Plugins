@@ -15,11 +15,23 @@ class FilesLibraryController extends Controller{
 					'type'=>array('widthPx'=>1),
 					'created','updated'
 			))
-			->render(_t('plugins.files.FilesLibrary'));
+			->render(_t('plugins.files.FilesLibrary'),function(){
+				echo $form=HForm::File()->action('/filesLibrary/upload')->attrClass('oneline');
+				echo $form->inputFile('file')->noLabel();
+				echo $form->select('type',LibraryFile::typesList())->noLabel();
+				echo $form->end(_tC('Add'));
+			});
 	}
 	/** */
 	function tools(){
 		/* TODO : regenerate thumbnails,... */
+		redirect('/filesLibrary');
+	}
+	
+	/** */
+	function upload(int $type){
+		if($type===LibraryFile::IMAGE) ACFilesLibraryImages::upload('file');
+		else ACFilesLibrary::uploadAndDetect('file','ACFilesLibraryImages');
 		redirect('/filesLibrary');
 	}
 	

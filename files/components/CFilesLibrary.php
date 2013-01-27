@@ -1,5 +1,5 @@
 <?php
-class ACFilesLibraryImages extends CImages{
+class ACFilesLibrary extends CFiles{
 	protected static $folderPrefix='library_';
 	
 	public static function folderPath(){
@@ -7,9 +7,9 @@ class ACFilesLibraryImages extends CImages{
 	}
 	
 	protected static function createObject(){
-		$image=new LibraryFile();
-		$image->type=LibraryFile::IMAGE;
-		return $image;
+		$file=new LibraryFile();
+		$file->type=LibraryFile::FILE;
+		return $file;
 	}
 	
 }
