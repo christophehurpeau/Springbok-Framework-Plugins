@@ -1,4 +1,6 @@
 includeCore('springbok.jqueryui');
+includeCore('springbok.tinymce');
+includeCore('components/ImageGallery');
 
 includeCore('codemirror/codemirror');
 includeCore('codemirror/util/overlay');
@@ -27,8 +29,8 @@ _.cms={
 	
 	getGallery:function(){
 		if(this.gallery!==undefined) return this.gallery;
-		return this.gallery=new Gallery($('<div id="CmsGallery" style="width:800px;height:600px;margin-right:20px"/>'),
-										basedir+'cmsAlbum',function(id){return staticUrl+'files/cms_images/'+id+'-small.jpg';});
+		return this.gallery=new S.ImageGallery($('<div id="CmsGallery" style="width:800px;height:600px;margin-right:20px"/>'),
+										basedir+'filesLibrary',function(id){return staticUrl+'files/library/'+id+'-small.jpg';});
 	},
 };
 

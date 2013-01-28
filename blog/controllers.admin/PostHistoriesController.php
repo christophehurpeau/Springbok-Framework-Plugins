@@ -10,16 +10,13 @@ class PostHistoriesController extends Controller{
 	
 	/** @ValidParams @Required('id') */
 	function history(int $id){
-		$history=PostHistory::QOne()->byId($id);
-		notFoundIfFalse($history);
-		mset($history);
+		set('history',PostHistory::QOne()->byId($id)->notFoundIfFalse());
 		render();
 	}
 	
 	/** @Ajax @ValidParams @Required('id') */
 	function restore(int $id){
-		$history=PostHistory::QOne()->byId($id);
-		notFoundIfFalse($history);
+		$history=PostHistory::QOne()->byId($id)->notFoundIfFalse();
 		$history->restore();
 		Post::onModified($history->post_id);
 		redirect('/posts/edit/'.$history->post_id);

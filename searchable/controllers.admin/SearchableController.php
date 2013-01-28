@@ -22,8 +22,7 @@ class SearchableController extends Controller{
 	
 	/** */
 	function reindex(int $id){
-		$sb=Searchable::ById($id);
-		notFoundIfFalse($sb);
+		$sb=Searchable::ById($id)->notFoundIfFalse();
 		$sb->reindex();
 		redirect('/searchable/view/'.$id);
 	}

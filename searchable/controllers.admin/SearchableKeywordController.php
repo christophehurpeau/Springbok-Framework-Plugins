@@ -7,9 +7,9 @@ class SearchableKeywordController extends Controller{
 		HBreadcrumbs::set(array('Keywords'=>'/searchable/keywords'));
 		$keyword=SearchablesKeyword::ById($id)->with('MainTerm')
 				->with('TermWithType')
-				->with('Types');
+				->with('Types')
+				->notFoundIfFalse();
 						/*->with('SearchablesTypedTerm',array('with'=>array('SearchablesTerm'=>array('fieldsInModel'=>true,'fields'=>'term'))))*/
-		notFoundIfFalse($keyword);
 		mset($keyword);
 		render();
 	}

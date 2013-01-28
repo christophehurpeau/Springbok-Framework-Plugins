@@ -34,8 +34,12 @@ class Post extends Searchable{
 	public static $hasMany=array(
 		'PostPost'=>array('onConditions'=>array('deleted'=>false)),
 		'LinkedPost'=>array('modelName'=>'PostPost','associationForeignKey'=>'linked_post_id'),
+		'SearchableWord'=>array('foreignKey'=>'p_id','associationForeignKey'=>'searchable_id'),
 	);
-	public static $hasManyThrough=array('Post'=>array('joins'=>array('PostPost'=>array('associationForeignKey'=>'linked_post_id'))));
+	public static $hasManyThrough=array(
+		'Post'=>array('joins'=>array('PostPost'=>array('associationForeignKey'=>'linked_post_id'))),
+		'SearchablesKeywordTerm'=>array('joins'=>'PostTag'),
+	);
 	
 	
 	public static function findLatest(){

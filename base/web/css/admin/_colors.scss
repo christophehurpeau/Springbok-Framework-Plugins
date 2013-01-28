@@ -1,0 +1,42 @@
+$HeaderBackground:false !default;
+$HeaderColor:false !default; /* needed to be usable ouside {} */
+@if $HeaderBackground==false{
+	$HeaderBackground:#333;
+	$HeaderColor:#FFF;
+}
+$HeaderMenuBackground:false !default;
+$HeaderMenuColor:false !default; $VariableMenuCurrentColor:false !default; /* needed to be usable ouside {} */
+$HeaderMenuLinkBackground:false !default; $HeaderMenuLinkColor:false!default;
+$HeaderMenuLinkHoverBackground:false!default; $HeaderMenuLinkHoverColor:false!default;
+$HeaderMenuLinkCurrentBackground:false!default; $HeaderMenuLinkCurrentColor:false!default;
+@if $HeaderMenuBackground==false{
+	$HeaderMenuBackground:#707070 #444;
+	$HeaderMenuColor:#EEE;
+	$VariableMenuCurrentColor:#FFF;
+	
+	@if $HeaderMenuLinkBackground==false and $HeaderMenuLinkColor!=false{
+		$HeaderMenuLinkCurrentOrHoverColor:false;
+		$HeaderMenuLinkColor:#EEE;
+		@if $HeaderMenuLinkHoverBackground==false{
+			@if $HeaderMenuLinkHoverColor!=false{ $HeaderMenuLinkHoverBackground:findBestFgColor($HeaderMenuLinkHoverColor); }
+			@else if $InteractionHoverColor{ $HeaderMenuLinkHoverBackground:findBestFgColor($InteractionHoverColor); }
+		}
+		@if $HeaderMenuLinkCurrentBackground==false{
+			@if $HeaderMenuLinkCurrentColor!=false{ $HeaderMenuLinkCurrentBackground:findBestFgColor($HeaderMenuLinkCurrentColor); }
+			@else if $InteractionCurrentColor{ $HeaderMenuLinkCurrentBackground:findBestFgColor($InteractionCurrentColor); }
+		}
+	}
+}
+$FooterBackground:false !default;
+$FooterColor:false !default; $FooterLinkColor:false !default; /* needed to be usable ouside {} */
+@if $FooterBackground==false{
+	$FooterBackground:#555;
+	$FooterColor:#C0C0C0;
+	$FooterLinkColor:#FFF;
+}
+$BreadcrumbsBackground:false !default;
+$BreadcrumbsColor:false !default; /* needed to be usable ouside {} */
+@if $BreadcrumbsBackground==false{
+	$BreadcrumbsBackground:#444;
+	$BreadcrumbsColor:#fff;
+}
