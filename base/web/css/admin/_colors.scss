@@ -19,11 +19,18 @@ $HeaderMenuLinkCurrentBackground:false!default; $HeaderMenuLinkCurrentColor:fals
 		$HeaderMenuLinkColor:#EEE;
 		@if $HeaderMenuLinkHoverBackground==false{
 			@if $HeaderMenuLinkHoverColor!=false{ $HeaderMenuLinkHoverBackground:findBestFgColor($HeaderMenuLinkHoverColor); }
-			@else if $InteractionHoverColor{ $HeaderMenuLinkHoverBackground:findBestFgColor($InteractionHoverColor); }
+			@else if $InteractionHoverColor and $HeaderMenuColor==false{ $HeaderMenuLinkHoverBackground:findBestFgColor($InteractionHoverColor); }
 		}
 		@if $HeaderMenuLinkCurrentBackground==false{
 			@if $HeaderMenuLinkCurrentColor!=false{ $HeaderMenuLinkCurrentBackground:findBestFgColor($HeaderMenuLinkCurrentColor); }
-			@else if $InteractionCurrentColor{ $HeaderMenuLinkCurrentBackground:findBestFgColor($InteractionCurrentColor); }
+			@else if $InteractionCurrentColor and $HeaderMenuColor==false{ $HeaderMenuLinkCurrentBackground:findBestFgColor($InteractionCurrentColor); }
+		}
+	}@else if $HeaderMenuLinkColor==false{
+		@if $HeaderMenuLinkHoverBackground{
+			@if $HeaderMenuLinkHoverColor==false{ $HeaderMenuLinkHoverColor:findBestFgColor($HeaderMenuLinkHoverBackground); }
+		}
+		@if $HeaderMenuLinkCurrentBackground{
+			@if $HeaderMenuLinkCurrentColor==false{ $HeaderMenuLinkCurrentColor:findBestFgColor($HeaderMenuLinkCurrentBackground); }
 		}
 	}
 }
