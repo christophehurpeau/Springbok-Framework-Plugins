@@ -2,9 +2,13 @@
 <html>
 	<head>
 		<? HHtml::metaCharset() ?>
-		<title><?= Config::$projectName ?> - {$layout_title}</title>
-		<?php HHtml::cssLink('/Dev/dev'); HHtml::jsLink('/Dev/dev'); HHtml::jsI18n() ?>
-		<? HHtml::favicon() ?>
+		<?php
+			HHead::title(Config::$projectName.' - '.$layout_title);
+			HHead::linkCssAndJs('/Dev/dev');
+			HHead::jsI18n();
+			HHead::favicon();
+			HHead::display();
+		?>
 	</head>
 	<body>{=$layout_content}</body>
 </html>
