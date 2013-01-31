@@ -25,4 +25,5 @@
 	'plugin.blog.postLinked_title'=>'Billets liés',
 	'plugin.blog.PostsLatestTitle'=>'Derniers billets',
 	'plugin.blog.NoComments'=>'Pas de commentaire',
+	'plugin.blog.Publish'=>'Publier',
 );

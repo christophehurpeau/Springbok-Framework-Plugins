@@ -3,7 +3,11 @@
 {=$form=Post::Form()->noDefaultLabel()->id('formPostEdit')->attr('novalidate',true)}
 <div class="fixed right w200">
 	<div class="content center">
-		{=$form->select('status',Post::statusesList())}
+		{if $post->published===null && $post->status===Post::DRAFT}
+			{=$form->submit(_t('plugin.blog.Publish'))->attr('onclick',"$(this).closest('form').append('<input type=\"hidden\" name=\"publish\" value=\"1\"/>')")}
+		{else}
+			{=$form->select('status',Post::statusesList())}
+		{/if}
 		<p>{iconLink 'delete','Supprimer cet article','/posts/delete/'.$post->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cet article ?')}</p>
 		<p>{if $post->isPublished()}{link 'Article en ligne',$post->link(),array('entry'=>'index','target'=>'_blank')}{/if}</p>
 	</div>
@@ -50,7 +54,6 @@
 			<br class="clear"/>
 		</div>
 		<div id="editTab2">
-			<span class="bold" style="color:red;text-shadow:#777 1px 0 0;">Attention au bug de sauvegarde sur Firefox !</span>
 			<div class="alignRight"><a href="#" onclick="S.tinymce.switchtoHtml('PostExcerpt');return false">HTML</a> - <a href="#" onclick="S.tinymce.switchtoVisual('PostExcerpt');return false">Visuel</a></div>
 			<? $form->textarea('excerpt') ?>
 			
