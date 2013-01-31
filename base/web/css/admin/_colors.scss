@@ -9,13 +9,14 @@ $HeaderMenuColor:false !default; $VariableMenuCurrentColor:false !default; /* ne
 $HeaderMenuLinkBackground:false !default; $HeaderMenuLinkColor:false!default;
 $HeaderMenuLinkHoverBackground:false!default; $HeaderMenuLinkHoverColor:false!default;
 $HeaderMenuLinkCurrentBackground:false!default; $HeaderMenuLinkCurrentColor:false!default;
+$HeaderMenuLinkCurrentOrHoverBackground:false !default;
 @if $HeaderMenuBackground==false{
 	$HeaderMenuBackground:#707070 #444;
 	$HeaderMenuColor:#EEE;
 	$VariableMenuCurrentColor:#FFF;
 	
 	@if $HeaderMenuLinkBackground==false and $HeaderMenuLinkColor!=false{
-		$HeaderMenuLinkCurrentOrHoverColor:false;
+		@if $HeaderMenuLinkCurrentOrHoverBackground==false{ $HeaderMenuLinkCurrentOrHoverColor:false; }
 		$HeaderMenuLinkColor:#EEE;
 		@if $HeaderMenuLinkHoverBackground==false{
 			@if $HeaderMenuLinkHoverColor!=false{ $HeaderMenuLinkHoverBackground:findBestFgColor($HeaderMenuLinkHoverColor); }
