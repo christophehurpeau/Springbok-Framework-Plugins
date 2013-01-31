@@ -12,6 +12,7 @@
 		/* IF(blog_comments_enabled) */
 		_t('plugin.blog.Comments')=>array('/postsComments','startsWith'=>false),
 		_t('plugin.blog.CommentValidation')=>'/postsComments/validation',
+		_t('plugin.connectedSite.ConnectedServices')=>array('/connectedServices'),
 		/* /IF */
 		false,
 		_t('plugin.blog.Tools')=>'/posts/tools',
