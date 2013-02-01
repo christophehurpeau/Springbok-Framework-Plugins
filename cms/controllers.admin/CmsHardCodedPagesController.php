@@ -1,6 +1,6 @@
 <?php
 /** @Check('ACSecureAdmin') @Acl('CMS') */
-class CmsHardCodedPagesController extends AController{
+class CmsHardCodedPagesController extends Controller{
 	
 	/** */
 	function index(){
