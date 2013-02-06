@@ -1,7 +1,7 @@
-<?php HBreadcrumbs::set(array('Articles'=>'/posts')); $v=new AjaxBreadcrumbsPageView('Edition article','mr200'); ?>
+<?php HBreadcrumbs::set(array('Articles'=>'/posts')); $v=new AjaxPageView('Edition article',''); ?>
 
 {=$form=Post::Form()->noDefaultLabel()->id('formPostEdit')->attr('novalidate',true)}
-<div class="fixed right w200">
+<div class="col fixed right w200">
 	<div class="content center">
 		{if $post->published===null && $post->status===Post::DRAFT}
 			{=$form->submit(_t('plugin.blog.Publish'))->attr('onclick',"$(this).closest('form').append('<input type=\"hidden\" name=\"publish\" value=\"1\"/>')")}
@@ -22,7 +22,9 @@
 	{=$form->submit(true)->container()->addClass('center')}
 </div>
 
-<div class="variable padding">
+<div class="col variable r200">
+	<? HBreadcrumbs::display(_tC('Home'),$post->id.': '.$post->name) ?>
+	
 	<div id="editTabs" class="tabs">
 		<ul><li>{iconLink 'page','Article','#editTab1'}</li><li>{iconLink 'pageEdit','Contenu','#editTab2'}</li><li>{iconLink 'time','Historique','/postHistories/view/'.$id}</li><li>{iconLink 'pageLink','Articles liés','/postPosts/view/'.$id}</li></ul>
 		<div id="editTab1" class="clearfix">

@@ -1,5 +1,5 @@
-<?php new AjaxPageView($layout_title,'ml280','Dev/page') ?>
-<div class="fixed left w280">
+<?php new AjaxPageView($layout_title,'','Dev/page') ?>
+<div class="col fixed left w280">
 	<ul class="simpleDouble ml10">
 	<?php $len=strlen($tests->getPath())+1;
 	UPhp::recursive(function($callback,$tests) use($len){ ?>
@@ -18,7 +18,7 @@
 	<?php },$tests) ?>
 	</ul>
 </div>
-<div class="variable padding">
+<div class="col variable l280">
 	<h1>{$layout_title}</h1>
 	{=$layout_content}
 </div>

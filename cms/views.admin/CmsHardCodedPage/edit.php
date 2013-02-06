@@ -1,4 +1,4 @@
-<?php HBreadcrumbs::set(array(_t('plugin.cms.HardCodedPages')=>'/cmsHardCodedPage')); $v=new AjaxBreadcrumbsPageView('Edition page','mr200'); ?>
+<?php HBreadcrumbs::set(array(_t('plugin.cms.HardCodedPages')=>'/cmsHardCodedPage')); $v=new AjaxPageView('Edition page',''); ?>
 
 {=$form=CmsHardCodedPage::Form()}
 
