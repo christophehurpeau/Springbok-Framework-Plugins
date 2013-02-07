@@ -1,10 +1,18 @@
 <?php
 Controller::$defaultLayout='admin';
-/** @Check('ACSecureAdmin') @Acl */
+/** @Check('ACSecureAdmin') @Acl('Acl') */
 class AclController extends Controller{
 	const MODEL='AclGroup';
 	
 	use TreeController;
+	
+	
+	/** @Acl('AclGroup') */
+	function index(){
+		$modelName=self::MODEL;
+		set('tree',$modelName::TreeView()->actionView('/acl/permissions'));
+		render();
+	}
 	
 	/*AclGroup::Table()->paginate()->actionClick('permissions')
 		->render('Acl Groups',array('modelName'=>'AclGroup','form'=>array('action'=>'/acl/add')));*/
