@@ -1,5 +1,4 @@
 <?php $v=new AjaxPageView($layout_title,''); ?>
-<?php HBreadcrumbs::display(_tC('Home'),$layout_title) ?>
 <div class="col fixed right w200">
 	<div class="content">
 		{if CSecure::isConnected() && CSecure::isAdmin()}
@@ -16,4 +15,7 @@
 		<? VPostsTags::create()->render() ?>
 	</div>
 </div>
-<div class="col variable r200">{=$layout_content}</div>
+<div class="col variable r200">
+	<?php HBreadcrumbs::display(_tC('Home'),$layout_title) ?>
+	{=$layout_content}
+</div>
