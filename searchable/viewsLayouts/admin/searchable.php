@@ -1,6 +1,6 @@
-<?php new AjaxBreadcrumbsPageView($layout_title,'ml160','admin_page') ?>
+<?php new AjaxPageView($layout_title,'','admin_page') ?>
 
-<div class="fixed left w160">
+<div class="col fixed left w160">
 	{menuLeft
 		'Searchable'=>'/searchable',
 		'Keywords'=>'/searchable/keywords',
@@ -8,6 +8,7 @@
 	}
 </div>
 
-<div class="variable padding">
+<div class="col variable l160">
+	<? HBreadcrumbs::display(_tC('Home'),$layout_title) ?>
 	{=$layout_content}
 </div>

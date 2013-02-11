@@ -1,5 +1,5 @@
-<?php new AjaxPageView($layout_title,'ml280','Dev/page') ?>
-<div class="fixed left w280">
+<?php new AjaxPageView($layout_title,'','Dev/page') ?>
+<div class="col fixed left w280">
 	<ul class="simpleDouble ml10">
 	{f $models as $dbName=>$imodels}
 		<?php sort($imodels) ?>
@@ -11,7 +11,7 @@
 	{/f}
 	</ul>
 </div>
-<div class="variable padding">
+<div class="col variable l280">
 	<h1>{$layout_title}</h1>
 	{=$layout_content}
 </div>

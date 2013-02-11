@@ -1,7 +1,7 @@
-<?php HBreadcrumbs::set(array('Pages'=>'/pages')); $v=new AjaxBreadcrumbsPageView('Edition page','mr200'); ?>
+<?php HBreadcrumbs::set(array('Pages'=>'/pages')); $v=new AjaxBreadcrumbsPageView('Edition page',''); ?>
 
 {=$form=Page::Form()->id('formPageEdit')->attr('novalidate',true)->noDefaultLabel()}
-<div class="fixed right w200">
+<div class="col fixed right w200">
 	<div class="content center">
 		{=$form->select('status',Page::statusesList())}
 		{iconLink 'delete','Supprimer cet article','/pages/delete/'.$page->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cette page ?')}
@@ -10,7 +10,8 @@
 	<? $form->submit(true)->container()->addClass('center'); ?>
 </div>
 
-<div class="variable padding">
+<div class="col variable r200">
+	<? HBreadcrumbs::display(_tC('Home'),$page->id.': '.$page->name) ?>
 	<div id="editTabs" class="tabs">
 		<ul><li>{iconLink 'page','Page','#editTab1'}</li><li>{iconLink 'pageEdit','Contenu','#editTab2'}</li><li>{iconLink 'time','Historique','/pageHistories/view/'.$id}</li></ul>
 		<div id="editTab1" class="clearfix">
