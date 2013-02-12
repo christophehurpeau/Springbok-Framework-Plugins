@@ -39,6 +39,14 @@ class Searchable extends SSeoModel{
 			return $escapedWord;
 		});
 	}
+
+	public function _renormalize(){
+		$this->updated=false;
+		$this->normalized=$this->normalized();
+		$this->html_name=$this->htmlName();
+		unset($this->name);
+		$this->update('normalized','html_name');
+	}
 	
 	public function beforeSave(){
 		if(!empty($this->name)){

@@ -15,7 +15,7 @@ class SearchableTermAbbrController extends Controller{
 	/** @ValidParams('/searchable') @Id('abbrId','termId') */
 	function add(int $abbrId,int $termId){
 		SearchablesTypedTerm::addIgnore($abbrId,SearchablesTypedTerm::ABBREVIATION);
-		if(SearchablesTermAbbreviation::QInsert()->ignore()->set(array('term_id'=>$termId,'abbr_id'=>$abbrId)))
+		if(SearchablesTermAbbreviation::create($termId,$abbrId))
 			renderText('1');
 	}
 	/** @ValidParams('/searchable') @Id('abbrId','termId') */
@@ -26,7 +26,7 @@ class SearchableTermAbbrController extends Controller{
 	/** @ValidParams('/searchable') @Id('termId') @NotEmpty('val') */
 	function create(int $termId,$val){
 		$abbrId=SearchablesTerm::createOrGet($val,SearchablesTypedTerm::ABBREVIATION);
-		if(SearchablesTermAbbreviation::QInsert()->ignore()->set(array('term_id'=>$termId,'abbr_id'=>$abbrId)))
+		if(SearchablesTermAbbreviation::create($termId,$abbrId))
 			renderText('1');
 	}
 }
