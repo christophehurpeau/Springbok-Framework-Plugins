@@ -28,6 +28,8 @@ class SearchablesTerm extends SSqlModel{
 	);
 	public static $hasManyThrough=array(
 		'SearchablesKeyword'=>array('joins'=>'SearchablesKeywordTerm'),
+		'Abbreviations'=>array('modelName'=>'SearchablesTerm','alias'=>'stabbr',
+				'joins'=>array('SearchablesTermAbbreviation'=>array('associationForeignKey'=>'abbr_id')))
 	);
 	
 	/* VALUE(searchable.SearchablesTerm.phpcontent) */

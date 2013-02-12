@@ -10,6 +10,8 @@ class Searchable extends SSeoModel{
 		*/ $id,
 		/** @SqlType('varchar(300)') @NotNull @MinLenth(3)
 		*/ $name,
+		/** @SqlType('varchar(500)') @NotNull @MinLenth(3)
+		*/ $html_name,
 		/** @SqlType('varchar(300)') @NotNull
 		* @Index
 		*/ $normalized,
@@ -24,10 +26,24 @@ class Searchable extends SSeoModel{
 		*/ $visible;
 	
 	public function normalized(){ return UString::normalize($this->name); }
+	public function htmlName(){
+		return UString::callbackWords($this->name,function($word,$dot){
+			$escapedWord=h($word.$dot);
+			
+			$term=SearchablesTerm::QOne()
+				->withForce('SearchablesTermAbbreviation',array('associationForeignKey'=>'term_id',
+						'with'=>array('SearchablesTerm'=>array('alias'=>'stabbr','fields'=>false,'foreignKey'=>'abbr_id'))))
+				->where(!empty($dot) ? array('OR'=>array('stabbr.term LIKE'=>$word,'stabbr.term LIKE'=>$word.$dot))
+									 : array('stabbr.term LIKE'=>$word));
+			if($term!==false) return '<abbr title="'.h($term->term).'">'.$escapedWord.'</abbr>';
+			return $escapedWord;
+		});
+	}
 	
 	public function beforeSave(){
 		if(!empty($this->name)){
 			$this->normalized=$this->normalized();
+			$this->html_name=$this->htmlName();
 			if(empty($this->slug)) $this->slug=$this->auto_slug();
 			/* IF(searchable_order_field) */
 			if(empty($this->order)) $this->order=$this->name;
