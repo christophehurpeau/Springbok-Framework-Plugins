@@ -2,59 +2,69 @@
 
 {=$form=SearchablesTerm::Form('term')->id('formTermEdit')->noDefaultLabel()}
 
-/* IF(searchable.keywordTerms.text) */<div class="floatR w300">/* /IF */
-
-
-<div class="/* IF!(searchable.keywordTerms.text) */floatR /* /IF */block2">
-	<div>Created : <? HTime::compact($term->created) ?></div>
-	
-	<?php $types=$typesDefault=SearchablesTypedTerm::typesList(); ?>
-	
-	<div>
-		<?php if($term->type!==0) unset($typesDefault[0]); unset($typesDefault[SearchablesTypedTerm::ITSELF]) ?>
-		{=$form->select('type',$typesDefault,$term->type)->label('Default type:')}
-		{=$form->submit(true,array(),array('class'=>'submit center'))}
-	</div>
-	
-	<div>
-		Types: 
-		{f $term->types as $type}
-			{if isset($types[$type])}{$types[$type]}{else}{$type}{/if}, 
-			<?php unset($types[$type]) ?>
-		{/f}
-		<?php if($term->type!==0) unset($types[0]); ?>
-		{* {if!e $types}
-			{=$form->select('type',$types,$term->type)->label('Add a type:')}
-			{=$form->submit()->container()->addClass('center')}
-		{/if} *}
-	</div>
-	
-	{if SearchablesKeyword::existById($term->id)}<div class="mt6">{link 'Go to the keyword','/searchableKeyword/view/'.$term->id}</div>{/if}
-</div>
-
-<div id="linkedKeywords" class="clear mt10 block1">
-	<h5 class="noclear">{t 'plugin.searchable.LinkedKeywords'}</h5>
-	<ul class="compact">
-	{f $term->keywords as $keyword}
-		<li>{=$keyword->adminLink()}</li>
-	{/f}
-	</ul>
-</div>
-
-/* IF(searchable.keywordTerms.text) */</div>/* /IF */
-
-
-<div class="mr300 context">
-	{=$form->input('term')->attrClass('wp100 biginfo')->container()->addClass('mb10')}
-	
-	/* IF(searchable.keywordTerms.seo) */
-	<? View::element('seo',array('model'=>$term,'form'=>$form)) ?>
-	{=$form->submit()->container()->addClass('center')}
-	/* /IF */
-</div>
+{=$form->input('term')->attrClass('wp100 biginfo')}
 
 /* IF(searchable.keywordTerms.text) */
-<div class="clear">
+<div class="row gut mt10">
+	<div class="col w300">
+/* /IF */
+		<div class="/* IF!(searchable.keywordTerms.text) */col /* /IF */block2">
+			<div>Created : <? HTime::compact($term->created) ?></div>
+			
+			<?php $types=$typesDefault=SearchablesTypedTerm::typesList(); ?>
+			
+			<div>
+				<?php if($term->type!==0) unset($typesDefault[0]); unset($typesDefault[SearchablesTypedTerm::ITSELF]) ?>
+				{=$form->select('type',$typesDefault,$term->type)->label('Default type:')}
+				{=$form->submit(true,array(),array('class'=>'submit center'))}
+			</div>
+			
+			<div>
+				Types: 
+				{f $term->types as $type}
+					{if isset($types[$type])}{$types[$type]}{else}{$type}{/if}, 
+					<?php unset($types[$type]) ?>
+				{/f}
+				<?php if($term->type!==0) unset($types[0]); ?>
+				{* {if!e $types}
+					{=$form->select('type',$types,$term->type)->label('Add a type:')}
+					{=$form->submit()->container()->addClass('center')}
+				{/if} *}
+			</div>
+			
+			{if SearchablesKeyword::existById($term->id)}<div class="mt6">{link 'Go to the keyword','/searchableKeyword/view/'.$term->id}</div>{/if}
+		</div>
+		
+		<div class="mt10 block1">
+			<h5 class="noclear">{t 'plugin.searchable.Abbreviations'}</h5>
+			<? HHtml::ajaxCRDInputAutocomplete('/searchableTermAbbr',$term->abbreviations,
+				array('js'=>'{allowNew:1,url:"/'.$term->id.'"}','modelFunctionName'=>'adminLink','escape'=>false,
+						'inputAttributes'=>array('style'=>'width:240px'))) ?>
+		</div>
+		<div id="linkedKeywords" class="mt10 block1">
+			<h5 class="noclear">{t 'plugin.searchable.LinkedKeywords'}</h5>
+			<ul class="compact">
+			{f $term->keywords as $keyword}
+				<li>{=$keyword->adminLink()}</li>
+			{/f}
+			</ul>
+		</div>
+
+/* IF(searchable.keywordTerms.text) */
+	</div>
+/* /IF */
+
+
+	<div class="col">
+		/* IF(searchable.keywordTerms.seo) */
+		<? View::element('seo',array('model'=>$term,'form'=>$form)) ?>
+		{=$form->submit()->container()->addClass('center')}
+		/* /IF */
+	</div>
+
+/* IF(searchable.keywordTerms.text) */
+</div>
+<div class="mt10">
 	<h4>Description du terme</h4>
 	{=$form->textarea('text')->wp100()}
 	{=$form->submit()->container()->addClass('center')}

@@ -1,6 +1,7 @@
 <?php return array(
 	'plugin.searchable.LinkedTerms'=>'Termes liés',
 	'plugin.searchable.LinkedKeywords'=>'Mots-clés liés',
+	'plugin.searchable.Abbreviations'=>'Abréviations',
 	'models.Searchables:id'=>'Id',
 	'models.Searchables:name'=>'Nom',
 	'models.Searchables:normalized'=>'Nom normalisé',
