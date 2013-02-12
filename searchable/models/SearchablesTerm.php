@@ -78,7 +78,9 @@ class SearchablesTerm extends SSqlModel{
 	/* /IF */
 	
 	
-	public function beforeUpdate(){
+	public static $beforeUpdate=array('_addTypeInSearchablesTypedTerm');
+	
+	public function _addTypeInSearchablesTypedTerm(){
 		if(!empty($this->type)) SearchablesTypedTerm::addIgnore($this->id,$this->type);
 		return true;
 	}
