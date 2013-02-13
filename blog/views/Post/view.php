@@ -3,4 +3,4 @@ HMeta::canonical($post->link()); HMeta::description($metas['descr']); HMeta::key
 /* IF!(blog.onIndexPage) */HBreadcrumbs::set(array('/* VALUE(blog_title) */'=>'/posts'));/* /IF */
 $v->set('col_content',$ve->render('tags'));
 ?>
-<? $ve->render() ?>
+<? $ve->incl() ?>
