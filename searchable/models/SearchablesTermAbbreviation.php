@@ -18,9 +18,7 @@ class SearchablesTermAbbreviation extends SSqlModel{
 	
 	public static function _update($termId){
 		$term=SearchablesTerm::findValueTermById($termId);
-		Searchable::beginTransaction();
 		Searchable::QAll()->fields('id,name')->addCond('name LIKE','%'.$term.'%')->callback('_renormalize()');
-		Searchable::commit();
 	}
 	
 }

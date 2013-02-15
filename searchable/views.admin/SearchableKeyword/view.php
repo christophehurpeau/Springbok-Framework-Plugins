@@ -10,7 +10,7 @@
 			<div>Created : <? HTime::compact($keyword->created) ?></div>
 			<div>Types: <?php $types=SearchablesTypedTerm::typesList(); ?>
 				{f $keyword->types as $type}
-					{$types[$type]}, 
+					{=?e $types[$type] : $type}, 
 				{/f}
 			</div>
 			<div class="mt6">{link 'Go to the term','/searchableTerm/view/'.$keyword->id}</div>
