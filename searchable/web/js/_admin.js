@@ -2,6 +2,7 @@ includePlugin('seo/_seo');
 includeCore('ui/dialogs');
 includeCore('ui/THtml');
 includeCore('springbok.jqueryui');
+
 window.searchable={
 	proximities:{0:'0: Identique',1:'1: Synonyme',2:'2: Lien direct',3:'3: Lien indirect',4:'4: Très proche',5:'5: Proche',7:'7: Eloigné',9:'9: Lointain'},
 	form:function(type,proximity){

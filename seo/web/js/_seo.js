@@ -1,3 +1,5 @@
+includeCore('ui/validation');
+
 _.seo={
 	init:function(inputName,ulKeywords){
 		if(inputName){

@@ -24,7 +24,7 @@
 
 
 	<div class="col">
-		{=$form->input('term')->attrClass('wp100 biginfo')->container()->addClass('mb10')}
+		{=$form->input('term')->attrClass('wp100 biginfo')->required()->container()->addClass('mb10')}
 		
 		/* IF(searchable.keywords.seo) */
 		<? View::element('seo',array('model'=>$keyword,'form'=>$form)) ?>
