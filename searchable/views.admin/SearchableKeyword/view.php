@@ -10,7 +10,7 @@
 			<div>Created : <? HTime::compact($keyword->created) ?></div>
 			<div>Types: <?php $types=SearchablesTypedTerm::typesList(); ?>
 				{f $keyword->types as $type}
-					{$types[$type]}, 
+					{=?e $types[$type] : $type}, 
 				{/f}
 			</div>
 			<div class="mt6">{link 'Go to the term','/searchableTerm/view/'.$keyword->id}</div>
@@ -24,7 +24,7 @@
 
 
 	<div class="col">
-		{=$form->input('term')->attrClass('wp100 biginfo')->container()->addClass('mb10')}
+		{=$form->input('term')->attrClass('wp100 biginfo')->required()->container()->addClass('mb10')}
 		
 		/* IF(searchable.keywords.seo) */
 		<? View::element('seo',array('model'=>$keyword,'form'=>$form)) ?>

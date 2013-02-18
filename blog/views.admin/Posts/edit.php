@@ -28,7 +28,7 @@
 	<div id="editTabs" class="tabs">
 		<ul><li>{iconLink 'page','Article','#editTab1'}</li><li>{iconLink 'pageEdit','Contenu','#editTab2'}</li><li>{iconLink 'time','Historique','/postHistories/view/'.$id}</li><li>{iconLink 'pageLink','Articles liés','/postPosts/view/'.$id}</li></ul>
 		<div id="editTab1" class="clearfix">
-			{=$form->input('name')->wp100()}
+			{=$form->input('name')->wp100()->required()}
 			
 			/* IF(blog_personalizeAuthors_enabled) */
 			<div class="floatR clearfix mt10 ml10 block1" style="width:180px">
