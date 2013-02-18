@@ -33,8 +33,6 @@ HBreadcrumbs::set(array('Mon compte'=>'/user'));
 	<? $form->input('new_password_confirm',array('label'=>'Confirmation','type'=>'password','autocomplete'=>'off','data-same'=>'#new_password')) ?>
 	{=$form->end('Changer')}
 	
-	<? HHtml::jsInline('$("form").ht5ifv({ events:{validate:"change.ht5ifv focus.ht5ifv",check:"change.ht5ifv"}, restrictions:users.ht5ifvRestrictions() })') ?>
-	
 	<p class="message info">Votre mot de passe doit avoir un minimum de <b>6</b> caractères. Il doit comporter des chiffres et des lettres. Tous les caractères sont autorisés.</p>
 {/if}
 

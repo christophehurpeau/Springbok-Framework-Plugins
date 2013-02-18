@@ -5,9 +5,8 @@ includeCore('springbok.forms');
 includeCore('springbok.ajax');
 includeCore('springbok.dynamictabs');
 includeCore('helpers/form');
+includeCore('ui/validation');
 
 define('AJAX_CONTENT_EFFECT',false);
 
 includeCore('springbok.contextmenu');
-
-includeCore('ht5ifv');
