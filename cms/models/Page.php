@@ -1,14 +1,14 @@
 <?php
-/** @TableAlias('pg') @DisplayField('name') @Child('Searchable','created,updated') @Seo @Created @Updated */
+/** @TableAlias('pg') @DisplayField('name') @Child('Searchable','created,updated') @Created @Updated @UniqueSlug */
 class Page extends Searchable{
-	use BChild;
+	use BChild,BSlug,BSeo;
 	
 	const DRAFT=1,PUBLISHED=2,DELETED=4;
 		
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
-		/** @SqlType('varchar(300)') @NotNull @MinLenth(3)
+		/** @SqlType('varchar(180)') @NotNull @MinLenth(3)
 		*/ $name,
 		/** @SqlType('int(10) unsigned') @NotNull
 		*  @ForeignKey('User','id')
@@ -26,18 +26,20 @@ class Page extends Searchable{
 		* @NotBindable
 		*/ $published;
 	
+	public static $beforeUpdate=array('_setOldSlug');
+	public static $afterUpdate=array('_addSlugRedirect');
+	public static $afterSave=array('destroyVElement');
 	
-	public function beforeSave(){
-		parent::beforeSave();
-		if(isset($this->id)){
-			$oldSlug=self::QValue()->field('slug')->byId($this->id);
-			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
-		}
+	private function _setOldSlug(){
+		$oldSlug=self::QValue()->field('slug')->byId($this->id);
+		if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
 		return true;
 	}
-	public function afterSave($data=null){
-		VPage::destroy($this->id);
+	private function _addSlugRedirect(){
 		if(!empty($this->oldSlug)) PageSlugRedirect::add($this->oldSlug,$this->slug);
+	}
+	public function destroyVElement(){
+		VPage::destroy($this->id);
 	}
 	
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->content),ENT_QUOTES,'UTF-8')))); }

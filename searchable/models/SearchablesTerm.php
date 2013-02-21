@@ -1,14 +1,11 @@
 <?php
-/** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') /* IF(searchable.keywordTerms.seo) *\/ @Seo @Index('slug') /* /IF *\/ */
+/** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') @IndexSlug */
 class SearchablesTerm extends SSqlModel{
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
 		/** @Unique @SqlType('varchar(100)') @NotNull
-		*/ $term/* IF(searchable.keywordTerms.slug) */,
-		/** @Unique @SqlType('varchar(100)') @NotNull @MinLength(3)
-		*/ $slug,
-		/* /IF */
+		*/ $term,
 		/** @SqlType('tinyint(2) unsigned') @NotNull
 		*/ $type;
 	/*
@@ -17,11 +14,14 @@ class SearchablesTerm extends SSqlModel{
 		foreach($terms as $term)
 			$data[]=array('keyword_id'=>$keywordId,'term'=>self::cleanTerm($term));
 	}
+	/* I F(searchable.keywordTerms.seo) *\/ @UniqueSlug /* /I F *\/ <= removed...
 	*/
 	
-	/* IF(searchable.keywordTerms.text) */
-	use BTextContent;
-	/* /IF */
+	use /* IF(searchable.keywordTerms.slug) */BSlug,/* /IF */
+		/* IF(searchable.keywordTerms.seo) */BSeo,/* /IF */
+		/* IF(searchable.keywordTerms.text) */BTextContent/* /IF */
+		;
+	
 	
 	public static $hasMany=array(
 		'Types'=>array('modelName'=>'SearchablesTypedTerm','associationForeignKey'=>'term_id','fields'=>'type'),
@@ -31,6 +31,8 @@ class SearchablesTerm extends SSqlModel{
 		'Abbreviations'=>array('modelName'=>'SearchablesTerm','alias'=>'stabbr',
 				'joins'=>array('SearchablesTermAbbreviation'=>array('associationForeignKey'=>'abbr_id')))
 	);
+	public static $beforeSave=array('_st_beforeSave');
+	public static $afterSave=array('_st_afterSave');
 	
 	/* VALUE(searchable.SearchablesTerm.phpcontent) */
 	
@@ -72,9 +74,6 @@ class SearchablesTerm extends SSqlModel{
 			->addCondition('skt2.term_id',$this->id)
 			->orderBy('term')); }
 	
-	public function metaTitle(){ return empty($this->meta_title) ? $this->auto_meta_title() : $this->meta_title; }
-	public function metaDescr(){ return empty($this->meta_descr) ? $this->auto_meta_descr() : $this->meta_descr; }
-	public function metaKeywords(){ return empty($this->meta_keywords) ? $this->auto_meta_keywords() : $this->meta_keywords ; }
 	/* /IF */
 	
 	
@@ -85,46 +84,23 @@ class SearchablesTerm extends SSqlModel{
 		return true;
 	}
 	
-	public function beforeSave(){
+	public function _st_beforeSave(){
 		if(!empty($this->term)) $this->term=trim($this->term);
 		
 		/* IF(searchable.keywordTerms.slug) */
-		if(!empty($this->term) && empty($this->slug)){
-			$this->slug=$this->auto_slug();
-		}
 		if(isset($this->id)){
 			$oldSlug=self::QValue()->field('slug')->byId($this->id);
 			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
 		}
-		/* /IF */
-		
-		/* IF(searchable.keywordTerms.seo) */ /* COPY */
-		if(!empty($this->term) && empty($this->slug)){
-			$this->slug=$this->auto_slug();
-		}
-		if(isset($this->id)){
-			$oldSlug=self::QValue()->field('slug')->byId($this->id);
-			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
-		}
-		/* /IF */
-		
-		
-		/* IF(searchable.keywordTerms.text) */
-		if(empty($this->text) && isset($this->text)) $this->text=null;
 		/* /IF */
 		return true;
 	}
 	
-	public function afterSave(&$data=null){
+	public function _st_afterSave(&$data=null){
 		if(!empty($data['term'])){
 			SearchableTermWord::add($this->id,$this->term);
 		}
 		/* IF(searchable.keywordTerms.slug) */
-		if(!empty($this->oldSlug)){
-			SearchablesTermSlugRedirect::add($this->oldSlug,$this->slug);
-		}
-		/* /IF */
-		/* IF(searchable.keywordTerms.seo) */ /* COPY */
 		if(!empty($this->oldSlug)){
 			SearchablesTermSlugRedirect::add($this->oldSlug,$this->slug);
 		}
