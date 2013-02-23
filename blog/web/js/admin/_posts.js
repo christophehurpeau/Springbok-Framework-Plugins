@@ -1,6 +1,6 @@
 includeCore('springbok.jqueryui');
 
-S.extObj(_.cms.internalLinks,{
+UObj.extend(_.cms.internalLinks,{
 	post:{
 		title:'Article',params:{id:{title:'Id',style:'width:45px'}},search:{title:'Nom de l\'article (Recherche)'},
 		checkParam:basedir+'posts/checkId',

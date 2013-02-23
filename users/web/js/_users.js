@@ -18,7 +18,7 @@ S.FormValidator.addRestriction('data-ajaxcheck',(function(){
 			Email:{20:'L\'adresse est vide.',21:'Cette adresse email est déjà utilisée par un compte.',22:'Le nom de domaine n\'est pas valide.'}},
 			registerDivInvalidChecks={},registerPreviousValidity={},registerCachedValidity={},registerDivPseudoInvalid=false,pseudoPreviousValidity=true;
 	return function(checkName,val,$node){
-		checkName=checkName.sbUcFirst();
+		checkName=UString.ucFirst(checkName);
 		var img,valid,errorCode,exception=$node.data('checkexception');
 		if(val===''){
 			if(registerDivInvalidChecks[checkName]){

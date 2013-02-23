@@ -15,7 +15,7 @@ _.seo={
 				$('#SeoMeta_keywordsAuto').val($(this).find('li span').map(function(){return $(this).text()}).get().sort().join(', '));
 			});
 		}
-		['Slug','Meta_title','Meta_descr','Meta_keywords'].sEach(function(i,m){
+		['Slug','Meta_title','Meta_descr','Meta_keywords'].forEach(function(m,i){
 			var input=$('#Seo'+m), val=input.val(), tr=input.closest('tr'),
 				mw=tr.find('.manuel .words'), mc=tr.find('.manuel .chars'),
 				updateWords=function(w,c,val){
