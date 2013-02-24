@@ -1,3 +1,4 @@
+includeCoreUtils('UString/html');
 includePlugin('searchable/_admin');
 includeCore('springbok.jqueryui');
 includeCore('springbok.tinymce');
@@ -40,7 +41,7 @@ _.pages={
 		S.ready(function(){
 			$("#editTabs").tabs();
 			S.tinymce.init("100%","430px",'basicAdvanced',true).wordCount().autolink().autoSave().validXHTML()
-				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(inst.getBody().innerHTML.sbStripTags()).change()})
+				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(UString.stripTags(inst.getBody().innerHTML)).change()})
 				.createForIds("PageContent");
 			$("#formPageEdit").ajaxForm(basedir+'pages/save/'+postId,false,function(){
 				S.tinymce.switchtoVisual("PageContent");
