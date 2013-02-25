@@ -61,7 +61,7 @@ class SearchablesKeyword extends SSqlModel{
 	public static function listKeywordIds($phraseCleaned){
 		return SearchablesKeywordTerm::QValues()->field('DISTINCT keyword_id')
 			->withForce('SearchablesTerm')
-			->where(array(self::dbEscape(' '.$phraseCleaned.' ').' LIKE CONCAT("% ",st.term," %")'));
+			->where(array(self::dbEscape(' '.UString::normalize($phraseCleaned).' ').' LIKE CONCAT("% ",st.normalized," %")'));
 	}
 	
 	
