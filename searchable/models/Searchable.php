@@ -1,7 +1,7 @@
 <?php
 /** @TableAlias('sb') @Created @Updated @Parent /* IF(searchable_seo) *\/ @Seo /* /IF *\/ */
-class Searchable extends SSeoModel{
-	use BParent;
+class Searchable extends SSqlModel{
+	use BParent,BNormalized/* IF(searchable_seo) */,BSlug,BSeo/* /IF */;
 	
 	const INVALID=0,VALID=1,DELETED=2;
 	
@@ -12,20 +12,17 @@ class Searchable extends SSeoModel{
 		*/ $name,
 		/** @SqlType('varchar(500)') @NotNull @MinLenth(3)
 		*/ $html_name,
-		/** @SqlType('varchar(300)') @NotNull
-		* @Index
-		*/ $normalized,
 		/* IF(searchable_order_field) */
 		/** @SqlType('varchar(300)') @NotNull
 		* @Index
 		*/ $order,
-		/* /IF *//* IF!(searchable_seo) */
-		/** @SqlType('varchar(300)') @NotNull @MinLenth(3)
-		*/ $slug,/* /IF */
 		/** @Boolean @Default(true)
 		*/ $visible;
 	
-	public function normalized(){ return UString::normalize($this->name); }
+	public static $beforeSave=array('_setIfName');
+	public static $afterSave=array('_reindexIfName');
+	
+	
 	public function htmlName(){
 		return UString::callbackWords($this->name,function($word,$dot){
 			$escapedWord=h($word.$dot);
@@ -48,11 +45,9 @@ class Searchable extends SSeoModel{
 		$this->update('normalized','html_name');
 	}
 	
-	public function beforeSave(){
+	public function _setIfName(){
 		if(!empty($this->name)){
-			$this->normalized=$this->normalized();
 			$this->html_name=$this->htmlName();
-			if(empty($this->slug)) $this->slug=$this->auto_slug();
 			/* IF(searchable_order_field) */
 			if(empty($this->order)) $this->order=$this->name;
 			/* /IF */
@@ -60,7 +55,7 @@ class Searchable extends SSeoModel{
 		return true;
 	}
 	
-	public function afterSave($data=null){
+	private function _reindexIfName($data=null){
 		if(!empty($data['name']) || (!empty($this->name) && array_key_exists('visible',$data))){ /* isset will return false if $data['visible']===null */
 			$this->reindex();
 		}

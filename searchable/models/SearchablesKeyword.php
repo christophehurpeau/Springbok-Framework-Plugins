@@ -1,15 +1,14 @@
 <?php
-/** @TableAlias('ssk') @Created @Updated @Parent /* IF(searchable.keywords.seo) *\/ @Seo /* /IF *\/ */
+/** @TableAlias('ssk') @Created @Updated @Parent /* IF(searchable.keywords.slug) *\/ @Slug('varchar(100)') @UniqueSlug /* /IF *\/ */
 class SearchablesKeyword extends SSqlModel{
-	use BParent,BSeo/* IF(searchable.keywords.text) */,BTextContent/* /IF */;
+	use BParent/* IF(searchable.keywords.seo) */,BSeo/* /IF */
+		/* IF(searchable.keywords.slug) */,BSlug/* /IF */
+		/* IF(searchable.keywords.text) */,BTextContent/* /IF */;
 	
 	public
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
 		* @ForeignKey('SearchablesTerm','id')
-		*/ $id/* IF(searchable.keywords.slug) */,
-		/** @Unique @SqlType('varchar(100)') @NotNull @MinLength(3)
-		*/ $slug
-		/* /IF */;
+		*/ $id;
 	
 	/* IF(searchable.keywords.text) */
 	public static function findOneForSeo($id){
@@ -51,16 +50,6 @@ class SearchablesKeyword extends SSqlModel{
 	
 	public function beforeInsert(){
 		return $this->id=SearchablesTerm::createOrGet($this->term,SearchablesTypedTerm::NONE);
-	}
-	
-	public function beforeSave(){
-		/* IF(searchable.keywords.slug) */
-		if(!empty($this->term) && empty($this->slug)) $this->slug=$this->auto_slug();
-		/* /IF */
-		/* IF(searchable.keywords.text) */
-		if(empty($this->text) && isset($this->text)) $this->text=null;
-		/* /IF */
-		return true;
 	}
 	
 	public static function cleanPhrase($phrase){

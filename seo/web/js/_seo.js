@@ -1,3 +1,6 @@
+includeCoreUtils('UString/normalize');
+includeCoreUtils('UString/html');
+includeCoreUtils('UString/countWords');
 includeCore('ui/validation');
 
 _.seo={
@@ -5,7 +8,7 @@ _.seo={
 		if(inputName){
 			var inputNameUpdate=function(){
 				var val=$(this).val();
-				$('#SeoSlugAuto').val(val.sbSlug()).change();
+				$('#SeoSlugAuto').val(UString.slugify(val)).change();
 				$('#SeoMeta_titleAuto').val(val).change();
 			};
 			inputName.change(inputNameUpdate).delayedKeyup(inputNameUpdate);
@@ -15,11 +18,11 @@ _.seo={
 				$('#SeoMeta_keywordsAuto').val($(this).find('li span').map(function(){return $(this).text()}).get().sort().join(', '));
 			});
 		}
-		['Slug','Meta_title','Meta_descr','Meta_keywords'].sEach(function(i,m){
+		['Slug','Meta_title','Meta_descr','Meta_keywords'].forEach(function(m,i){
 			var input=$('#Seo'+m), val=input.val(), tr=input.closest('tr'),
 				mw=tr.find('.manuel .words'), mc=tr.find('.manuel .chars'),
 				updateWords=function(w,c,val){
-					w.text(val.sbWordsCount());
+					w.text(UString.countWords(val));
 					c.text(val.length);
 				},
 				eventUpdateWords=function(){updateWords(mw,mc,$(this).val())};
@@ -36,7 +39,7 @@ _.seo={
 		});
 	},
 	tinymceChanged_metaKeywords:function(inst){
-		$("#SeoMeta_descrAuto").val(inst.getBody().innerHTML.sbStripTags().replace(/[\s\r\n]+/g,' ').trim()).change();
+		$("#SeoMeta_descrAuto").val(UString.stripTags(inst.getBody().innerHTML).replace(/[\s\r\n]+/g,' ').trim()).change();
 	},
 	meta:function(t){
 		var tr=$(t).closest('tr');

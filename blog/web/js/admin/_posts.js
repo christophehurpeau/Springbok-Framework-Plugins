@@ -1,6 +1,7 @@
+includeCoreUtils('UString/html');
 includeCore('springbok.jqueryui');
 
-S.extObj(_.cms.internalLinks,{
+UObj.extend(_.cms.internalLinks,{
 	post:{
 		title:'Article',params:{id:{title:'Id',style:'width:45px'}},search:{title:'Nom de l\'article (Recherche)'},
 		checkParam:basedir+'posts/checkId',
@@ -34,7 +35,7 @@ _.posts={
 		S.ready(function(){
 			$("#editTabs").tabs();
 			S.tinymce.init("100%","150px",'basicAdvanced',true).wordCount().autolink().autoSave().validXHTML()
-				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(inst.getBody().innerHTML.sbStripTags()).change()})
+				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(UString.stripTags(inst.getBody().innerHTML)).change()})
 				.createForIds("PostExcerpt");
 			S.tinymce.init("100%","430px",'basicAdvanced',true)
 				.wordCount().autolink().autoSave().validXHTML().createForIds("PostContent");
