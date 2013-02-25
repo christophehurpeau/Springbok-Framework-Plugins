@@ -6,6 +6,7 @@ includeCore('springbok.ajax');
 includeCore('springbok.dynamictabs');
 includeCore('helpers/form');
 includeCore('ui/validation');
+includeCore('ui/THtml');
 
 define('AJAX_CONTENT_EFFECT',false);
 

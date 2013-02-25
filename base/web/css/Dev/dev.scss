@@ -3,6 +3,9 @@ $PAGE_FIXED:true; $PAGE_VERSION:2;
 @includeCore 'default.scss';
 @includeCore 'base/ajax.scss';
 @includeCore 'ui/validation';
+@includeCore 'widgets/THtml';
+@includeCore 'base/icons';
+
 
 
 ul.devtools_colors{
