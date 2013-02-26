@@ -1,5 +1,5 @@
 <?php
-/** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') @IndexSlug */
+/** @TableAlias('st') @Created @Updated @DisplayField('term') @OrderByField('term') @IndexSlug @UniqueNormalized */
 class SearchablesTerm extends SSqlModel{
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
@@ -17,9 +17,10 @@ class SearchablesTerm extends SSqlModel{
 	/* I F(searchable.keywordTerms.seo) *\/ @UniqueSlug /* /I F *\/ <= removed...
 	*/
 	
-	use /* IF(searchable.keywordTerms.slug) */BSlug,/* /IF */
-		/* IF(searchable.keywordTerms.seo) */BSeo,/* /IF */
-		/* IF(searchable.keywordTerms.text) */BTextContent/* /IF */
+	use BNormalized
+		/* IF(searchable.keywordTerms.slug) */,BSlug/* /IF */
+		/* IF(searchable.keywordTerms.seo) */,BSeo/* /IF */
+		/* IF(searchable.keywordTerms.text) */,BTextContent/* /IF */
 		;
 	
 	
@@ -36,11 +37,27 @@ class SearchablesTerm extends SSqlModel{
 	
 	/* VALUE(searchable.SearchablesTerm.phpcontent) */
 	
+	public function normalized(){ return UString::normalize($this->term); }
+	
+	public function _setNormalizedIfName(){
+		if(!empty($this->term)){
+			$this->normalized=$this->normalized();
+		}
+		return true;
+	}
+	
+	public function _renormalize(){
+		$this->updated=false;
+		$this->normalized=$this->normalized();
+		unset($this->term);
+		$this->update('normalized');
+	}
+	
 	
 	public static function createOrGet($term,$type){
 		$term=self::cleanTerm($term);
 		if(empty($term)) throw new Exception('term is empty');
-		$id=self::QValue()->field('id')->where(array('term LIKE'=>$term));
+		$id=self::QValue()->field('id')->where(array('normalized'=>UString::normalize($term)));
 		if($id!==false){
 			SearchablesTypedTerm::addIgnore($id,$type);
 			return $id;
@@ -54,7 +71,7 @@ class SearchablesTerm extends SSqlModel{
 	}
 	public static function get($term){
 		$term=self::cleanTerm($term);
-		return self::QValue()->field('id')->where(array('term LIKE'=>$term));
+		return self::QValue()->field('id')->where(array('OR'=>array('term LIKE'=>$term,'normalized'=>UString::normalize($term))));
 	}
 	
 	public static function cleanTerm($term){
@@ -88,7 +105,7 @@ class SearchablesTerm extends SSqlModel{
 		if(!empty($this->term)) $this->term=trim($this->term);
 		
 		/* IF(searchable.keywordTerms.slug) */
-		if(isset($this->id)){
+		if(isset($this->id) && !empty($this->slug)){
 			$oldSlug=self::QValue()->field('slug')->byId($this->id);
 			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
 		}

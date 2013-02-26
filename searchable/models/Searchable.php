@@ -30,8 +30,7 @@ class Searchable extends SSqlModel{
 			$term=SearchablesTerm::QOne()
 				->withForce('SearchablesTermAbbreviation',array('associationForeignKey'=>'term_id',
 						'with'=>array('SearchablesTerm'=>array('alias'=>'stabbr','fields'=>false,'foreignKey'=>'abbr_id'))))
-				->where(!empty($dot) ? array('OR'=>array('stabbr.term LIKE'=>$word,'stabbr.term LIKE'=>$word.$dot))
-									 : array('stabbr.term LIKE'=>$word));
+				->where(array('stabbr.normalized LIKE'=>UString::normalizeWithoutTransliterate($word)));
 			if($term!==false) return '<abbr title="'.h($term->term).'">'.$escapedWord.'</abbr>';
 			return $escapedWord;
 		});
