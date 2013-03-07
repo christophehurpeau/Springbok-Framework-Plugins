@@ -24,16 +24,20 @@ class Searchable extends SSqlModel{
 	
 	
 	public function htmlName(){
-		return UString::callbackWords($this->name,function($word,$dot){
-			$escapedWord=h($word.$dot);
-			
+		$replace=$replacements=array(); $i=1;
+		$name=UString::callbackWords($this->name,function($word,$dot) use(&$replace,&$replacements,&$i){
 			$term=SearchablesTerm::QOne()
 				->withForce('SearchablesTermAbbreviation',array('associationForeignKey'=>'term_id',
 						'with'=>array('SearchablesTerm'=>array('alias'=>'stabbr','fields'=>false,'foreignKey'=>'abbr_id'))))
 				->where(array('stabbr.normalized LIKE'=>UString::normalizeWithoutTransliterate($word)));
-			if($term!==false) return '<abbr title="'.h($term->term).'">'.$escapedWord.'</abbr>';
-			return $escapedWord;
+			if($term!==false){
+				$replacements[]='<abbr title="'.h($term->term).'">'.h($word.$dot).'</abbr>';
+				return $replace[]='__SEARCHABLE_STRING_TO_REPLACE_'.($i++).'__';
+			}
+			return $word.$dot;
 		});
+		
+		return str_replace($replace,$replacements,h($name));
 	}
 
 	public function _renormalize(){

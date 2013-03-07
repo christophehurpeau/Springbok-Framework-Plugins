@@ -10,15 +10,20 @@ class SearchableTermWord extends SSqlModel{
 		*/ $word_id;
 	
 	public static function add($termId,$term){
-		$words=self::getWords($termId);
+		$words=self::getWords($termId); $diff=false;
 		foreach(SearchablesWord::explodePhrase($term) as $word){
 			if($wordId=array_search($word,$words)){
 				unset($words[$wordId]);
 			}else{
 				self::QInsert()->ignore()->set(array('term_id'=>$termId,'word_id'=>SearchablesWord::createOrGet($word)));
+				$diff=true;
 			}
 		}
-		if(!empty($words)) self::QDeleteAll()->where(array('term_id'=>$termId,'word_id'=>array_keys($words)));
+		if(!empty($words)){
+			self::QDeleteAll()->where(array('term_id'=>$termId,'word_id'=>array_keys($words)));
+			$diff=true;
+		}
+		return $diff;
 	}
 	
 	private static function getWords($termId){

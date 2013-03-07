@@ -16,9 +16,21 @@ class SearchablesTermAbbreviation extends SSqlModel{
 		return $res;
 	}
 	
-	public static function _update($termId){
-		$term=SearchablesTerm::findValueTermById($termId);
-		Searchable::QAll()->fields('id,name')->addCond('normalized RLIKE','(^| )'.UString::normalize($term).'( |$)')->callback('_renormalize()');
+	public static function _update($abbrId){
+		$terms=SearchablesTerm::findValuesTermById($abbrId);
+		self::_updateTerms($terms);
 	}
 	
+	private static function _updateTerms($terms){
+		Searchable::QAll()->fields('id,name')
+			->addCond('normalized RLIKE','(^| )('.implode('|',array_map(array('UString','normalize'),$terms)).')( |$)')
+			->callback('_renormalize()');
+	}
+	
+	public static function _updateAllAbbr($termId){
+		$terms=SearchablesTerm::QValues()->field('term')->withForce('SearchablesTermAbbreviation',array('associationForeignKey'=>'abbr_id'))
+				->where(array('sta.term_id'=>$termId));
+		self::_updateTerms($terms);
+		
+	}
 }
