@@ -115,7 +115,8 @@ class SearchablesTerm extends SSqlModel{
 	
 	public function _st_afterSave(&$data=null){
 		if(!empty($data['term'])){
-			SearchableTermWord::add($this->id,$this->term);
+			if(SearchableTermWord::add($this->id,$this->term))
+				SearchablesTermAbbreviation::_updateAllAbbr($this->id);
 		}
 		/* IF(searchable.keywordTerms.slug) */
 		if(!empty($this->oldSlug)){
