@@ -10,8 +10,10 @@ class Searchable extends SSqlModel{
 		*/ $id,
 		/** @SqlType('varchar(300)') @NotNull @MinLenth(3)
 		*/ $name,
-		/** @SqlType('varchar(500)') @NotNull @MinLenth(3)
+		/** @SqlType('varchar(500)') @NotNull @NotBindable
 		*/ $html_name,
+		/** @SqlType('varchar(500)') @NotNull @NotBindable
+		*/ $long_name,
 		/* IF(searchable_order_field) */
 		/** @SqlType('varchar(300)') @NotNull
 		* @Index
@@ -23,34 +25,36 @@ class Searchable extends SSqlModel{
 	public static $afterSave=array('_reindexIfName');
 	
 	
-	public function htmlName(){
-		$replace=$replacements=array(); $i=1;
-		$name=UString::callbackWords($this->name,function($word,$dot) use(&$replace,&$replacements,&$i){
+	public function htmlAndLongName(){
+		$replace=$replacementsHtml=$replacementsLong=array(); $i=1;
+		$name=UString::callbackWords($this->name,function($word,$dot) use(&$replace,&$replacementsHtml,&$replacementsLong,&$i){
 			$term=SearchablesTerm::QOne()
 				->withForce('SearchablesTermAbbreviation',array('associationForeignKey'=>'term_id',
 						'with'=>array('SearchablesTerm'=>array('alias'=>'stabbr','fields'=>false,'foreignKey'=>'abbr_id'))))
 				->where(array('stabbr.normalized LIKE'=>UString::normalizeWithoutTransliterate($word)));
 			if($term!==false){
-				$replacements[]='<abbr title="'.h($term->term).'">'.h($word.$dot).'</abbr>';
+				$replacementsHtml[]='<abbr title="'.($replacementsLong[]=h($term->term)).'">'.h($word.$dot).'</abbr>';
 				return $replace[]='__SEARCHABLE_STRING_TO_REPLACE_'.($i++).'__';
 			}
 			return $word.$dot;
 		});
 		
-		return str_replace($replace,$replacements,h($name));
+		$hname=h($name);
+		$this->html_name=str_replace($replace,$replacementsHtml,$hname);
+		$this->long_name=str_replace($replace,$replacementsLong,$hname);
 	}
 
 	public function _renormalize(){
 		$this->updated=false;
 		$this->normalized=$this->normalized();
-		$this->html_name=$this->htmlName();
+		$this->htmlAndLongName();
 		unset($this->name);
-		$this->update('normalized','html_name');
+		$this->update('normalized','html_name','long_name');
 	}
 	
 	public function _setIfName(){
 		if(!empty($this->name)){
-			$this->html_name=$this->htmlName();
+			$this->htmlAndLongName();
 			/* IF(searchable_order_field) */
 			if(empty($this->order)) $this->order=$this->name;
 			/* /IF */
