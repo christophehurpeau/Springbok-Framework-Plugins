@@ -53,8 +53,9 @@ class SearchablesTerm extends SSqlModel{
 	public function _renormalize(){
 		$this->updated=false;
 		$this->normalized=$this->normalized();
+		if(empty($this->slug̣)) $this->slug̣=$this->auto_slug();
 		unset($this->term);
-		$this->update('normalized');
+		$this->update('normalized','slug̣');
 	}
 	
 	
