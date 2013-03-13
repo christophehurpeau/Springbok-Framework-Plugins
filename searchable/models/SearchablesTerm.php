@@ -45,6 +45,10 @@ class SearchablesTerm extends SSqlModel{
 		}
 		return true;
 	}
+	public function _setSlugIfName(){
+		if(!empty($this->term) && empty($this->slug)) $this->slug=$this->auto_slug();
+		return true;
+	}
 	
 	public function _renormalize(){
 		$this->updated=false;

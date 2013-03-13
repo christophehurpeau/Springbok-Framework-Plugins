@@ -22,8 +22,9 @@ class SearchablesTermAbbreviation extends SSqlModel{
 	}
 	
 	private static function _updateTerms($terms){
+		if(empty($terms)) return;
 		Searchable::QAll()->fields('id,name')
-			->addCond('normalized RLIKE','(^| )('.implode('|',array_map(array('UString','normalize'),$terms)).')( |$)')
+			->addCond('normalized RLIKE','(^| )('.implode('|',array_map('preg_quote',array_map(array('UString','normalize'),$terms))).')( |$)')
 			->callback('_renormalize()');
 	}
 	
