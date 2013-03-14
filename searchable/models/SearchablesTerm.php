@@ -53,9 +53,12 @@ class SearchablesTerm extends SSqlModel{
 	public function _renormalize(){
 		$this->updated=false;
 		$this->normalized=$this->normalized();
-		if(empty($this->slug̣)) $this->slug̣=$this->auto_slug();
+		/* IF(searchable.keywordTerms.slug) */
+		if(empty($this->slug)) $this->slug=$this->auto_slug();
+		else unset($this->slug);
+		/* /IF */
 		unset($this->term);
-		$this->update('normalized','slug̣');
+		$this->update('normalized'/* IF(searchable.keywordTerms.slug) */,'slug'/* /IF */);
 	}
 	
 	
@@ -110,7 +113,7 @@ class SearchablesTerm extends SSqlModel{
 		if(!empty($this->term)) $this->term=trim($this->term);
 		
 		/* IF(searchable.keywordTerms.slug) */
-		if(isset($this->id) && !empty($this->slug)){
+		if(isset($this->id) && !empty($this->slug) && empty($this->oldSlug)){
 			$oldSlug=self::QValue()->field('slug')->byId($this->id);
 			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
 		}
@@ -126,6 +129,7 @@ class SearchablesTerm extends SSqlModel{
 		/* IF(searchable.keywordTerms.slug) */
 		if(!empty($this->oldSlug)){
 			SearchablesTermSlugRedirect::add($this->oldSlug,$this->slug);
+			unset($this->oldSlug);
 		}
 		/* /IF */
 	}
