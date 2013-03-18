@@ -13,7 +13,7 @@ class PostPost extends SSqlModel{
 		/** @Boolean @Default(false)
 		*/ $manual;
 	
-	public static $belongsTo=array('Post'=>array('foreignKey'=>'linked_post_id'));
+	public static $belongsTo=array('Post'=>array(array('linked_post_id'=>'id')));
 	
 	public static function refind($postId){
 		self::deleteAllByPost_idAndDeletedAndManual($postId,false,false);
