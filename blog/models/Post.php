@@ -33,11 +33,11 @@ class Post extends Searchable{
 	
 	public static $hasMany=array(
 		'PostPost'=>array('onConditions'=>array('deleted'=>false)),
-		'LinkedPost'=>array('modelName'=>'PostPost','associationForeignKey'=>'linked_post_id'),
-		'SearchableWord'=>array('foreignKey'=>'p_id','associationForeignKey'=>'searchable_id'),
+		'LinkedPost'=>array('modelName'=>'PostPost',0=>array('id'=>'linked_post_id')),
+		'SearchableWord'=>array(array('p_id'=>'searchable_id')),
 	);
 	public static $hasManyThrough=array(
-		'Post'=>array('joins'=>array('PostPost'=>array('associationForeignKey'=>'linked_post_id'))),
+		'Post'=>array('joins'=>array('PostPost'=>array(0=>array('id'=>'linked_post_id')))),
 		'SearchablesKeywordTerm'=>array('joins'=>'PostTag'),
 	);
 	

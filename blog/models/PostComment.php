@@ -30,7 +30,7 @@ class PostComment extends SSqlModel{
 	
 	public static $hasOne=array(
 		'PostRating'=>array(
-			'foreignKey'=>'user_id','associationForeignKey'=>'user_id',
+			array('user_id'=>'user_id'),
 			'onConditions'=>array('pcom.post_id=prat.post_id'),
 			'fields'=>array('value'=>'rating'),'fieldsInModel'=>true
 		),

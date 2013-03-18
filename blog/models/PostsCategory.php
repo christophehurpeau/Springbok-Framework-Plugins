@@ -10,7 +10,7 @@ class PostsCategory extends SSqlModel{
 		*/ $home_page;
 	
 	public static $belongsTo=array(
-		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'p_id','fieldsInModel'=>true,'fields'=>array('term'=>'name','slug'),'alias'=>'skmt')
+		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term',0=>array('p_id'=>'id'),'fieldsInModel'=>true,'fields'=>array('term'=>'name','slug'),'alias'=>'skmt')
 	);
 	
 	public static function create($name){
