@@ -29,7 +29,7 @@ class SearchablesTermAbbreviation extends SSqlModel{
 	}
 	
 	public static function _updateAllAbbr($termId){
-		$terms=SearchablesTerm::QValues()->field('term')->withForce('SearchablesTermAbbreviation',array('associationForeignKey'=>'abbr_id'))
+		$terms=SearchablesTerm::QValues()->field('term')->withForce('SearchablesTermAbbreviation',array(array('id'=>'abbr_id')))
 				->where(array('sta.term_id'=>$termId));
 		self::_updateTerms($terms);
 		

@@ -28,6 +28,13 @@ class SearchableController extends Controller{
 	}
 	
 	/** */
+	function renormalize(int $id){
+		$sb=Searchable::ById($id)->notFoundIfFalse();
+		$sb->_renormalize();
+		redirect('/searchable/view/'.$id);
+	}
+	
+	/** */
 	function keywords(){
 		SearchablesKeyword::Table()->noAutoRelations()->fields('id,_type,created,updated')
 			->with('MainTerm','term,slug')
