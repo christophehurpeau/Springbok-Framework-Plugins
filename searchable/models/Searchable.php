@@ -29,8 +29,8 @@ class Searchable extends SSqlModel{
 		$replace=$replacementsHtml=$replacementsLong=array(); $i=1;
 		$name=UString::callbackWords($this->name,function($word,$dot) use(&$replace,&$replacementsHtml,&$replacementsLong,&$i){
 			$term=SearchablesTerm::QOne()
-				->withForce('SearchablesTermAbbreviation',array('associationForeignKey'=>'term_id',
-						'with'=>array('SearchablesTerm'=>array('alias'=>'stabbr','fields'=>false,'foreignKey'=>'abbr_id'))))
+				->withForce('SearchablesTermAbbreviation',array(0=>array('id'=>'term_id'),
+						'with'=>array('SearchablesTerm'=>array('alias'=>'stabbr','fields'=>false,0=>array('abbr_id'=>'id')))))
 				->where(array('stabbr.normalized LIKE'=>UString::normalizeWithoutTransliterate($word)));
 			if($term!==false){
 				$replacementsHtml[]='<abbr title="'.($replacementsLong[]=h($term->term)).'">'.h($word.$dot).'</abbr>';

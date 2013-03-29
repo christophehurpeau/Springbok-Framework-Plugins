@@ -30,7 +30,7 @@ class SearchablesTerm extends SSqlModel{
 	public static $hasManyThrough=array(
 		'SearchablesKeyword'=>array('joins'=>'SearchablesKeywordTerm'),
 		'Abbreviations'=>array('modelName'=>'SearchablesTerm','alias'=>'stabbr',
-				'joins'=>array('SearchablesTermAbbreviation'=>array('associationForeignKey'=>'abbr_id')))
+				'joins'=>array('SearchablesTermAbbreviation'=>array(array('id'=>'abbr_id'))))
 	);
 	public static $beforeSave=array('_st_beforeSave');
 	public static $afterSave=array('_st_afterSave');

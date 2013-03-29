@@ -15,6 +15,7 @@
 		<div class="block2">
 			<h5>Actions</h5>
 			{link 'Reindex','/searchable/reindex/'.$sb->id}
+			{link 'Renormalize','/searchable/renormalize/'.$sb->id}
 		</div>
 	</div>
 </div>
