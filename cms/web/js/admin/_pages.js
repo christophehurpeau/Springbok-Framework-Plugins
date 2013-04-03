@@ -12,6 +12,15 @@ includeCore('codemirror/modes/javascript/javascript');
 includeCore('codemirror/modes/css/css');
 includeCore('codemirror/modes/htmlmixed/htmlmixed');
 
+
+includeLib('plupload/plupload');
+includeLib('plupload/plupload.html5');
+includeLib('plupload/plupload.flash');
+includeLib('plupload/plupload.silverlight');
+
+
+includePlugin('seo/_seo');
+
 _.cms={
 	internalLinks:{
 		page:{
