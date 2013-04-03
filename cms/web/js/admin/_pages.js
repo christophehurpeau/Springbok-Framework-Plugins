@@ -1,6 +1,7 @@
 includeCoreUtils('UString/html');
 includePlugin('searchable/_admin');
 includeCore('springbok.jqueryui');
+includeCore('springbok.forms');
 includeCore('springbok.tinymce');
 includeCore('components/ImageGallery');
 
@@ -11,6 +12,15 @@ includeCore('codemirror/modes/xml/xml');
 includeCore('codemirror/modes/javascript/javascript');
 includeCore('codemirror/modes/css/css');
 includeCore('codemirror/modes/htmlmixed/htmlmixed');
+
+
+includeLib('plupload/plupload');
+includeLib('plupload/plupload.html5');
+includeLib('plupload/plupload.flash');
+includeLib('plupload/plupload.silverlight');
+
+
+includePlugin('seo/_seo');
 
 _.cms={
 	internalLinks:{
