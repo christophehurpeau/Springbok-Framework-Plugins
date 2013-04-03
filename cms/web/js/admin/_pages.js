@@ -1,6 +1,7 @@
 includeCoreUtils('UString/html');
 includePlugin('searchable/_admin');
 includeCore('springbok.jqueryui');
+includeCore('springbok.forms');
 includeCore('springbok.tinymce');
 includeCore('components/ImageGallery');
 
