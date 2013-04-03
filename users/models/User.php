@@ -1,8 +1,10 @@
 <?php
-/** @TableAlias('u') @Created @Updated @DisplayField('IF(first_name is null,/* IF(users.pseudo) *\/IF(last_name IS NULL,pseudo,/* /IF *\/last_name/* IF(users.pseudo) *\/)/* /IF *\/,CONCAT(first_name," ",last_name))') */
+/** @TableAlias('u') @Created @Updated /* IF(user.searchable) *\/ @Child('Searchable') /* /IF *\/ @DisplayField('IF(first_name is null,/* IF(users.pseudo) *\/IF(last_name IS NULL,pseudo,/* /IF *\/last_name/* IF(users.pseudo) *\/)/* /IF *\/,CONCAT(first_name," ",last_name))') */
 class User extends SSqlModel{
 	CONST ADMIN=9,WAITING=0,VALID=1,DISABLED=2,DELETED=3,
 		SITE=1,FACEBOOK=2,GOOGLE=3,YAHOO=4,WLIVE=5,OPENID=9;
+	
+	/* IF(user.searchable) */use BChild;/* /IF */
 	
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
@@ -136,6 +138,7 @@ class User extends SSqlModel{
 		$password=UGenerator::randomLetters(12);
 		$user->pwd=USecure::hashWithSalt($password);
 		$user->status=User::WAITING;
+		/* IF(user.searchable) */ $user->name=$user->first_name.' '.$user->last_name; $user->updateParent(); /* /IF */
 		$user->insert('email','pseudo','pwd','status','first_name','last_name');
 		
 		if($connectAfterRegistration) CSecure::setConnected(CSecure::CONNECTION_AFTER_REGISTRATION,$user->id,$user->email);
