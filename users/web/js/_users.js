@@ -1,8 +1,9 @@
 includeCore('ui/validation');
+includeCore('springbok.forms');
 
 window.users={
 	loginRegister:function(){
-		$('#formLogin,#formLostPassword,#formRegister').each(function(form){ new S.FormValidator($(form),'change focus blur');});
+		'#formLogin,#formLostPassword,#formRegister'.split(',').forEach(function(form){ new S.FormValidator($(form),'change focus blur');});
 		$('#formLostPassword').ajaxForm(function(data){
 			if(data!=='0'){
 				var divLostPassword=$('#divLostPassword').html('');
