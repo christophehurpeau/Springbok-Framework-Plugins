@@ -1,5 +1,5 @@
 <?php
-/** @TableAlias('sk') */
+/** @TableAlias('sk') @Created */
 class SearchableKeyword extends SSqlModel{
 	public
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
@@ -8,4 +8,9 @@ class SearchableKeyword extends SSqlModel{
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
 		* @ForeignKey('SearchablesKeyword','id')
 		*/ $keyword_id;
+	
+	public static function create($searchableId,$keywordId){
+		return self::QInsert()->ignore()->cols('searchable_id,keyword_id')
+						->values(array($searchableId,$keywordId));
+	}
 }
