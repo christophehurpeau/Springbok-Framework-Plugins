@@ -1,4 +1,4 @@
-<?php HBreadcrumbs::set(array('Pages'=>'/pages')); $v=new AjaxBreadcrumbsPageView('Edition page',''); ?>
+<?php HBreadcrumbs::set(array('Pages'=>'/pages')); $v=new AjaxPageView('Edition page',''); ?>
 
 {=$form=Page::Form()->id('formPageEdit')->attr('novalidate',true)->noDefaultLabel()}
 <div class="col fixed right w200">
