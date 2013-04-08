@@ -45,13 +45,13 @@ class SearchableHistory extends SSqlModel{
 	
 	
 	
-	public static function add($searchableId,$type,$relId=null,$userId=true/* IF(searchableHistory.source) */,$source=AConsts::DEFAULT_SOURCE/* /IF */){
+	public static function add($searchableId,$type,$relId=null,$userId=true/* IF(searchableHistory.source) */,$source=null/* /IF */){
 		if($userId===true) $userId=CSecure::connected();
 		$oh=new self;
 		$oh->searchable_id=$searchableId;
 		$oh->user_id=$userId;
 		$oh->type=$type;
-		/* IF(searchableHistory.source) */ $oh->source=$source; /* /IF */
+		/* IF(searchableHistory.source) */ $oh->source=$source===null ? AConsts::DEFAULT_SOURCE : $source; /* /IF */
 		if($relId !== null) $oh->rel_id=$relId;
 		$oh->insert();
 	}
