@@ -27,6 +27,24 @@ class SearchableHistory extends SSqlModel{
 		/** @SqlType('int(10) unsigned') @Null
 		*/ $rel_id;
 	
+	
+	
+	
+	public static $belongsToType=array(
+		'type'=>array(
+			'dataName'=>'details',
+			'types'=>array(
+				
+			),
+			'relations'=>array(
+				
+			)
+		)
+	);
+	
+	
+	
+	
 	public static function add($searchableId,$type,$relId=null,$userId=true,$source=AConsts::DEFAULT_SOURCE){
 		if($userId===true) $userId=CSecure::connected();
 		$oh=new self;
