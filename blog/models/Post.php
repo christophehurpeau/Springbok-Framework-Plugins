@@ -119,4 +119,9 @@ class Post extends Searchable{
 		$post->slug=Searchable::QValue()->field('slug')->with('Post',array('fields'=>false))->addCondition('p.id',$id);
 		return $post->link();
 	}
+	
+	public function link($action=null,$more=''){
+		return array('/:controller/:id-:slug(/:action/*)?',_tR(static::LINK_CONTROLLER),sprintf('%03d',$this->id),$this->slug,$action===null?'':_tR($action),$more);
+		//return array('/:id-:slug/:action/*',$this->id,$this->slug,$action===null?'':_tR($action),$more);
+	}
 }
