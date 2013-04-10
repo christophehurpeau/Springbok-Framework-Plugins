@@ -1,13 +1,6 @@
 <?php
 /** @TableName('searchable_history') @TableAlias('sh') @Created */
 class SearchableHistory extends SSqlModel{
-	/* [01][0-9] RESERVED */
-	const 
-		CREATED=01,UPDATED=02,DELETED=03,STATUS_CHANGED=04,
-		MERGED=05,MERGED_TO=06
-	;
-	
-	
 	public
 		/** @Pk @AutoIncrement @SqlType('BIGINT(20) unsigned') @NotNull
 		*/ $id,
@@ -28,31 +21,36 @@ class SearchableHistory extends SSqlModel{
 		*/ $rel_id;
 	
 	
-	
-	
-	public static $belongsToType=array(
-		'type'=>array(
-			'dataName'=>'details',
-			'types'=>array(
-				
-			),
-			'relations'=>array(
-				
-			)
-		)
+	/* [01][0-9] RESERVED */
+	public static $history=array(
+		01=>CREATED,
+		02=>UPDATED,
+		03=>DELETED,
+		04=>STATUS_CHANGED,
+		05=>MERGED,
+		06=>MERGED_TO,
 	);
 	
-	
-	
-	
-	public static function add($searchableId,$type,$relId=null,$userId=true/* IF(searchableHistory.source) */,$source=null/* /IF */){
+	public static function add($searchableId,$type,$relId=null,$userId=true/* IF(searchableHistory.source) */,$source=null/* /IF */,$date=null){
 		if($userId===true) $userId=CSecure::connected();
-		$oh=new self;
-		$oh->searchable_id=$searchableId;
-		$oh->user_id=$userId;
-		$oh->type=$type;
-		/* IF(searchableHistory.source) */ $oh->source=$source===null ? AConsts::DEFAULT_SOURCE : $source; /* /IF */
-		if($relId !== null) $oh->rel_id=$relId;
-		$oh->insert();
+		$h=new self;
+		$h->searchable_id=$searchableId;
+		if($userId!==null) $h->user_id=$userId;
+		$h->type=$type;
+		/* IF(searchableHistory.source) */ $h->source=$source===null ? AConsts::DEFAULT_SOURCE : $source; /* /IF */
+		if($relId !== null) $h->rel_id=$relId;
+		if($date!==null) $h->created=$date;
+		$h->insert();
+	}
+	
+	
+	public function hasDetails(){
+		return isset($this->details);
+	}
+	public function hasMoreDetails(){
+		return method_exists($this->details,'moreDetails');
+	}
+	public function moreDetails(){
+		return $this->details->moreDetails();
 	}
 }
