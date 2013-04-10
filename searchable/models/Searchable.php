@@ -84,4 +84,11 @@ class Searchable extends SSqlModel{
 		//return array('/:controller/:id-:slug(/:action/*)?',_tR(static::LINK_CONTROLLER),sprintf('%03d',$this->id),$this->slug,$action===null?'':_tR($action),$more);
 		return array('/:id-:slug/:action/*',$this->id,$this->slug,$action===null?'':_tR($action),$more);
 	}
+	
+	public static function withOptions($options=array()){
+		$options['with']=array('Parent');
+		$options['orderBy']=array('sb.created'=>'DESC');
+		return $options;
+	}
+	
 }

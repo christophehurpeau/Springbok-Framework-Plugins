@@ -5,7 +5,7 @@ class SearchableController extends AController{
 		$sbChild=ACSearchable::find();
 		
 		$rparams=CRoute::getParams();
-		$controller=isset($rparams['subcontroller'])?$rparams['subcontroller']:$modelName/*::$__pluralized*/;
+		$controller=isset($rparams['subcontroller'])?$rparams['subcontroller']:get_class($sbChild)/*::$__pluralized*/;
 		$action=isset($rparams['subaction'])?$rparams['subaction']:'view';
 		unset($rparams['subcontroller'],$rparams['subaction']);
 		

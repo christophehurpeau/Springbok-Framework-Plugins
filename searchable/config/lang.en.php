@@ -20,4 +20,12 @@
 	'models.SearchablesTypedTerm:type.Enum.Abbreviation'=>'Abbreviation',
 	'models.SearchablesTypedTerm:type.Enum.Acronym'=>'Acronym',
 	'models.SearchablesTypedTerm:type.Enum.Spelling mistake'=>'Spelling mistake',
+	
+	'models.SearchableHistory.1'=>'Creation',
+	'models.SearchableHistory.2'=>'Update',
+	'models.SearchableHistory.3'=>'Deletion',
+	'models.SearchableHistory.4'=>'Status changed',
+	'models.SearchableHistory.5'=>'Merged',
+	'models.SearchableHistory.6'=>'Merged to',
+	
 );
