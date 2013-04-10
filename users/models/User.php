@@ -1,5 +1,5 @@
 <?php
-/** @TableAlias('u') @Created @Updated /* IF(user.searchable) *\/ @Child('Searchable') /* /IF *\/ @DisplayField('IF(first_name is null,/* IF(users.pseudo) *\/IF(last_name IS NULL,pseudo,/* /IF *\/last_name/* IF(users.pseudo) *\/)/* /IF *\/,CONCAT(first_name," ",last_name))') */
+/** @TableAlias('u') @Created @Updated /* IF(user.searchable) *\/ @Child('Searchable','name,slug') /* /IF *\/ @DisplayField('IF(first_name is null,/* IF(users.pseudo) *\/IF(last_name IS NULL,pseudo,/* /IF *\/last_name/* IF(users.pseudo) *\/)/* /IF *\/,CONCAT(first_name," ",last_name))') */
 class User extends SSqlModel{
 	CONST ADMIN=9,WAITING=0,VALID=1,DISABLED=2,DELETED=3,
 		SITE=1,FACEBOOK=2,GOOGLE=3,YAHOO=4,WLIVE=5,OPENID=9;
@@ -40,9 +40,21 @@ class User extends SSqlModel{
 		*/ $status;
 		
 	public function name(){
+		/* IF(user.searchable) */ if(isset($this->name)) return $this->name; /* /IF */
+		return $this->_name();
+	}
+	
+	private function _name(){
 		return $this->first_name===null ? (/* IF(users.pseudo) */$this->last_name === null ? $this->pseudo :/* /IF */ $this->last_name) : $this->first_name.' '.$this->last_name;
 	}
 	
+	public function linkedName(){
+		return HHtml::link($this->name(),$this->link());
+	}
+	
+	/* IF(user.searchable) */
+	/* @ImportFunction('searchable','Searchable','link') */
+	/* /IF */
 	
 	/* IF(users.pseudo) */
 	
