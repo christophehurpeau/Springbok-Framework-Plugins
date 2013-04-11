@@ -20,6 +20,14 @@ class PageController extends AController{
 		render();
 	}
 	
+	/** @SubAction('Searchable') */
+	function viewSearchable($page){
+		$ve=VPage::create($page->id);
+		set('metas',$ve->metas());
+		mset($ve);
+		render('view');
+	}
+	
 	public static function _beforeRenderPage($pageId){}
 	
 }

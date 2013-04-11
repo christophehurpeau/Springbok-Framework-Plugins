@@ -19,4 +19,30 @@ class ACSearchable{
 		
 		return $sbChild;
 	}
+	
+	public static function findBySlug($modelName=null,$options=array(),$redirect=true){
+		$params=CRoute::getParams();
+		if(empty($params['slug'])) notFound();
+		$slug=$params['slug'];
+		
+		if($modelName===null){
+			$row=Searchable::QRow()->field('id,_type')->where(array('slug LIKE'=>$slug));
+			if($type!==false) $modelName=Config::$modelParents['type2model']['Searchable'][$row['_type']];
+			$sbChild=$modelName::findOneById($row['id'],$options);
+		}else{
+			$sbChild=$modelName::findOneBySlug($slug,$options);
+		}
+		
+		
+		if($redirect===true && $sbChild===false){
+			//TODO try to redirect
+			//redirectPermanent($sbChild->link());
+		}
+		
+		notFoundIfFalse($sbChild);
+		
+		Controller::setForLayoutAndView(lcfirst($modelName),$sbChild);
+		
+		return $sbChild;
+	}
 }

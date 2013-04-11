@@ -30,10 +30,14 @@ class Page extends Searchable{
 	public static function afterCreateTable(){
 	}
 	
-	
 	public static $beforeUpdate=array('_setOldSlug');
 	public static $afterUpdate=array('_addSlugRedirect');
 	public static $afterSave=array('destroyVElement');
+	
+	
+	public static function findOneById($id){
+		return self::QOne()->field('id,slug')->byId($id);
+	}
 	
 	private function _setOldSlug(){
 		$oldSlug=self::QValue()->field('slug')->byId($this->id);
