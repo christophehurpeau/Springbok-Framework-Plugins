@@ -6,8 +6,6 @@ class Page extends Searchable{
 	const DRAFT=1,PUBLISHED=2,DELETED=4;
 		
 	public
-		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
-		*/ $id,
 		/** @SqlType('varchar(180)') @NotNull @MinLenth(3)
 		*/ $name,
 		/** @SqlType('int(10) unsigned') @NotNull
