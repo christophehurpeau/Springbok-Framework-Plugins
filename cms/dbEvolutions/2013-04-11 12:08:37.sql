@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   KEY `updated` (`updated`),
   KEY `fk_pages_author_id` (`author_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
-INSERT INTO pages SELECT id,name,author_id,content,status,published,created,updated,slug,meta_title,meta_descr,meta_keywords FROM old_pages;
+INSERT INTO pages SELECT p_id,name,author_id,content,status,published,created,updated,slug,meta_title,meta_descr,meta_keywords FROM old_pages;
 
 SET FOREIGN_KEY_CHECKS=1;
 
