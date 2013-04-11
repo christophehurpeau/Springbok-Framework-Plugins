@@ -36,7 +36,7 @@ class Page extends Searchable{
 	
 	
 	public static function findOneById($id){
-		return self::QOne()->field('id,slug')->byId($id);
+		return self::QOne()->fields('id,slug')->byId($id);
 	}
 	
 	private function _setOldSlug(){
