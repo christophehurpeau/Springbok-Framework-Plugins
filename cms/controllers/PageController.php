@@ -3,7 +3,10 @@ class PageController extends AController{
 	/** */
 	function view($slug){
 		if($slug===null) $pageId=1;
-		else $pageId=Page::QValue()->field('id')->where(array('slug'=>$slug,'status'=>Page::PUBLISHED));
+		elseif(is_object($slug)){
+			self::viewSearchable($slug);
+			exit;
+		}else $pageId=Page::QValue()->field('id')->where(array('slug'=>$slug,'status'=>Page::PUBLISHED));
 		if($pageId===false){
 			$newSlug=PageSlugRedirect::get($slug);
 			notFoundIfFalse($newSlug);
