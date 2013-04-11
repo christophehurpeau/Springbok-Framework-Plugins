@@ -26,6 +26,11 @@ class Page extends Searchable{
 		* @NotBindable
 		*/ $published;
 	
+	
+	public static function afterCreateTable(){
+	}
+	
+	
 	public static $beforeUpdate=array('_setOldSlug');
 	public static $afterUpdate=array('_addSlugRedirect');
 	public static $afterSave=array('destroyVElement');

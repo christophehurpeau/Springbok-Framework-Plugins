@@ -3,8 +3,12 @@
 {=$form=Page::Form()->id('formPageEdit')->attr('novalidate',true)->noDefaultLabel()}
 <div class="col fixed right w200">
 	<div class="content center">
-		{=$form->select('status',Page::statusesList())}
-		{iconLink 'delete','Supprimer cet article','/pages/delete/'.$page->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cette page ?')}
+		{if !($inLocked=in_array($page->id,Config::$cmsLockedIds)) && $page->isPublished()}
+			{=$form->select('status',Page::statusesList())}
+		{/if}
+		{if $inLocked}
+			{iconLink 'delete','Supprimer cet article','/pages/delete/'.$page->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cette page ?')}
+		{/if}
 		<p>{if $page->isPublished()}{link 'Page en ligne',$page->link(),array('entry'=>'index','target'=>'_blank')}{/if}</p>
 	</div>
 	<? $form->submit(true)->container()->addClass('center'); ?>
