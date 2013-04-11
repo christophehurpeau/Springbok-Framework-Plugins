@@ -55,10 +55,10 @@ class Page extends Searchable{
 	}
 	
 	public function save(){
-		if($this->status===self::PUBLISHED && !Page::existByIdAndStatus($this->id,self::PUBLISHED)) $this->published=array('NOW()');
+		if($this->status===self::PUBLISHED && !self::existByIdAndStatus($this->id,self::PUBLISHED)) $this->published=array('NOW()');
 		$res=$this->update();
 		$this->visible=$this->status===self::PUBLISHED;
-		if(empty($this->p_id)) $this->p_id=Page::findValueP_idById($this->id);
+		if(isset(static::$__modelInfos['columns']['p_id']) && empty($this->p_id)) $this->p_id=Page::findValueP_idById($this->id);
 		$resP=$this->updateParent();
 		if($res && $this->status===self::PUBLISHED)
 			self::onModified($this->id);
