@@ -6,8 +6,6 @@ class Page extends Searchable{
 	const DRAFT=1,PUBLISHED=2,DELETED=4;
 		
 	public
-		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
-		*/ $id,
 		/** @SqlType('varchar(180)') @NotNull @MinLenth(3)
 		*/ $name,
 		/** @SqlType('int(10) unsigned') @NotNull
@@ -30,10 +28,14 @@ class Page extends Searchable{
 	public static function afterCreateTable(){
 	}
 	
-	
 	public static $beforeUpdate=array('_setOldSlug');
 	public static $afterUpdate=array('_addSlugRedirect');
 	public static $afterSave=array('destroyVElement');
+	
+	
+	public static function findOneById($id){
+		return self::QOne()->fields('id,slug')->byId($id);
+	}
 	
 	private function _setOldSlug(){
 		$oldSlug=self::QValue()->field('slug')->byId($this->id);
@@ -53,10 +55,10 @@ class Page extends Searchable{
 	}
 	
 	public function save(){
-		if($this->status===self::PUBLISHED && !Page::existByIdAndStatus($this->id,self::PUBLISHED)) $this->published=array('NOW()');
+		if($this->status===self::PUBLISHED && !self::existByIdAndStatus($this->id,self::PUBLISHED)) $this->published=array('NOW()');
 		$res=$this->update();
 		$this->visible=$this->status===self::PUBLISHED;
-		if(empty($this->p_id)) $this->p_id=Page::findValueP_idById($this->id);
+		if(isset(static::$__modelInfos['columns']['p_id']) && empty($this->p_id)) $this->p_id=Page::findValueP_idById($this->id);
 		$resP=$this->updateParent();
 		if($res && $this->status===self::PUBLISHED)
 			self::onModified($this->id);
