@@ -13,4 +13,8 @@ class SearchableKeyword extends SSqlModel{
 		return self::QInsert()->ignore()->cols('searchable_id,keyword_id')
 						->values(array($searchableId,$keywordId));
 	}
+	
+	public static function del($searchableId,$keywordId){
+		return self::QDeleteAll()->where(array('searchable_id'=>$searchableId,'keyword_id'=>$keywordId));
+	}
 }
