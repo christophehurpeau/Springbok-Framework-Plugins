@@ -14,7 +14,7 @@ class ACSearchable{
 		$sbChild=$modelName::findOneById($id,$options);
 		notFoundIfFalse($sbChild);
 		
-		if($redirect===true && $sbChild->slug!==$slug) redirectPermanent($sbChild->link());
+		if($redirect===true && $sbChild->slug!==$slug) Controller::redirectPermanent($sbChild->link());
 		Controller::setForLayoutAndView(lcfirst($modelName),$sbChild);
 		
 		return $sbChild;
