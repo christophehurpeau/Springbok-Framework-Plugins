@@ -5,7 +5,7 @@
 	
 	'view'=>array('fr'=>'afficher'),
 	'edit'=>array('fr'=>'editer'),
-	'update'=>array('fr'=>'modifier'),
+	'update'=>array('fr'=>'miseajour'),
 	'add'=>array('fr'=>'ajouter'),
 	'delete'=>array('fr'=>'supprimer'),
 );
