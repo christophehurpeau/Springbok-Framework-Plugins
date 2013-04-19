@@ -21,11 +21,11 @@
 	'models.SearchablesTypedTerm:type.Enum.Acronym'=>'Acronym',
 	'models.SearchablesTypedTerm:type.Enum.Spelling mistake'=>'Spelling mistake',
 	
-	'models.SearchableHistory.1'=>'Creation',
-	'models.SearchableHistory.2'=>'Update',
-	'models.SearchableHistory.3'=>'Deletion',
-	'models.SearchableHistory.4'=>'Status changed',
-	'models.SearchableHistory.5'=>'Merged',
-	'models.SearchableHistory.6'=>'Merged to',
+	'models.SearchableHistory:History.1'=>'Creation',
+	'models.SearchableHistory:History.2'=>'Update',
+	'models.SearchableHistory:History.3'=>'Deletion',
+	'models.SearchableHistory:History.4'=>'Status changed',
+	'models.SearchableHistory:History.5'=>'Merged',
+	'models.SearchableHistory:History.6'=>'Merged to',
 	
 );
