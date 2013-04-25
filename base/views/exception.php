@@ -4,6 +4,6 @@
 	<div class="content">
 		<p>{if $e instanceof HttpException && $e->hasDescription()}{$e->getDescription()}{else}L'application a rencontré une erreur ({$e_className}){/if}.<br />
 		Si le problème persiste, contactez le support technique.</p>
-		<?php /* DEV */ HDev::exception($e_message,$e_file,$e_line,$e_trace)/* /DEV */ ?>
+		<?php /* DEV */ HDev::exception($e)/* /DEV */ ?>
 	</div>
 </div>

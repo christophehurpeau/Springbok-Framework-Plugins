@@ -8,4 +8,6 @@
 	'update'=>array('fr'=>'miseajour'),
 	'add'=>array('fr'=>'ajouter'),
 	'delete'=>array('fr'=>'supprimer'),
+	
+	'search'=>array('fr'=>'recherche'),
 );
