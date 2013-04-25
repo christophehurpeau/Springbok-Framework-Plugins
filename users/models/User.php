@@ -54,6 +54,9 @@ class User extends SSqlModel{
 	
 	/* IF(user.searchable) */
 	/* @ImportFunction('searchable','Searchable','link') */
+	public static function findOneById($id){
+		return self::ById($id)->withParent();
+	}
 	/* /IF */
 	
 	/* IF(users.pseudo) */
