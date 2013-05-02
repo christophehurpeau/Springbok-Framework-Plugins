@@ -32,9 +32,9 @@ class JsLog extends SSqlModel{
 		*/ $minorver;
 		
 	public static function create($href,$jsurl,$message,$line){
-		$data=CHttpRequest::parseUserAgent();
-		$data['is_mobile']=CHttpRequest::isMobile();
-		$data['is_bot']=CHttpRequest::isBot();
+		$data=CHttpUserAgent::parseUserAgent();
+		$data['is_mobile']=CHttpUserAgent::isMobileAndNotTablet();
+		$data['is_bot']=CHttpUserAgent::isBot();
 		$data['ip']=CHttpRequest::getClientIP();
 		$data['href']=$href;
 		$data['url']=$jsurl;

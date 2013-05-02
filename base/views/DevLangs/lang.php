@@ -1,6 +1,6 @@
 <?php new AjaxContentView($lang,'Dev/default'); ?>
 
-<div><?php $form=HForm::create(NULL,array('action'=>['/dev/:controller(/:action/*)?','langs','save',$lang));
+<div><?php $form=HForm::create(NULL,array('action'=>array('/dev/:controller(/:action/*)?','langs','save','/'.$lang)));
 	$i=0;
 	foreach($allStrings as $filename=>$string){
 		echo $form->hidden('data['.$i.'][s]',$string);
