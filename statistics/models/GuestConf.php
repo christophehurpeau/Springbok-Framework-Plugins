@@ -25,22 +25,22 @@ class GuestConf extends SSqlModel{
 		*/ $minorver;
 	
 	public static function create($guestId){
-		$data=CHttpRequest::parseUserAgent();
+		$data=CHttpUserAgent::parseUserAgent();
 		$data['guest_id']=$guestId;
-		$data['is_mobile']=CHttpRequest::isMobile();
-		$data['is_bot']=CHttpRequest::isBot();
+		$data['is_mobile']=CHttpUserAgent::isMobileAndNotTablet();
+		$data['is_bot']=CHttpUserAgent::isBot();
 		return self::QInsert()->data($data);
 	}
 	
 	public static function check($guestId,$id){
-		$data=CHttpRequest::parseUserAgent();
+		$data=CHttpUserAgent::parseUserAgent();
 		$data['id']=$id;
 		$data['guest_id']=$guestId;
 		if(self::QExist()->where($data)) return false;
 		
 		unset($data['id']);
-		$data['is_mobile']=CHttpRequest::isMobile();
-		$data['is_bot']=CHttpRequest::isBot();
+		$data['is_mobile']=CHttpUserAgent::isMobileAndNotTablet();
+		$data['is_bot']=CHttpUserAgent::isBot();
 		return self::QInsert()->data($data);
 	}
 }
