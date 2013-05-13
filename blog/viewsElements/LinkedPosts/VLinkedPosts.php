@@ -8,6 +8,7 @@ class VLinkedPosts extends SViewElement{
 			->addCondition('skt.term_id',$termId)->addCondition('skt.proximity <=',$proximityMax)
 			->groupBy('id')
 			->orderBy(array('YEARWEEK(sb.created)'=>'DESC','MIN(skt.proximity)','sb.created'=>'DESC'));
+		if(empty($posts)) return VPostsLatest::vars();
 		foreach($posts as $post)
 			$post->excerpt=UHtml::transformInternalLinks($post->excerpt,Config::$internalLinks,'index',/* VALUE(blog.VPostsLatest.fullUrls) *//* HIDE */false/* /HIDE */);
 		return array(
