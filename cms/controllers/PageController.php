@@ -8,7 +8,7 @@ class PageController extends AController{
 			exit;
 		}else $pageId=Page::QValue()->field('id')->where(array('slug'=>$slug,'status'=>Page::PUBLISHED));
 		if($pageId===false){
-			$newSlug=PageSlugRedirect::get($slug);
+			$newSlug=SlugRedirect::get('Page',$slug);
 			notFoundIfFalse($newSlug);
 			redirect(array('/:slug',$newSlug));
 		}
