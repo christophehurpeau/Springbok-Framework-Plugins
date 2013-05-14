@@ -1,7 +1,7 @@
 <?php
 /** @TableAlias('sb') @Created @Updated @Parent /* IF(searchable_seo) *\/ @Seo /* /IF *\/ @History('SearchableHistory') */
 class Searchable extends SSqlModel{
-	use BParent,BNormalized,BHistory/* IF(searchable_seo) */,BSlug,BSeo/* /IF */;
+	use BParent,BNormalized,BHistory/* IF(searchable_seo) */,BSlug,BSlugRedirectable,BSeo/* /IF */;
 	
 	const INVALID=0,VALID=1,DELETED=2;
 	
@@ -73,6 +73,7 @@ class Searchable extends SSqlModel{
 		if(!empty($data['name']) || (!empty($this->name) && array_key_exists('visible',$data))){ /* isset will return false if $data['visible']===null */
 			$this->reindex();
 		}
+		return true;
 	}
 	
 	public function reindex(){

@@ -15,6 +15,12 @@ class DevTestsController extends Controller{
 	/** */
 	function view($file){
 		$results=include APP.'tests/'.str_replace('..','',$file);
+		if(empty($results) || $results===1){
+			$className=basename($file,'.php').'Test';
+			if(class_exists($className,false)){
+				$results=$className::run();
+			}
+		}
 		mset($results);
 		render();
 	}

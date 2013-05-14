@@ -1,7 +1,7 @@
 <?php
 /** @TableAlias('pg') @DisplayField('name') @Child('Searchable','created,updated') @Created @Updated @UniqueSlug */
 class Page extends Searchable{
-	use BChild,BSlug,BSeo;
+	use BChild,BSlug,BSlugRedirectable,BSeo;
 	
 	const DRAFT=1,PUBLISHED=2,DELETED=4;
 		
@@ -28,8 +28,6 @@ class Page extends Searchable{
 	public static function afterCreateTable(){
 	}
 	
-	public static $beforeUpdate=array('_setOldSlug');
-	public static $afterUpdate=array('_addSlugRedirect');
 	public static $afterSave=array('destroyVElement');
 	
 	
@@ -37,16 +35,9 @@ class Page extends Searchable{
 		return self::QOne()->fields('id,slug')->byId($id);
 	}
 	
-	private function _setOldSlug(){
-		$oldSlug=self::QValue()->field('slug')->byId($this->id);
-		if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
-		return true;
-	}
-	private function _addSlugRedirect(){
-		if(!empty($this->oldSlug)) PageSlugRedirect::add($this->oldSlug,$this->slug);
-	}
 	public function destroyVElement(){
 		VPage::destroy($this->id);
+		return true;
 	}
 	
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->content),ENT_QUOTES,'UTF-8')))); }

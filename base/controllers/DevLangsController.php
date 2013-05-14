@@ -1,5 +1,7 @@
 <?php
+exit('TODO : edit yaml files');
 define('SRC',dirname(APP).'/src/');
+include CORE.'enhancers/Translations.php';
 class DevLangsController extends Controller{
 	/** */
 	function index(){
@@ -9,46 +11,22 @@ class DevLangsController extends Controller{
 	/** @ValidParams @NotEmpty('lang') */
 	function lang($lang){
 		mset($lang);
-		$arrayStrings=array('all'=>array());
-		self::_recursiveFiles($projectPath,$arrayStrings);
-		$all=array_unique($arrayStrings['all']);
-		unset($arrayStrings['all']);
+		$arrayStrings=SpringbokTranslations::findTranslations(SRC);
+		$allStrings=$arrayStrings['all']; unset($arrayStrings['all']);
 		//debug($arrayStrings);
 		//exit;
 		
 		$db=self::_loadDbLang($lang);
-		//$db->doUpdate('CREATE TABLE IF NOT EXISTS t(s NOT NULL,c NOT NULL,t NOT NULL, PRIMARY KEY(s,c)');
+		SpringbokTranslations::checkDb($db);
 		
-		
-		$dbSchema=new DBSchemaSQLite($db,'t');
-		$dbSchema->setModelInfos(array(
-			'primaryKeys'=>array('s','c'),
-			'columns'=>array(
-				's'=>array('type'=>'TEXT','notnull'=>true,'unique'=>false,'default'=>false),
-				'c'=>array('type'=>'TEXT','notnull'=>true,'unique'=>false,'default'=>'"a"'),
-				't'=>array('type'=>'TEXT','notnull'=>true,'unique'=>false,'default'=>false)
-			)
-		));
-		if(!$dbSchema->tableExist()) $dbSchema->createTable();
-		//else $dbSchema->compareTableAndApply();
-		
-		set('translations',$db->doSelectListValue('SELECT s,t FROM t WHERE c=\'a\' AND s NOT LIKE "plugin%"'));
-		
-		set_('allStrings',$all);
-		set_('arrayStrings',$arrayStrings);
+		$translations=$db->doSelectListValue('SELECT s,t FROM t WHERE c=\'a\' AND s NOT LIKE "plugin%"');
+		mset($translations,$allStrings,$arrayStrings);
 		render();
 	}
 
 	/** @ValidParams @NotEmpty('lang') */
 	function save($lang, array $data){
-		$db=self::_loadDbLang($lang);
-		$db->doUpdate('DELETE FROM t WHERE c=\'a\' AND s NOT LIKE "plugin%"');
-		$statement=$db->getConnect()->prepare('INSERT INTO t(s,c,t) VALUES (:s,\'a\',:t)');
-		if(!empty($data)) foreach($data as $d){
-			$statement->bindValue(':s',$d['s']);
-			$statement->bindValue(':t',$d['t']);
-			$statement->execute();
-		}
+		SpringbokTranslations::saveAll($lang,$data);
 		
 		redirect(['/dev/:controller(/:action/*)?','langs','lang',$lang]);
 	}
@@ -71,18 +49,7 @@ class DevLangsController extends Controller{
 	
 	/** @ValidParams @NotEmpty('lang') */
 	function sp_save(string $lang, array $data){
-		$db=self::_loadDbLang($lang);
-		$db->doUpdate('DELETE FROM t WHERE c IN(\'s\',\'p\')');
-		$statementSingular=$db->getConnect()->prepare('INSERT INTO t(s,c,t) VALUES (:s,\'s\',:t)');
-		$statementPlural=$db->getConnect()->prepare('INSERT INTO t(s,c,t) VALUES (:s,\'p\',:t)');
-		foreach($data as $d){
-			$statementSingular->bindValue(':s',$d['s']);
-			$statementSingular->bindValue(':t',$d['singular']);
-			$statementSingular->execute();
-			$statementPlural->bindValue(':s',$d['s']);
-			$statementPlural->bindValue(':t',$d['plural']);
-			$statementPlural->execute();
-		}
+		SpringbokTranslations::saveAllSP($lang,$data);
 		redirect(['/dev/:controller(/:action/*)?','langs','sp',$lang]);
 	}
 	
@@ -91,19 +58,13 @@ class DevLangsController extends Controller{
 		mset($lang);
 		
 		$all=array();
-		if($dir=opendir(($dirname=APP.'models/infos/'))){
-			$files=array();
-			while (false !== ($file = readdir($dir)))
-				if($file != '.' && $file != '..' && substr($file,-1)!=='_' && !is_dir($filename=$dirname.$file)) $files[$file]=$filename;
-			closedir($dir);
-			ksort($files);
-			
-			foreach($files as $modelname=>$file){
-				$infos=include $file;
-				$all[$modelname][]='';
-				$all[$modelname][]='New';
-				foreach($infos['columns'] as $key=>$v) $all[$modelname][]=$key;
-			}
+		$files=SpringbokTranslations::listInfosModels(APP.'models/infos/');
+		
+		foreach($files as $modelname=>$file){
+			$infos=include $file;
+			$all[$modelname][]='';
+			$all[$modelname][]='New';
+			foreach($infos['columns'] as $key=>$v) $all[$modelname][]=$key;
 		}
 		
 		
@@ -225,31 +186,6 @@ class DevLangsController extends Controller{
 	
 	
 	private static function _loadDbLang($lang){
-		$projectConfig=include SRC.'config/_'.ENV.'.php';
-		return new DBSQLite(false,array( 'file'=>$projectConfig['db']['_lang'].$lang.'.db','flags'=>SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE ));
-	}
-	
-	protected static function _recursiveFiles(&$path,&$arrayStrings,$functionName='_t',$deleteLastParam=false,$pattern=false){
-		foreach(new RecursiveDirectoryIterator($path,FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS)
-					as $pathname=>$fileInfo){
-			if(substr($fileInfo->getFilename(),0,1) == '.') continue;
-			if($fileInfo->isDir()) self::_recursiveFiles($pathname,$arrayStrings,$functionName,$deleteLastParam);
-			if(!in_array(($ext=substr($fileInfo->getFilename(),-3)),array('.js','php')) || substr($fileInfo->getFilename(),0,4)=='i18n') continue;
-			$matches=array(); preg_match_all($pattern?$pattern:'/(?:\b'.$functionName.'\((.+)\)'.($ext==='php'?'|\{'.substr($functionName,1).'\s+([^}]+)\s*\}':'').')/Um',file_get_contents($pathname),$matches);
-			if(!empty($matches[1])){
-				foreach($matches[1] as $key=>$value)
-					if(empty($matches[1][$key])) $matches[1][$key]=$matches[2][$key];
-				unset($matches[2]);
-				
-				$matches=array_map(function($v) use(&$deleteLastParam){
-					$string=substr($v,1);
-					if($deleteLastParam) $string=substr($string,0,strrpos($string,','));
-					return stripslashes(substr($string,0,-1));
-				},$matches[1]);
-				foreach($matches as $keyM=>$match) if(substr($match,0,7)==='plugin.') unset($matches[$keyM]);
-				$arrayStrings['all']=array_merge($arrayStrings['all'],$matches);
-				$arrayStrings[$pathname]=$matches;
-			}
-		}
+		return SpringbokTranslations::loadDbLang(DB::langDir(),$lang);
 	}
 }

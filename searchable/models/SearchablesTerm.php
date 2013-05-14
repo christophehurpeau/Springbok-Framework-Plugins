@@ -132,6 +132,7 @@ class SearchablesTerm extends SSqlModel{
 			unset($this->oldSlug);
 		}
 		/* /IF */
+		return true;
 	}
 	
 	public function adminLink(){
