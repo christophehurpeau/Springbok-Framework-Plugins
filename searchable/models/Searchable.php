@@ -73,6 +73,7 @@ class Searchable extends SSqlModel{
 		if(!empty($data['name']) || (!empty($this->name) && array_key_exists('visible',$data))){ /* isset will return false if $data['visible']===null */
 			$this->reindex();
 		}
+		return true;
 	}
 	
 	public function reindex(){

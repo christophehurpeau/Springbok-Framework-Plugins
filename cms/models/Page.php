@@ -28,8 +28,6 @@ class Page extends Searchable{
 	public static function afterCreateTable(){
 	}
 	
-	public static $beforeUpdate=array('_setOldSlug');
-	public static $afterUpdate=array('_addSlugRedirect');
 	public static $afterSave=array('destroyVElement');
 	
 	
@@ -39,6 +37,7 @@ class Page extends Searchable{
 	
 	public function destroyVElement(){
 		VPage::destroy($this->id);
+		return true;
 	}
 	
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->content),ENT_QUOTES,'UTF-8')))); }
