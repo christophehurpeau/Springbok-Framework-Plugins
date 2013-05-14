@@ -20,10 +20,10 @@ class SlugRedirect extends SSqlModel{
 			self::QInsertSelect()->ignore()->query(self::QAll()->setFields(array('model_name','old_slug','('.UPhp::exportString($newSlug).')','("")','NOW()'))
 							->where(array('new_slug'=>$oldSlug,'model_name'=>$modelName)));
 	}
-	
+	/*
 	public static function slugAdded($modelName,$slug){
 		self::QUpdateOneField('direct',false)->where(array('model_name'=>$modelName,'old_slug'=>$slug));
-	}
+	}*/
 	
 	
 	public static function get($modelName,$oldSlug){
