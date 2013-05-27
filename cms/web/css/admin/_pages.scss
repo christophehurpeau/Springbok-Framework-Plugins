@@ -8,6 +8,7 @@
 
 @includeCore 'codemirror/codemirror.css';
 @includeCore 'codemirror/themes/springbok.css';
+@includeCore 'codemirror/addons/hint/show-hint.css';
 
 body #container .fullscreen{
 	display: block;

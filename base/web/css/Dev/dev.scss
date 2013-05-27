@@ -20,3 +20,19 @@ ul.devtools_colors li{
 	padding:1px 0;
 	width:70px;
 }
+
+.message .methodName{
+	padding:3px 6px;
+	display:inline-block;
+}
+
+.message.success .methodName{
+	background:#1f7b1f;
+	color:#fff;
+	text-shadow:0 -1px 0 rgba(0, 0, 0, 0.6)
+}
+.message.error .methodName{
+	background:#a40000;
+	color:#fff;
+	text-shadow:0 -1px 0 rgba(0, 0, 0, 0.6)
+}

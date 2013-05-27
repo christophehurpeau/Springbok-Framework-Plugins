@@ -3,7 +3,7 @@ Controller::$defaultLayout='Dev/tests';
 class DevTestsController extends Controller{
 	/** */
 	function beforeRender(){
-		self::setForLayout('tests',new RecursiveDirectoryIterator(APP.'tests',FilesystemIterator::SKIP_DOTS));
+		self::setForLayout('tests',STest::directoryIterator());
 		return true;
 	}
 	
@@ -13,15 +13,24 @@ class DevTestsController extends Controller{
 	}
 	
 	/** */
-	function view($file){
-		$results=include APP.'tests/'.str_replace('..','',$file);
-		if(empty($results) || $results===1){
-			$className=basename($file,'.php').'Test';
-			if(class_exists($className,false)){
-				$results=$className::run();
+	function all(){
+		$tests=STest::directoryIterator(); $allResults=array();
+		UPhp::recursive(function($callback,$tests) use(&$allResults){
+			foreach($tests as $path=>$file){
+				if($file->isDir())
+					$callback($callback,new RecursiveDirectoryIterator($path,FilesystemIterator::SKIP_DOTS));
+				else
+					$allResults[$path]=STest::runFile($path);
 			}
-		}
-		mset($results);
+		},$tests);
+		set('allResults',$allResults);
+		set('tests',$tests);
+		render();
+	}
+	
+	/** */
+	function view($file){
+		set('results',STest::runFile(APP.'tests/'.str_replace('..','',$file)));
 		render();
 	}
 }

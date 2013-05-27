@@ -6,12 +6,24 @@ includeCore('springbok.tinymce');
 includeCore('components/ImageGallery');
 
 includeCore('codemirror/codemirror');
-includeCore('codemirror/util/overlay');
+includeCore('codemirror/addons/search/search');
+includeCore('codemirror/addons/search/match-highlighter');
+includeCore('codemirror/addons/edit/matchbrackets');
+includeCore('codemirror/addons/edit/closebrackets');
+includeCore('codemirror/addons/edit/closetag');
+includeCore('codemirror/addons/fold/foldcode');
+includeCore('codemirror/addons/mode/overlay');
+includeCore('codemirror/addons/hint/show-hint');
 
 includeCore('codemirror/modes/xml/xml');
 includeCore('codemirror/modes/javascript/javascript');
+includeCore('codemirror/addons/hint/javascript-hint');
 includeCore('codemirror/modes/css/css');
 includeCore('codemirror/modes/htmlmixed/htmlmixed');
+includeCore('codemirror/addons/hint/html-hint');
+
+includeCore('codemirror/addons/fold/xml-fold');
+includeCore('codemirror/addons/fold/brace-fold');
 
 
 includeLib('plupload/plupload');
