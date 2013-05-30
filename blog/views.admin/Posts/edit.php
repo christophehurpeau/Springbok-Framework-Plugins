@@ -30,13 +30,13 @@
 		<div id="editTab1" class="clearfix">
 			{=$form->input('name')->wp100()->required()}
 			
-			/* IF(blog_personalizeAuthors_enabled) */
+			/*#if blog_personalizeAuthors_enabled*/
 			<div class="floatR clearfix mt10 ml10 block1" style="width:180px">
 				<b>Auteurs</b>
 				<? HHtml::ajaxCRDSelectFiltrable('/postAuthors',PostsAuthor::findListName(),$post->authors,array('url'=>'/'.$id,'selectAttributes'=>array('style'=>'width:135px'))) ?>
 				{=$form->submit(true)->container()->addClass('center')}
 			</div>
-			/* /IF */
+			/*#/if*/
 			
 			<div class="content mt10 mr200 clearfix">
 				<div id="divPostImage">

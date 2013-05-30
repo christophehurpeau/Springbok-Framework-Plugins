@@ -2,15 +2,15 @@
 class PostController extends AController{
 	/** @ValidParams('/') @Id('id') @NotEmpty('slug') */
 	function view(int $id,$slug){
-		$post=Post::QOne()->fields('id')->withParent('name,slug')->where(/* IF(blog_slugOnly_enabled) */$id===null ? array('slug'=>$slug) :/* /IF */array('id'=>$id))
+		$post=Post::QOne()->fields('id')->withParent('name,slug')->where(/*#if blog_slugOnly_enabled*/$id===null ? array('slug'=>$slug) :/*#/if*/array('id'=>$id))
 			->addCondition('status',Post::PUBLISHED)->notFoundIfFalse();
-		if(/* IF(blog_slugOnly_enabled) */$id!==null && /* /IF*/$post->slug!==$slug) redirectPermanent($post->link());
+		if(/*#if blog_slugOnly_enabled*/$id!==null && /*#/if*/$post->slug!==$slug) redirectPermanent($post->link());
 
-		/* IF(blog_comments_enabled) */
+		/*#if blog_comments_enabled*/
 		$userId=CSecure::connected();
 		$pagination=$post->findWithPaginate('PostComment',PostComment::_paginationQueryCommentsOptions($userId));
 		$pagination->pageSize(5)->page(1)->execute();
-		/* /IF */
+		/*#/if*/
 		
 		$ve=VPost::create($id);
 		set('metas',$ve->metas());
@@ -21,7 +21,7 @@ class PostController extends AController{
 	
 	public static function _beforeRenderPost(&$post){}
 	
-	/* IF(blog_comments_enabled) */
+	/*#if blog_comments_enabled*/
 	/** @Ajax
 	* postId > @Required
 	* page > @Required
@@ -38,7 +38,7 @@ class PostController extends AController{
 		set('comments',$pagination);
 		render('_comments');
 	}
-	/* /IF */
+	/*#/if*/
 	
 	/** @Ajax @Check
 	* postId > @Required

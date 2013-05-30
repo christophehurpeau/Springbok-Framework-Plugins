@@ -1,6 +1,6 @@
 <?php
 class VPostsTags extends SViewCachedElement{
-	/* DEV */ public function exists(){ return false; } /* /DEV */
+	/*#if DEV*/ public function exists(){ return false; } /*#/if*/
 	
 	public static function path(){return DATA.'cache/posts-tags-list';}
 	public static function vars(){

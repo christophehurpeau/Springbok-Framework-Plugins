@@ -17,12 +17,12 @@ class UsersController extends AController{
 	
 	protected static function _renderConnected(){
 		$user=ACSecure::user();
-		self::renderJSON(json_encode(array( 'userName'=>$user->name()/* IF(users.pseudo) */, 'pseudo'=>$user->pseudo /* /IF */)));
+		self::renderJSON(json_encode(array( 'userName'=>$user->name()/*#if users.pseudo*/, 'pseudo'=>$user->pseudo /*#/if*/)));
 	}
 	
 	
 	/** @Ajax @Required('user')
-	* user > @Valid('email'/* IF(users.pseudo) *\/,'pseudo'/* /IF *\/)
+	* user > @Valid('email'/*#if users.pseudo*\/,'pseudo'/*#/if*\/)
 	*/ function ajaxRegister(User $user){
 		renderText(CValidation::hasErrors()?'0':User::register($user));
 	}
@@ -41,13 +41,13 @@ class UsersController extends AController{
 	}
 	
 	
-	/* IF(users.pseudo) */
+	/*#if users.pseudo*/
 	/** @Ajax @ValidParams @NotEmpty('val') */
 	function checkPseudo($val){
 		$errorCode=User::checkPseudo(trim($val));
 		renderText($errorCode===true ? '1' : $errorCode);
 	}
-	/* /IF */
+	/*#/if*/
 	
 	/** @Ajax @ValidParams @NotEmpty('val') */
 	function checkEmail($val){

@@ -21,7 +21,7 @@ class SearchablesKeywordTerm extends SearchablesTypedTerm{ /* EXTENDS : methods 
 		'TermKeyword'=>array('modelName'=>'SearchablesKeyword','foreignKey'=>'term_id')
 	);
 	
-	/* VALUE(searchable.SearchablesKeywordTerm.phpcontent) */
+	/*#value searchable.SearchablesKeywordTerm.phpcontent*/
 	
 	public static function byPks($keywordId,$termId){
 		return self::QOne()->where(array('keyword_id'=>$keywordId,'term_id'=>$termId))

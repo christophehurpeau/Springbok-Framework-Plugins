@@ -1,5 +1,5 @@
 <?php
-/* IF(blog_personalizeAuthors_enabled) */
+/*#if blog_personalizeAuthors_enabled*/
 /** @TableAlias('pa') */
 class PostAuthor extends SSqlModel{
 	public
@@ -16,4 +16,4 @@ class PostAuthor extends SSqlModel{
 		return self::QInsert()->set(array('post_id'=>$postId,'author_id'=>$authorId));
 	}
 }
-/* /IF */
+/*#/if*/

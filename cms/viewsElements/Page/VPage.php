@@ -2,7 +2,7 @@
 class VPage extends SViewCachedElement{
 	protected static $views=array('view','metas');
 	
-	/* DEV */ public function exists(){ return false; } /* /DEV */
+	/*#if DEV*/ public function exists(){ return false; } /*#/if*/
 	
 	public static function path($id){return DATA.'elementsCache/pages/'.$id;}
 	

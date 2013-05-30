@@ -14,7 +14,7 @@ class SearchablesTypedTerm extends SSqlModel{ /* EXTENDED by SearchablesKeywordT
 		* @ForeignKey('SearchablesTerm','id')
 		*/ $term_id,
 		/** @SqlType('tinyint(2) unsigned') @NotNull
-		*  @Enum('None','Keyword',20=>'Masculine term',21=>'Feminin term',22=>'Plural term',23=>'Epicene',25=>'Adjective',30=>'Abbreviation',31=>'Acronym',5=>'Spelling mistake'/* VALUE(searchables.terms.types) *\/)
+		*  @Enum('None','Keyword',20=>'Masculine term',21=>'Feminin term',22=>'Plural term',23=>'Epicene',25=>'Adjective',30=>'Abbreviation',31=>'Acronym',5=>'Spelling mistake'/*#value searchables.terms.types*\/)
 		*/ $type;
 	
 	

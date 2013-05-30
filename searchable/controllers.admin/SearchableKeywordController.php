@@ -21,10 +21,10 @@ class SearchableKeywordController extends Controller{
 		$keyword->id=$id;
 		//foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName)
 		//	if(empty($keyword->$metaName)) $keyword->$metaName=$keyword->{'auto_'.$metaName}();
-		/* IF(searchable.keywords.seo) */
+		/*#if searchable.keywords.seo*/
 		foreach(array('meta_title','meta_descr','meta_keywords') as $metaName)
 			if(empty($keyword->$metaName)) $keyword->$metaName=null;
-		/* /IF */
+		/*#/if*/
 		$res=$keyword->update();
 		//SearchableKeywordHistory::create($keyword,SearchableKeywordHistory::SAVE);
 		renderText($res);

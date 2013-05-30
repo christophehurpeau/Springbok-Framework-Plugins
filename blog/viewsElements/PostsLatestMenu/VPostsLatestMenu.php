@@ -1,6 +1,6 @@
 <?php
 class VPostsLatestMenu extends SViewCachedElement{
-	/* DEV */ public function exists(){ return false; } /* /DEV */
+	/*#if DEV*/ public function exists(){ return false; } /*#/if*/
 	public static function path(){return DATA.'elementsCache/posts/latest-menu-list';}
 	public static function vars(){
 		return array(

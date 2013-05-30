@@ -4,7 +4,7 @@ Controller::$defaultLayout='admin/users';
 class UsersController extends Controller{
 	/** */
 	function index(){
-		User::Table()->fields('id,email,pseudo,first_name,last_name,gender/* IF(users.pseudo) */,pseudo/* /IF */,type,status,created,updated')
+		User::Table()->fields('id,email,pseudo,first_name,last_name,gender/*#if users.pseudo*/,pseudo/*#/if*/,type,status,created,updated')
 			->allowFilters()->paginate()->actionClick('view')->render('Utilisateurs');
 	}
 	

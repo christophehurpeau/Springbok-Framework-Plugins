@@ -9,9 +9,9 @@ HBreadcrumbs::set(array('Mon compte'=>'/user'));
 <?php $attrs=$user->type!==User::SITE ? array('disabled'=>true) : array(); ?>
 {=$form->input('first_name',$attrs)}
 {=$form->input('last_name',$attrs)}
-/* IF(users.pseudo) */
+/*#if users.pseudo*/
 {=$form->input('pseudo',array('data-ajaxcheck'=>'pseudo','required'=>true,'data-checkexception'=>$user->pseudo))}
-/* /IF */
+/*#/if*/
 {if $user->type!==User::SITE}{=$form->input('gender',array('disabled'=>true,'value'=>$user->gender()))}
 {else}{=$form->select('gender',SConsts::gender())}{/if}
 {=$form->input('email',array('data-ajaxcheck'=>'email','required'=>true,'data-checkexception'=>$user->email)+$attrs)}

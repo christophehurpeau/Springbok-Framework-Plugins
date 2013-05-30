@@ -5,7 +5,7 @@ class PostsTag extends SSqlModel{
 	
 	public static $belongsTo=array(
 		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'id','fieldsInModel'=>true,
-			'fields'=>array('term'=>'name'/* IF(searchable.keywordTerms.seo) */,'slug'/* /IF */ /* IF(searchable.keywordTerms.slug) */,'slug'/* /IF */),'alias'=>'skmt'),
+			'fields'=>array('term'=>'name'/*#if searchable.keywordTerms.seo*/,'slug'/*#/if*/ /*#if searchable.keywordTerms.slug*/,'slug'/*#/if*/),'alias'=>'skmt'),
 		'Keyword'=>array('modelName'=>'SearchablesKeyword','dataName'=>'keyword','foreignKey'=>'id','fieldsInModel'=>true,
 			'fields'=>array('slug')),
 	);
@@ -31,16 +31,16 @@ class PostsTag extends SSqlModel{
 	}
 	
 	public static function withOptions(){
-		return array('fields'=>'id','with'=>array('MainTerm'/* IF(searchable.keywords.slug) */,'Keyword'/* /IF */));//array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name/* IF(searchable_slug) */,slug/* /IF */'))
+		return array('fields'=>'id','with'=>array('MainTerm'/*#if searchable.keywords.slug*/,'Keyword'/*#/if*/));//array('fields'=>'id','with'=>array('Parent'=>array('fields'=>'name/*#if searchable_slug */,slug/*#/if*/'))
 	}
 
 	public static function QOne(){
-		return /**/parent::QOne()->with('MainTerm')/* IF(searchable.keywords.slug) */->with('Keyword')/* /IF */;
+		return /**/parent::QOne()->with('MainTerm')/*#if searchable.keywords.slug*/->with('Keyword')/*#/if*/;
 	}
 	
 	const MAX_SIZE=20;
 	public static function findAllSize(){
-		$models=self::QListAll()->setFields(false)->with('MainTerm')/* IF(searchable.keywords.slug) */->with('Keyword')/* /IF */
+		$models=self::QListAll()->setFields(false)->with('MainTerm')/*#if searchable.keywords.slug*/->with('Keyword')/*#/if*/
 			->with('PostTag',array('isCount'=>true))
 			->orderBy(array('tags'=>'DESC'))
 			->limit(self::MAX_SIZE);
