@@ -16,7 +16,7 @@ class SearchablesWord extends SSqlModel{
 					explode(' ',trim(preg_replace('/[\s\-]+/',' ',strtolower(HString::removeSpecialChars($phrase))))))),					function($word){return !empty($word);});
 	}
 	
-	/* VALUE(searchables_word_phpcontent) */ 
+	/*#value searchables_word_phpcontent*/ 
 	
 	
 	public static function &createOrIncrement($word){

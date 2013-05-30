@@ -1,10 +1,10 @@
 <?php
-/** @TableAlias('u') @Created @Updated /* IF(user.searchable) *\/ @Child('Searchable','name,slug') /* /IF *\/ @DisplayField('IF(first_name is null,/* IF(users.pseudo) *\/IF(last_name IS NULL,pseudo,/* /IF *\/last_name/* IF(users.pseudo) *\/)/* /IF *\/,CONCAT(first_name," ",last_name))') */
+/** @TableAlias('u') @Created @Updated /*#if user.searchable*\/ @Child('Searchable','name,slug') /*#/if*\/ @DisplayField('IF(first_name is null,/*#if users.pseudo*\/IF(last_name IS NULL,pseudo,/*#/if*\/last_name/*#if users.pseudo*\/)/*#/if*\/,CONCAT(first_name," ",last_name))') */
 class User extends SSqlModel{
 	CONST ADMIN=9,WAITING=0,VALID=1,DISABLED=2,DELETED=3,
 		SITE=1,FACEBOOK=2,GOOGLE=3,YAHOO=4,WLIVE=5,OPENID=9;
 	
-	/* IF(user.searchable) */use BChild;/* /IF */
+	/*#if user.searchable*/use BChild;/*#/if*/
 	
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
@@ -25,11 +25,11 @@ class User extends SSqlModel{
 		* @Enum(['SConsts','gender'])
 		* @Icons(SConsts::genderIcons())
 		*/ $gender,
-		/* IF(users.pseudo) */
+		/*#if users.pseudo*/
 		/** @SqlType('varchar(40)') @Null
 		* @Required @Index
 		*/ $pseudo,
-		/* /IF */
+		/*#/if*/
 		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(1) @Comment("Default type")
 		* @Enum(1=>'Site','Facebook','Google','Yahoo','W. Live','OpenID')
 		* @Icons(1=>'pageWww','facebook','google','yahoo','wlive','openid')
@@ -40,26 +40,26 @@ class User extends SSqlModel{
 		*/ $status;
 		
 	public function name(){
-		/* IF(user.searchable) */ if(isset($this->name)) return $this->name; /* /IF */
+		/*#if user.searchable*/ if(isset($this->name)) return $this->name; /*#/if*/
 		return $this->_name();
 	}
 	
 	private function _name(){
-		return $this->first_name===null ? (/* IF(users.pseudo) */$this->last_name === null ? $this->pseudo :/* /IF */ $this->last_name) : $this->first_name.' '.$this->last_name;
+		return $this->first_name===null ? (/*#if users.pseudo*/$this->last_name === null ? $this->pseudo :/*#/if*/ $this->last_name) : $this->first_name.' '.$this->last_name;
 	}
 	
 	public function linkedName(){
 		return HHtml::link($this->name(),$this->link());
 	}
 	
-	/* IF(user.searchable) */
+	/*#if user.searchable*/
 	/* @ImportFunction('searchable','Searchable','link') */
 	public static function findOneById($id){
 		return self::ById($id)->withParent();
 	}
-	/* /IF */
+	/*#/if*/
 	
-	/* IF(users.pseudo) */
+	/*#if users.pseudo*/
 	
 	public function publicName(){
 		return $this->pseudo;
@@ -73,7 +73,7 @@ class User extends SSqlModel{
 		return true;
 	}
 	
-	/* /IF */
+	/*#/if*/
 	
 	
 	public static function findValidUserByEmail($email){
@@ -124,7 +124,7 @@ class User extends SSqlModel{
 	}
 
 	public function check($checkPseudoValidityAndEmailValidity=true){
-		/* IF(users.pseudo) */if($isPseudoSet=isset($this->pseudo)) $this->pseudo=trim($this->pseudo);/* /IF */
+		/*#if users.pseudo*/if($isPseudoSet=isset($this->pseudo)) $this->pseudo=trim($this->pseudo);/*#/if*/
 		if(empty($this->type) || $this->type===User::SITE){
 			foreach(array('first_name','last_name') as $field){
 				if(empty($this->$field)) $this->$field=null;
@@ -135,7 +135,7 @@ class User extends SSqlModel{
 				}
 			}
 		}
-		return $checkPseudoValidityAndEmailValidity===false || (/* IF(users.pseudo) */($isPseudoSet===false||self::checkPseudo($this->pseudo)===true) &&/* /IF */ self::checkEmail($this->email)===true);
+		return $checkPseudoValidityAndEmailValidity===false || (/*#if users.pseudo*/($isPseudoSet===false||self::checkPseudo($this->pseudo)===true) &&/*#/if*/ self::checkEmail($this->email)===true);
 	}
 	
 	
@@ -153,7 +153,7 @@ class User extends SSqlModel{
 		$password=UGenerator::randomLetters(12);
 		$user->pwd=USecure::hashWithSalt($password);
 		$user->status=User::WAITING;
-		/* IF(user.searchable) */ $user->name=$user->first_name.' '.$user->last_name; $user->updateParent(); /* /IF */
+		/*#if user.searchable*/ $user->name=$user->first_name.' '.$user->last_name; $user->updateParent(); /*#/if*/
 		$user->insert('email','pseudo','pwd','status','first_name','last_name');
 		
 		if($connectAfterRegistration) CSecure::setConnected(CSecure::CONNECTION_AFTER_REGISTRATION,$user->id,$user->email);

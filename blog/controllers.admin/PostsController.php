@@ -18,7 +18,7 @@ class PostsController extends Controller{
 		$post->author_id=CSecure::connected();
 		$post->visible=false;
 		$post->insert();
-		/* IF(blog_personalizeAuthors_enabled) */PostAuthor::create($post->id,1);/* /IF */
+		/*#if blog_personalizeAuthors_enabled*/PostAuthor::create($post->id,1);/*#/if*/
 		redirect('/posts/edit/'.$post->id);
 	}
 	
@@ -26,7 +26,7 @@ class PostsController extends Controller{
 	function edit(int $id){
 		$post=Post::ById($id)->withParent('name,slug,meta_title,meta_descr,meta_keywords')->with('PostTag','tag_id')->with('PostCategory','category_id')
 			->with('PostImage')
-			/* IF(blog_personalizeAuthors_enabled) */->with('PostAuthor','author_id')/* /IF */
+			/*#if blog_personalizeAuthors_enabled*/->with('PostAuthor','author_id')/*#/if*/
 			;
 		notFoundIfFalse($post);
 		mset($post,$id);

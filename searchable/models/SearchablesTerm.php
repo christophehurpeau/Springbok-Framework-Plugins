@@ -18,9 +18,9 @@ class SearchablesTerm extends SSqlModel{
 	*/
 	
 	use BNormalized
-		/* IF(searchable.keywordTerms.slug) */,BSlug/* /IF */
-		/* IF(searchable.keywordTerms.seo) */,BSeo/* /IF */
-		/* IF(searchable.keywordTerms.text) */,BTextContent/* /IF */
+		/*#if searchable.keywordTerms.slug*/,BSlug/*#/if*/
+		/*#if searchable.keywordTerms.seo*/,BSeo/*#/if*/
+		/*#if searchable.keywordTerms.text*/,BTextContent/*#/if*/
 		;
 	
 	
@@ -35,7 +35,7 @@ class SearchablesTerm extends SSqlModel{
 	public static $beforeSave=array('_st_beforeSave');
 	public static $afterSave=array('_st_afterSave');
 	
-	/* VALUE(searchable.SearchablesTerm.phpcontent) */
+	/*#value searchable.SearchablesTerm.phpcontent*/
 	
 	public function normalized(){ return UString::normalize($this->term); }
 	
@@ -53,12 +53,12 @@ class SearchablesTerm extends SSqlModel{
 	public function _renormalize(){
 		$this->updated=false;
 		$this->normalized=$this->normalized();
-		/* IF(searchable.keywordTerms.slug) */
+		/*#if searchable.keywordTerms.slug*/
 		if(empty($this->slug)) $this->slug=$this->auto_slug();
 		else unset($this->slug);
-		/* /IF */
+		/*#/if*/
 		unset($this->term);
-		$this->update('normalized'/* IF(searchable.keywordTerms.slug) */,'slug'/* /IF */);
+		$this->update('normalized'/*#if searchable.keywordTerms.slug*/,'slug'/*#/if*/);
 	}
 	
 	
@@ -90,7 +90,7 @@ class SearchablesTerm extends SSqlModel{
 	
 	
 	public function auto_slug(){ return HString::slug($this->term); }
-	/* IF(searchable.keywordTerms.seo) */
+	/*#if searchable.keywordTerms.seo*/
 	public function auto_meta_title(){ return $this->term; }
 	public function auto_meta_descr(){ return empty($this->text)?null:trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->text),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('DISTINCT term')
@@ -99,7 +99,7 @@ class SearchablesTerm extends SSqlModel{
 			->addCondition('skt2.term_id',$this->id)
 			->orderBy('term')); }
 	
-	/* /IF */
+	/*#/if*/
 	
 	
 	public static $beforeUpdate=array('_addTypeInSearchablesTypedTerm');
@@ -112,12 +112,12 @@ class SearchablesTerm extends SSqlModel{
 	public function _st_beforeSave(){
 		if(!empty($this->term)) $this->term=trim($this->term);
 		
-		/* IF(searchable.keywordTerms.slug) */
+		/*#if searchable.keywordTerms.slug*/
 		if(isset($this->id) && !empty($this->slug) && empty($this->oldSlug)){
 			$oldSlug=self::QValue()->field('slug')->byId($this->id);
 			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
 		}
-		/* /IF */
+		/*#/if*/
 		return true;
 	}
 	
@@ -126,12 +126,12 @@ class SearchablesTerm extends SSqlModel{
 			if(SearchableTermWord::add($this->id,$this->term))
 				SearchablesTermAbbreviation::_updateAllAbbr($this->id);
 		}
-		/* IF(searchable.keywordTerms.slug) */
+		/*#if searchable.keywordTerms.slug*/
 		if(!empty($this->oldSlug)){
 			SearchablesTermSlugRedirect::add($this->oldSlug,$this->slug);
 			unset($this->oldSlug);
 		}
-		/* /IF */
+		/*#/if*/
 		return true;
 	}
 	

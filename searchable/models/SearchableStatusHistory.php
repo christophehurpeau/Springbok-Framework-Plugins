@@ -1,5 +1,5 @@
 <?php
-/* IF(searchable.statuses) */
+/*#if searchable.statuses*/
 
 
 
@@ -8,4 +8,4 @@
 
 
 
-/* /IF */
+/*#/if*/

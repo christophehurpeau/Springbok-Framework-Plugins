@@ -1,5 +1,5 @@
 <?php
-/* IF(blog_personalizeAuthors_enabled) */
+/*#if blog_personalizeAuthors_enabled*/
 Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostsAuthorsController extends Controller{
@@ -39,4 +39,4 @@ class PostsAuthorsController extends Controller{
 		CRUD::view('PostsAuthor',$id,array(),array('Post'=>Post::CRUDOptions()));
 	}
 }
-/* /IF */
+/*#/if*/

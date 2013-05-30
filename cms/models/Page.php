@@ -11,10 +11,10 @@ class Page extends Searchable{
 		/** @SqlType('int(10) unsigned') @NotNull
 		*  @ForeignKey('User','id')
 		*/ $author_id,
-		/* IF(cms.multisite) */
+		/*#if cms.multisite*/
 		/** @Index @SqlType('tinyint(3) unsigned') @NotNull
 		*/ $site,
-		/* /IF */
+		/*#/if*/
 		/** @SqlType('text') @NotNull
 		*/ $content,
 		/** @SqlType('tinyint(1)') @NotNull

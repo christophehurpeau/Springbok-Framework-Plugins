@@ -1,4 +1,4 @@
-<?php /* DEV */
+<?php /*#if DEV */
 Controller::$defaultLayout='Dev/default';
 class DevController extends AController{
 	
@@ -14,4 +14,4 @@ class DevController extends AController{
 		}
 	}
 }
-/* /DEV */
+/*#/if */

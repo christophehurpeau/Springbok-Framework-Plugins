@@ -1,20 +1,23 @@
 <?php
-/** @TableAlias('ssk') @Created @Updated @Parent /* IF(searchable.keywords.slug) *\/ @Slug('varchar(100)') @UniqueSlug /* /IF *\/ */
+/** @TableAlias('ssk') @Created @Updated @Parent
+	/*#if searchable.keywords.slug*\/ @Slug('varchar(100)') @UniqueSlug /*#/if*\/
+	/*#if searchable.keywords.translatable*\/ @Translatable /*#/if*\/
+*/
 class SearchablesKeyword extends SSqlModel{
-	use BParent/* IF(searchable.keywords.seo) */,BSeo/* /IF */
-		/* IF(searchable.keywords.slug) */,BSlug/* /IF */
-		/* IF(searchable.keywords.text) */,BTextContent/* /IF */;
+	use BParent/*#if searchable.keywords.seo*/,BSeo/*#/if*/
+		/*#if searchable.keywords.slug*/,BSlug/*#/if*/
+		/*#if searchable.keywords.text*/,BTextContent/*#/if*/;
 	
 	public
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
 		* @ForeignKey('SearchablesTerm','id')
 		*/ $id;
 	
-	/* IF(searchable.keywords.text) */
+	/*#if searchable.keywords.text*/
 	public static function findOneForSeo($id){
-		return parent::QOne()/* IF!(searchable.keywords.seo) */->with('MainTerm')/* /IF */->where(array('id'=>$id));
+		return parent::QOne()/*#if !searchable.keywords.seo*/->with('MainTerm')/*#/if*/->where(array('id'=>$id));
 	}
-	/* /IF */
+	/*#/if*/
 	
 	public static $belongsTo=array(
 		'MainTerm'=>array('modelName'=>'SearchablesTerm','dataName'=>'term','foreignKey'=>'id','fieldsInModel'=>true,'fields'=>'term,slug','alias'=>'skmt')
@@ -35,7 +38,7 @@ class SearchablesKeyword extends SSqlModel{
 		'Keywords'=>array('modelName'=>'SearchablesKeyword','joins'=>array('KeywordsIds'=>array('associationForeignKey'=>'keyword_id')),'with'=>array('MainTerm'))
 	);
 	
-	/* VALUE(searchable.SearchablesKeyword.phpcontent) */
+	/*#value searchable.SearchablesKeyword.phpcontent*/
 	
 	public function name(){
 		return $this->term;

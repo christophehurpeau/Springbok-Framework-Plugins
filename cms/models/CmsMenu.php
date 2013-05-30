@@ -5,29 +5,29 @@ class CmsMenu extends SSqlModel{
 		/** @Pk @SqlType('int(10) unsigned') @NotNull
 		 * @ForeignKey('Page','id','onDeleted'=>'CASCADE')
 		*/ $page_id,
-		/* IF(cms.multisite) */
+		/*#if cms.multisite*/
 		/** @Index @SqlType('tinyint(3) unsigned') @NotNull
 		*/ $site,
-		/* /IF */
+		/*#/if*/
 		/** @SqlType('tinyint(2) unsigned') @NotNull @Default(0) @Comment('Rang d\'apparition')
 		*  @Index
 		*/ $position;
 	
-	public static function add($pageId/* IF(cms.multisite) */,$site/* /IF */){
-		return self::QInsert()->ignore()->cols('page_id,/* IF(cms.multisite) */,site/* /IF */position')
-				->values(array($pageId/* IF(cms.multisite) */,$site/* /IF */,self::findNextPosition()));
+	public static function add($pageId/*#if cms.multisite*/,$site/*#/if*/){
+		return self::QInsert()->ignore()->cols('page_id,/*#if cms.multisite*/,site/*#/if*/position')
+				->values(array($pageId/*#if cms.multisite*/,$site/*#/if*/,self::findNextPosition()));
 	}
 
-	public static function findNextPosition(/* IF(cms.multisite) */$site/* /IF */){
+	public static function findNextPosition(/*#if cms.multisite*/$site/*#/if*/){
 		$currPos=self::QValue()->field('position')->orderBy(array('position'=>'DESC'))
-				/* IF(cms.multisite) */->bySite($site)/* /IF */;
+				/*#if cms.multisite*/->bySite($site)/*#/if*/;
 		return $currPos===false?0:((int)$currPos)+1;
 	}
 
 
 	public static function QListName(){
 		return self::QList()->field('page_id')->with('Page','name')->orderBy('position')
-				/* IF(cms.multisite) */->bySite($_GET['site.num'])/* /IF */;
+				/*#if cms.multisite*/->bySite($_GET['site.num'])/*#/if*/;
 	}
 	
 }

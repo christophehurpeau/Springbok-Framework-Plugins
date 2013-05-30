@@ -1,5 +1,5 @@
 <?php
-/* IF(blog_personalizeAuthors_enabled) */
+/*#if blog_personalizeAuthors_enabled*/
 /** @TableAlias('a') */
 class PostsAuthor extends SSqlModel{
 	public
@@ -16,4 +16,4 @@ class PostsAuthor extends SSqlModel{
 		/** @SqlType('datetime') @Null @Default(NULL)
 		*/ $updated;
 }
-/* /IF */
+/*#/if*/

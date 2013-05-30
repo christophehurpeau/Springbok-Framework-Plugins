@@ -2,11 +2,11 @@
 
 {=$form=SearchablesKeyword::Form('keyword')->id('formKeywordEdit')->noDefaultLabel()}
 
-/* IF(searchable.keywords.text) */
+/*#if searchable.keywords.text*/
 <div class="row gut mt10">
 	<div class="col w300">
-/* /IF */
-		<div class="/* IF!(searchable.keywords.seo) */ /* /IF */ block2">
+/*#/if*/
+		<div class="/*#if !searchable.keywords.seo*/ /*#/if*/ block2">
 			<div>Created : <? HTime::compact($keyword->created) ?></div>
 			<div>Types: <?php $types=SearchablesTypedTerm::typesList(); ?>
 				{f $keyword->types as $type}
@@ -18,40 +18,40 @@
 		
 		{include _linkedTerms}
 
-/* IF(searchable.keywords.text) */
+/*#if searchable.keywords.text*/
 	</div>
-/* /IF */
+/*#/if*/
 
 
 	<div class="col">
 		{=$form->input('term')->attrClass('wp100 biginfo')->required()->container()->addClass('mb10')}
 		
-		/* IF(searchable.keywords.seo) */
+		/*#if searchable.keywords.seo*/
 		<? View::element('seo',array('model'=>$keyword,'form'=>$form)) ?>
-		/* /IF */
+		/*#/if*/
 		{=$form->submit(true)->container()->addClass('center')}
 		
 		
-		/* IF(searchable.keywords.text) */
+		/*#if searchable.keywords.text*/
 		<div class="mt10">
 			<h4>Description du mot clé</h4>
 			{=$form->textarea('text')->wp100()}
 			{=$form->submit(true)->container()->addClass('center')}
 		</div>
-		/* /IF */
+		/*#/if*/
 	</div>
 
-/* IF(searchable.keywords.text) */
+/*#if searchable.keywords.text*/
 </div>
-/* /IF */
+/*#/if*/
 {=$form->end(false)}
 
-<?php HHtml::jsReady('/* IF(searchable.keywords.seo) */_.seo.init($(\'#SearchablesKeywordSeo\'),$(\'#linkedTerms ul\'));/* /IF */'
-	.'/* IF(searchable.keywords.text) */S.tinymce.init("100%","330px","basicAdvanced",!!_.cms).wordCount().autolink().autoSave().validXHTML()'
-		/* IF2(searchable.keywords.seo) */.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'/* /IF2 */
+<?php HHtml::jsReady('/*#if searchable.keywords.seo*/_.seo.init($(\'#SearchablesKeywordSeo\'),$(\'#linkedTerms ul\'));/*#/if*/'
+	.'/*#if searchable.keywords.text*/S.tinymce.init("100%","330px","basicAdvanced",!!_.cms).wordCount().autolink().autoSave().validXHTML()'
+		/*#if searchable.keywords.seo*/.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'/*#/if*/
 		.'.createForId("SearchablesKeywordText");'
 	.'$("#formKeywordEdit").ajaxForm(basedir+"searchableKeyword/save/'.$keyword->id.'",false,function(){'
 		//.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
-	.'});/* /IF */'
+	.'});/*#/if*/'
 ) ?>
 <br class="clear"/>

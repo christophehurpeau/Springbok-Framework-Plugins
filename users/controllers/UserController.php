@@ -14,9 +14,9 @@ class UserController extends AController{
 				$user->id=CSecure::connected();
 				$currentUser=CSecure::user();
 				$user->type=$currentUser->type;
-				/* IF(users.pseudo) */
+				/*#if users.pseudo*/
 				if($user->pseudo===$currentUser->pseudo || User::checkPseudo($user->pseudo)!==true) unset($user->pseudo);
-				/* /IF */
+				/*#/if*/
 				if(isset($user->email) && $user->email!==$currentUser->email){
 					$user->email=strtolower($user->email);
 					if(User::checkEmail($user->email)===true){
@@ -35,7 +35,7 @@ class UserController extends AController{
 				self::_updateUser($currentUser,$user);
 				
 				if($currentUser->type!==User::SITE){
-					/* IF(users.pseudo) */if(!empty($user->pseudo)) $currentUser->pseudo=$user->pseudo;/* /IF */
+					/*#if users.pseudo*/if(!empty($user->pseudo)) $currentUser->pseudo=$user->pseudo;/*#/if*/
 					$_POST['user']=$currentUser->_getData();
 				}
 				CSession::setFlash('Vos informations ont bien été enregistrées.'.$moreInfos,'user/me','message '.$messageType);
@@ -47,25 +47,25 @@ class UserController extends AController{
 
 	private static function _updateUser($currentUser,$user){
 		if($currentUser->type===User::SITE){
-			if($currentUser->first_name!==$user->first_name || $currentUser->last_name!==$user->last_name || $currentUser->gender!==$user->gender/* IF(users.pseudo) */ || isset($user->pseudo)/* /IF */){
+			if($currentUser->first_name!==$user->first_name || $currentUser->last_name!==$user->last_name || $currentUser->gender!==$user->gender/*#if users.pseudo*/ || isset($user->pseudo)/*#/if*/){
 				UserHistory::add(UserHistory::UPDATE);
-				$originalData=User::QRow()->byId($user->id)->fields('p_id,first_name,last_name,gender/* IF(users.pseudo) */,pseudo/* /IF */');
-				/* IF(user.searchable) */ $pId=$originalData['p_id']; /* /IF */
+				$originalData=User::QRow()->byId($user->id)->fields('p_id,first_name,last_name,gender/*#if users.pseudo*/,pseudo/*#/if*/');
+				/*#if user.searchable*/ $pId=$originalData['p_id']; /*#/if*/
 				$isUpdated=$user->updateCompare($originalData);
-				/* IF(user.searchable) */
+				/*#if user.searchable*/
 				if($isUpdated===true){
 					$user->p_id=$pId; $user->visible=true;
 					$user->name=$user->first_name.' '.$user->last_name;
 					$user->updateParent();
 				}
-				/* /IF */
+				/*#/if*/
 			}
-		}/* IF(users.pseudo) */elseif(!empty($user->pseudo)){
+		}/*#if users.pseudo*/elseif(!empty($user->pseudo)){
 			if($user->pseudo!==$currentUser->pseudo){
 				UserHistory::add(UserHistory::UPDATE);
 				$user->update('pseudo');
 			}
-		}/* /IF */
+		}/*#/if*/
 	}
 	
 	/** @ValidParams @AllRequired */

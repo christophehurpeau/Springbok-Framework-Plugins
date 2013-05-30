@@ -1,7 +1,8 @@
-<?php new AjaxContentView('/* VALUE(blog_title) */','blog');
-/* IF!(blog.onIndexPage) */HMeta::canonical(array(true,'/post','?'=>'page='.$posts->getPage()));/* /IF */
-/* IF(blog.onIndexPage) */HBreadcrumbs::setLast(false); HMeta::canonical(array('/','?'=>'page='.$posts->getPage()));/* /IF */
+<?php new AjaxContentView('/*#val blog_title */','blog');
+/*#if !blog.onIndexPage */HMeta::canonical(array(true,'/post','?'=>'page='.$posts->getPage()));
+/*#else */HBreadcrumbs::setLast(false); HMeta::canonical(array('/','?'=>'page='.$posts->getPage()));
+/*#/if*/
 ?>
 
-/* IF(blog_title) */<h1>/* VALUE(blog_title) */</h1>/* /IF */
+/*#if blog_title*/<h1>/*#val blog_title */</h1>/*#/if*/
 {include _listPosts.php}

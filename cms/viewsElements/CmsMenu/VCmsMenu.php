@@ -1,7 +1,6 @@
 <?php
 class VCmsMenu extends SViewCachedElement{
-	
-	/* DEV */ public function exists(){ return false; } /* /DEV */
+	/*#if DEV*/ public function exists(){ return false; } /*#/if*/
 	
 	public static function path(){return DATA.'elementsCache/cmsMenu';}
 	

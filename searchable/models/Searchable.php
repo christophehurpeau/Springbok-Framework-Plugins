@@ -1,7 +1,7 @@
 <?php
-/** @TableAlias('sb') @Created @Updated @Parent /* IF(searchable_seo) *\/ @Seo /* /IF *\/ @History('SearchableHistory') */
+/** @TableAlias('sb') @Created @Updated @Parent /*#if searchable_seo*\/ @Seo /*#/if*\/ @History('SearchableHistory') */
 class Searchable extends SSqlModel{
-	use BParent,BNormalized,BHistory/* IF(searchable_seo) */,BSlug,BSlugRedirectable,BSeo/* /IF */;
+	use BParent,BNormalized,BHistory/*#if searchable_seo*/,BSlug,BSlugRedirectable,BSeo/*#/if*/;
 	
 	const INVALID=0,VALID=1,DELETED=2;
 	
@@ -14,18 +14,18 @@ class Searchable extends SSqlModel{
 		*/ $html_name,
 		/** @SqlType('varchar(500)') @NotNull @NotBindable
 		*/ $long_name,
-		/* IF(searchable.orderField) */
+		/*#if searchable.orderField*/
 		/** @SqlType('varchar(300)') @NotNull
 		* @Index
 		*/ $order,
-		/* /IF */
+		/*#/if*/
 		/** @Boolean @Default(true)
 		*/ $visible
-		/* IF(searchable.statuses) */
+		/*#if searchable.statuses*/
 		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(1)
 		* @Enum(['AConsts','searchableStatuses']) @Index @NotBindable
 		*/ $status,
-		/* /IF */
+		/*#/if*/
 		;
 	
 	public static $beforeSave=array('_setIfName');
@@ -62,9 +62,9 @@ class Searchable extends SSqlModel{
 	public function _setIfName(){
 		if(!empty($this->name)){
 			$this->htmlAndLongName();
-			/* IF(searchable.orderField) */
+			/*#if searchable.orderField*/
 			if(empty($this->order)) $this->order=$this->name;
-			/* /IF */
+			/*#/if*/
 		}
 		return true;
 	}

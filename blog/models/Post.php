@@ -19,10 +19,10 @@ class Post extends Searchable{
 		/** @SqlType('tinyint(1)') @NotNull
 		* @Enum(1=>'Draft',2=>'Published',3=>'Archived',4=>'Deleted')
 		*/ $status,
-		/* IF(blog_comments_enabled) */
+		/*#if blog_comments_enabled*/
 		/** @Boolean @Default(true)
 		*/ $comments_allowed,
-		/* /IF */
+		/*#/if*/
 		/** @SqlType('datetime') @Null @Default(NULL)
 		* @NotBindable
 		*/ $published;
@@ -47,10 +47,10 @@ class Post extends Searchable{
 	}
 
 	public static function QListAll(){
-		return/* */ Post::QAll()->withParent('name,slug,created,updated')->fields('id,/* IF(blog_comments_enabled) */comments_allowed,/* /IF */published')
+		return/* */ Post::QAll()->withParent('name,slug,created,updated')->fields('id,/*#if blog_comments_enabled*/comments_allowed,/*#/if*/published')
 			->with('PostImage','image_id')
 			->with('PostsTag',PostsTag::withOptions())
-			/* IF(blog_comments_enabled) */->with('PostComment',array('isCount'=>true,'onConditions'=>array('pcom.status'=>PostComment::VALID)))/* /IF */
+			/*#if blog_comments_enabled*/->with('PostComment',array('isCount'=>true,'onConditions'=>array('pcom.status'=>PostComment::VALID)))/*#/if*/
 			->byStatus(Post::PUBLISHED)
 			->addCondition('sb.visible',true)
 			->orderBy(array('sb.created'=>'DESC'));
@@ -66,7 +66,7 @@ class Post extends Searchable{
 	
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->excerpt),ENT_QUOTES,'UTF-8')))); }
 	public function auto_meta_keywords(){
-		/* DEV */ if(!isset($this->tags)) throw new Exception('Please find post tags'); /* /DEV */
+		/*#if DEV */ if(!isset($this->tags)) throw new Exception('Please find post tags'); /*#/if*/
 		return empty($this->tags)?'':implode(', ',is_int($this->tags[0])?
 				PostsTag::QValues()->setFields(false)->with('MainTerm','term')->byId($this->tags)->orderBy(array('skmt.term'))
 				: array_map(function(&$t){return $t->name;},$this->tags));

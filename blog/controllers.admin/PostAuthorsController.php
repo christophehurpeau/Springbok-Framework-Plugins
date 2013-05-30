@@ -1,5 +1,5 @@
 <?php
-/* IF(blog_personalizeAuthors_enabled) */
+/*#if blog_personalizeAuthors_enabled*/
 Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostAuthorsController extends Controller{
@@ -16,4 +16,4 @@ class PostAuthorsController extends Controller{
 		renderText($res ? '1' : '0');
 	}
 }
-/* /IF */
+/*#/if*/
