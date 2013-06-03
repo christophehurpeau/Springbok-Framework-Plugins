@@ -14,6 +14,7 @@ class DevTestsController extends Controller{
 	
 	/** */
 	function all(){
+		set_time_limit(0);
 		$tests=STest::directoryIterator(); $allResults=array();
 		UPhp::recursive(function($callback,$tests) use(&$allResults){
 			foreach($tests as $path=>$file){

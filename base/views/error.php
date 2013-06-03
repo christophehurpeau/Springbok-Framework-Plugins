@@ -3,6 +3,6 @@
 	<div class="content">
 		<p>L'application a rencontré une erreur.<br />
 		Si le problème persiste, contactez le support technique.</p>
-		<?php /*#if DEV */ ?>
+		<?php /*#if DEV */ HDev::error($e_message, $e_file, $e_line, $e_context) /*#/if*/ ?>
 	</div>
 </div>
