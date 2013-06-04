@@ -41,6 +41,7 @@ class PagesController extends Controller{
 	* page > @Valid('name','content') */
 	function save(int $id,Page $page){
 		$page->id=$id;
+		$page->checkMetasSet();
 		if(empty($page->slug)) $page->slug=$page->auto_slug();
 		if(!isset($page->status)) $page->status=Page::PUBLISHED; /* locked pages */
 		$res=$page->save();

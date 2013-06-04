@@ -76,7 +76,7 @@
 	.'/*#if searchable.keywordTerms.text*/S.tinymce.init("100%","330px","basicAdvanced",!!_.cms).wordCount().autolink().autoSave().validXHTML()'
 		/*#if searchable.keywordTerms.seo*/.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'/*#/if*/
 		.'.createForId("SearchablesTermText");/*#/if*/'
-	.'$("#formTermEdit").ajaxForm(basedir+"searchableTerm/save/'.$term->id.'",false,function(){'
+	.'$("#formTermEdit").ajaxForm(baseUrl+"searchableTerm/save/'.$term->id.'",false,function(){'
 		//.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
 	.'});') ?>
 <br class="clear"/>

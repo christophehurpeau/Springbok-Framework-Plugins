@@ -5,7 +5,7 @@
 $( ".sortable" ).sortable({
 	placeholder: "ui-state-highlight",
 	update: function(){
-		$.post(basedir+'cmsMenu/sort',$(this).sortable("serialize",{key:'pages[]',attribute:'rel',expression:'(.*)'}));
+		$.post(baseUrl+'cmsMenu/sort',$(this).sortable("serialize",{key:'pages[]',attribute:'rel',expression:'(.*)'}));
 	}
 }).disableSelection().change(function(){$(this).sortable('refresh')});
 {/jsReady}

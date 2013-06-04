@@ -34,7 +34,7 @@ S.FormValidator.addRestriction('data-ajaxcheck',(function(){
 		if(registerCachedValidity[checkName] && registerCachedValidity[checkName][val]!==undefined) errorCode=registerCachedValidity[checkName][val];
 		else{
 			registerCachedValidity[checkName]||(registerCachedValidity[checkName]={});
-			registerCachedValidity[checkName][val]=errorCode=S.syncGet(basedir+'users/check'+checkName,{val:val});
+			registerCachedValidity[checkName][val]=errorCode=S.syncGet(baseUrl+'users/check'+checkName,{val:val});
 		}
 		valid=errorCode==='1';
 		img.remove();

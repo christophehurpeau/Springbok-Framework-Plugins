@@ -4,9 +4,9 @@ includeCore('springbok.jqueryui');
 UObj.extend(_.cms.internalLinks,{
 	post:{
 		title:'Article',params:{id:{title:'Id',style:'width:45px'}},search:{title:'Nom de l\'article (Recherche)'},
-		checkParam:basedir+'posts/checkId',
+		checkParam:baseUrl+'posts/checkId',
 		autocomplete:{
-			source:basedir+'posts/autocomplete',
+			source:baseUrl+'posts/autocomplete',
 			focus:function(){return false;},
 			select:function(event,ui){
 				var div=$(this).closest('div.ui-dialog-content');
@@ -17,9 +17,9 @@ UObj.extend(_.cms.internalLinks,{
 	},
 	postsTag:{
 		title:'Mot clé',params:{id:{title:'Id',style:'width:45px'}},search:{title:'Nom du mot clé (Recherche)'},
-		checkParam:basedir+'postsTags/checkId',
+		checkParam:baseUrl+'postsTags/checkId',
 		autocomplete:{
-			source:basedir+'postsTags/autocomplete',
+			source:baseUrl+'postsTags/autocomplete',
 			focus:function(){return false;},
 			select:function(event,ui){
 				var div=$(this).closest('div.ui-dialog-content');
@@ -39,7 +39,7 @@ _.posts={
 				.createForIds("PostExcerpt");
 			S.tinymce.init("100%","430px",'basicAdvanced',true)
 				.wordCount().autolink().autoSave().validXHTML().createForIds("PostContent");
-			$("#formPostEdit").ajaxForm(basedir+'posts/save/'+postId,false,function(){
+			$("#formPostEdit").ajaxForm(baseUrl+'posts/save/'+postId,false,function(){
 				S.tinymce.switchtoVisual("PostContent");
 				S.tinymce.switchtoVisual("PostExcerpt");
 				if($("#PostContent").val()=="" || $("#PostExcerpt").val()==""){alert("Le texte est vide !");return false;}
@@ -51,7 +51,7 @@ _.posts={
 		var g=_.cms.gallery;
 		g.setOnSelectImage(function(id){
 			g.close();
-			$('#divPostImage').load(basedir+'posts/selectImage/'+postId+'/'+id);
+			$('#divPostImage').load(baseUrl+'posts/selectImage/'+postId+'/'+id);
 		});
 		g.load();
 		return false;
@@ -59,10 +59,10 @@ _.posts={
 	
 	linkedPosts:function(postId){
 		$('#PostLinkedPostAdd').autocomplete({
-			source:basedir+'postPosts/autocomplete/'+postId,
+			source:baseUrl+'postPosts/autocomplete/'+postId,
 			focus:function(event,ui){return false;},
 			select:function(event,ui){
-				$.get(basedir+'postPosts/add/'+postId+'/'+ui.item.id,function(result){
+				$.get(baseUrl+'postPosts/add/'+postId+'/'+ui.item.id,function(result){
 					if(result==='1'){
 						var ul=$('#PostLinkedPosts ul');
 						if(ul.length===0) ul=$('<ul class="compact"/>').appendTo($('#PostLinkedPosts').empty());
@@ -80,14 +80,14 @@ _.posts={
 	
 	delLinked:function(t,postId,linkedPostId){
 		var th=this;
-		$.get(basedir+'postPosts/delete/'+postId+'/'+linkedPostId,function(result){
+		$.get(baseUrl+'postPosts/delete/'+postId+'/'+linkedPostId,function(result){
 			th.updatePostsLinkedList(result,t,'PostLinkedPostsDeleted','delLinked','undelLinked');
 		});
 		return false;
 	},
 	undelLinked:function(t,postId,linkedPostId){
 		var th=this;
-		$.get(basedir+'postPosts/undelete/'+postId+'/'+linkedPostId,function(result){
+		$.get(baseUrl+'postPosts/undelete/'+postId+'/'+linkedPostId,function(result){
 			th.updatePostsLinkedList(result,t,'PostLinkedPosts','undelLinked','delLinked');
 		});
 		return false;

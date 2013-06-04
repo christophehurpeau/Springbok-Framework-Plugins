@@ -47,7 +47,7 @@
 			</div>
 			
 			<div class="sepTop block1">
-				<?php $form->setModelName('Searchable') ?>
+				<?php $form->setModelName('Searchable','post') ?>
 				<? View::element('seo',array('model'=>$post,'form'=>$form)) ?>
 				<?php $form->setModelName('Post') ?>
 				{=$form->submit(true)->container()->addClass('center')}
