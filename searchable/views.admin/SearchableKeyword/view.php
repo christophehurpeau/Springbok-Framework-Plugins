@@ -50,7 +50,7 @@
 	.'/*#if searchable.keywords.text*/S.tinymce.init("100%","330px","basicAdvanced",!!_.cms).wordCount().autolink().autoSave().validXHTML()'
 		/*#if searchable.keywords.seo*/.'.addAttr("onchange_callback",_.seo.tinymceChanged_metaKeywords)'/*#/if*/
 		.'.createForId("SearchablesKeywordText");'
-	.'$("#formKeywordEdit").ajaxForm(basedir+"searchableKeyword/save/'.$keyword->id.'",false,function(){'
+	.'$("#formKeywordEdit").ajaxForm(baseUrl+"searchableKeyword/save/'.$keyword->id.'",false,function(){'
 		//.'if($("#SearchablesKeywordDescr").val()==""){alert("Le texte est vide !");return false;}'
 	.'});/*#/if*/'
 ) ?>

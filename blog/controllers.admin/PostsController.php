@@ -46,7 +46,7 @@ class PostsController extends Controller{
 		$post->id=$id;
 		//if(empty($post->meta_keywords)) $post->findWith('PostTag',array('fields'=>'tag_id'));
 		if(isset($_POST['imageInText'])) PostImage::updateOneFieldByPk($id,'in_text',$_POST['imageInText']?true:false);
-		//foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName) if(empty($post->$metaName)) $post->$metaName=$post->{'auto_'.$metaName}();
+		$post->checkMetasSet();
 		if(empty($post->slug)) $post->slug=$post->auto_slug();
 		if($publish=isset($_POST['publish'])){
 			$post->status=Post::PUBLISHED;

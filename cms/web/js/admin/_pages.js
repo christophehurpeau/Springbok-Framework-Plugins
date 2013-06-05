@@ -38,9 +38,9 @@ _.cms={
 	internalLinks:{
 		page:{
 			title:'Page',params:{id:{title:'Id',style:'width:45px'}},search:{title:'Nom de la page (Recherche)'},
-			checkParam:basedir+'pages/checkId',
+			checkParam:baseUrl+'pages/checkId',
 			autocomplete:{
-				source:basedir+'pages/autocomplete',
+				source:baseUrl+'pages/autocomplete',
 				focus:function(){return false;},
 				select:function(event,ui){
 					var div=$(this).closest('div.ui-dialog-content');
@@ -54,7 +54,7 @@ _.cms={
 	getGallery:function(){
 		if(this.gallery!==undefined) return this.gallery;
 		return this.gallery=new S.ImageGallery($('<div id="CmsGallery" style="width:800px;height:600px;margin-right:20px"/>'),
-										basedir+'filesLibrary',function(id){return staticUrl+'files/library/'+id+'-small.jpg';});
+										baseUrl+'filesLibrary',function(id){return staticUrl+'files/library/'+id+'-small.jpg';});
 	},
 };
 
@@ -65,7 +65,7 @@ _.pages={
 			S.tinymce.init("100%","430px",'basicAdvanced',true).wordCount().autolink().autoSave().validXHTML()
 				.addAttr('onchange_callback',function(inst){$('#SeoMeta_descrAuto').val(UString.stripTags(inst.getBody().innerHTML)).change()})
 				.createForIds("PageContent");
-			$("#formPageEdit").ajaxForm(basedir+'pages/save/'+postId,false,function(){
+			$("#formPageEdit").ajaxForm(baseUrl+'pages/save/'+postId,false,function(){
 				S.tinymce.switchtoVisual("PageContent");
 				if($("#PageContent").val()==""){alert("Le texte est vide !");return false;}
 			});

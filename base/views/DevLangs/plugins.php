@@ -18,6 +18,6 @@
 </ul>
 {jsReady}
 {f $translations as $pluginName=>$pluginStrings}
-	$("#FormLangsPlugin_{$pluginName}").ajaxForm(basedir+"dev/devLangs/pluginSave/{=$project->id}/{$lang}/{$pluginName}");
+	$("#FormLangsPlugin_{$pluginName}").ajaxForm(baseUrl+"dev/devLangs/pluginSave/{=$project->id}/{$lang}/{$pluginName}");
 {/f}
 {/jsReady}
