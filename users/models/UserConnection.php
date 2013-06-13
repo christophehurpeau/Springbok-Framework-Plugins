@@ -14,7 +14,7 @@ class UserConnection extends SSqlModel{
 		 */ $succeed,
 		/** @SqlType('VARCHAR(100)') @Null
 		 */ $login,
-		/** @SqlType('INT(10) unsigned') @NotNull
+		/** @SqlType('INT(10) unsigned') @Null
 		 */ $connected,
 		/** @SqlType('VARCHAR(39)') @NotNull
 		 */ $ip;

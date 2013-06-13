@@ -49,7 +49,7 @@ S.FormValidator.addRestriction('data-ajaxcheck',(function(){
 			}
 		}else{
 			if(!registerPreviousValidity[checkName]){
-				registerPreviousValidity[checkName]=true;console.log('message error',$node);
+				registerPreviousValidity[checkName]=true;
 				$node.after(registerDivInvalidChecks[checkName]=$('<div class="message error bold" style="display:none;opacity:0"/>').text(registerDivHelp[checkName][errorCode]))
 				registerDivInvalidChecks[checkName].animate({opacity:1,height:'show'},'fast');
 			}
