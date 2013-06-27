@@ -1,4 +1,4 @@
-<?php new View(_t('plugin.contactForm.Contact')); HMeta::canonical('/site/contact') ?>
+<?php new View(_t('plugin.contactForm.Contact')); HMeta::canonical('/site/contact'); HMeta::noindex_follow() ?>
 <h1>{t 'plugin.contactForm.Contact'}</h1>
 <p>{t 'plugin.contactForm.details'}</p>
 <p class="italic">{t 'plugin.contactForm.allFieldsRequired'}</p>
