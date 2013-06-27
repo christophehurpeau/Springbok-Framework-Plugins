@@ -4,7 +4,7 @@ class VSeo extends SViewCachedElement{
 	
 	/*#if DEV */public function exists(){ return false; }/*#/if*/
 	
-	public static function path($type,$id){return DATA.'elementsCache/seo/'.$type.'_'.$id;}
+	public static function path($type,$id){return array('seo',$type.'_'.$id);}
 	
 	public static function vars($type,$id,$title=null){
 		$seo=$type::findOneForSeo($id);
@@ -12,6 +12,6 @@ class VSeo extends SViewCachedElement{
 		return array('seo'=>$seo,'title'=>$title);
 	}
 	public function metas(){
-		return json_decode($this->read('metas'),true);
+		return json_decode($this->_store->read('metas'),true);
 	}
 }

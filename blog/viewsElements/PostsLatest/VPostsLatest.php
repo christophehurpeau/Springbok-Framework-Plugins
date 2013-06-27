@@ -4,7 +4,7 @@ class VPostsLatest extends SViewCachedElement{
 	
 	/*#if DEV*/ public function exists(){ return false; } /*#/if*/
 	
-	public static function path(){return DATA.'elementsCache/posts/latest-list';}
+	public static function path(){return array('posts','latest-list');}
 	public static function vars(){
 		$posts=Post::QListAll()->addField('excerpt')->limit(/*#val blog.VPostsLatest.size */);
 		foreach($posts as $post)

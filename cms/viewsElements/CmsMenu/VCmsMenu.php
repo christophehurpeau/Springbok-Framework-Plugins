@@ -2,7 +2,7 @@
 class VCmsMenu extends SViewCachedElement{
 	/*#if DEV*/ public function exists(){ return false; } /*#/if*/
 	
-	public static function path(){return DATA.'elementsCache/cmsMenu';}
+	public static function path(){return array('cms','cmsMenu');}
 	
 	public static function vars(){
 		if(Springbok::$inError!==null) return array('links'=>array());
