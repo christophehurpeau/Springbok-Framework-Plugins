@@ -4,7 +4,7 @@ class VPage extends SViewCachedElement{
 	
 	/*#if DEV*/ public function exists(){ return false; } /*#/if*/
 	
-	public static function path($id){return DATA.'elementsCache/pages/'.$id;}
+	public static function path($id){return array('pages',$id);}
 	
 	public static function vars($id){
 		$page=Page::QOne()->where(array('id'=>$id))->notFoundIfFalse();
@@ -13,6 +13,6 @@ class VPage extends SViewCachedElement{
 		return array('page'=>$page);
 	}
 	public function metas(){
-		return json_decode($this->read('metas'),true);
+		return json_decode($this->_store->read('metas'),true);
 	}
 }

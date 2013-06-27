@@ -4,7 +4,7 @@ class VPost extends SViewCachedElement{
 	
 	/*#if DEV */public function exists(){ return false; }/*#/if*/
 	
-	public static function path($id){return DATA.'elementsCache/posts/'.$id;}
+	public static function path($id){return array('posts',$id);}
 	
 	public static function vars($id){
 		$post=Post::QOne()->withParent()->where(array('id'=>$id))
@@ -29,6 +29,6 @@ class VPost extends SViewCachedElement{
 		return array('post'=>$post);
 	}
 	public function metas(){
-		return json_decode($this->read('metas'),true);
+		return json_decode($this->_store->read('metas'),true);
 	}
 }
