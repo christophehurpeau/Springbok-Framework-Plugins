@@ -11,8 +11,8 @@
 		{/if}
 		<p>{if $page->isPublished()}{link 'Page en ligne',$page->link(),array('entry'=>'index','target'=>'_blank')}{/if}</p>
 	</div>
-	<? $form->submit(true)->container()->addClass('center'); ?>
 	<?php CModule::admin_page_view_col($page) ?>
+	<? $form->submit(true)->container()->addClass('center'); ?>
 </div>
 
 <div class="col variable r200">
