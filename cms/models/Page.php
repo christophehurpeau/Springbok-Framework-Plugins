@@ -80,4 +80,8 @@ class Page extends Searchable{
 		$page->slug=Page::QValue()->field('slug')->addCondition('id',$id);
 		return $page->link();
 	}
+
+	public static function findPlublishedBySlug($slug){
+		return Page::QValue()->field('id')->where(array('slug'=>$slug,'status'=>Page::PUBLISHED));
+	}
 }
