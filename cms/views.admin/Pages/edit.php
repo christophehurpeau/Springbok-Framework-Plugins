@@ -11,7 +11,7 @@
 		{/if}
 		<p>{if $page->isPublished()}{link 'Page en ligne',$page->link(),array('entry'=>'index','target'=>'_blank')}{/if}</p>
 	</div>
-	<?php CModule::admin_page_view_col($page) ?>
+	<?php CModule::admin_page_view_col($page,$form) ?>
 	<? $form->submit(true)->container()->addClass('center'); ?>
 </div>
 
