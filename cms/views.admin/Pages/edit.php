@@ -9,7 +9,7 @@
 		{if $inLocked}
 			{iconLink 'delete','Supprimer cet article','/pages/delete/'.$page->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cette page ?')}
 		{/if}
-		<p>{if $page->isPublished()}{link 'Page en ligne',$page->link(),array('entry'=>'index','target'=>'_blank')}{/if}</p>
+		<p>{if $page->isPublished()}{link 'Page en ligne',$page->link(),array('entry'=>'index','target'=>'_blank','https'=>false)}{/if}</p>
 	</div>
 	<?php CModule::admin_page_view_col($page,$form) ?>
 	<? $form->submit(true)->container()->addClass('center'); ?>

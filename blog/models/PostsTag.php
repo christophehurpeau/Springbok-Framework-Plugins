@@ -72,6 +72,7 @@ class PostsTag extends SSqlModel{
 	public static function internalLink($id){
 		$tag=new PostsTag; $tag->id=$id;
 		$tag->slug=PostsTag::QValue()->noFields()->with('MainTerm',array('fields'=>'slug'))->addCondition('id',$id);
+		if($tag->slug===false) return false;
 		return $tag->link();
 	}
 }

@@ -2,7 +2,7 @@
 class PageController extends AController{
 	/** */
 	function view($slug){
-		if($slug===null) $pageId=1;
+		if($slug===null) $pageId=Page::FIRST;
 		elseif(is_object($slug)){
 			self::viewSearchable($slug);
 			exit;

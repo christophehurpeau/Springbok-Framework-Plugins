@@ -117,6 +117,7 @@ class Post extends Searchable{
 	public static function internalLink($id){
 		$post=new Post; $post->id=$id;
 		$post->slug=Searchable::QValue()->field('slug')->with('Post',array('fields'=>false))->addCondition('p.id',$id);
+		if($post->slug===false) return false;
 		return $post->link();
 	}
 	
