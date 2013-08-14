@@ -2,6 +2,6 @@
 HBreadcrumbs::add('/*#val blog_title */','/posts');
 ?>
 
-<? VSeo::create('SearchablesKeyword',$postTag->p_id,'/*#val blog_title */: '._t('plugin.blog.postsListTag').' '.$postTag->name)->render('view') ?>
+<? VSeo::create('SearchablesKeyword',$postTag->id,'/*#val blog_title */: '._t('plugin.blog.postsListTag').' '.$postTag->name)->render('view') ?>
 
 {include _listPosts.php}
