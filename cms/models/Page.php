@@ -3,6 +3,7 @@
 class Page extends Searchable{
 	use BChild,BSlug,BSlugRedirectable,BSeo;
 	
+	const FIRST=/*#val cms.firstPageId*/0;
 	const DRAFT=1,PUBLISHED=2,DELETED=4;
 		
 	public
@@ -78,6 +79,7 @@ class Page extends Searchable{
 	public static function internalLink($id){
 		$page=new Page; $page->id=$id;
 		$page->slug=Page::QValue()->field('slug')->addCondition('id',$id);
+		if($page->slug===false) return false;
 		return $page->link();
 	}
 

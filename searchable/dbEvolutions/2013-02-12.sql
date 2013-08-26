@@ -1,0 +1,1 @@
+default=>ALTER TABLE `searchables` ADD `html_name` varchar( 500 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `name` 

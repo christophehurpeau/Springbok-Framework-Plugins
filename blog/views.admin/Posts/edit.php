@@ -9,7 +9,7 @@
 			{=$form->select('status',Post::statusesList())}
 		{/if}
 		<p>{iconLink 'delete','Supprimer cet article','/posts/delete/'.$post->id,array('confirm'=>'Êtes-vous sûr de vouloir supprimer cet article ?')}</p>
-		<p>{if $post->isPublished()}{link 'Article en ligne',$post->link(),array('entry'=>'index','target'=>'_blank')}{/if}</p>
+		<p>{if $post->isPublished()}{link 'Article en ligne',$post->link(),array('entry'=>'index','target'=>'_blank','https'=>false)}{/if}</p>
 	</div>
 	<div id="PostTags" class="block1">
 		<b>Tags</b>

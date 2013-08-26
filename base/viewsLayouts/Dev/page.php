@@ -5,7 +5,8 @@
 		'Retour':false,
 		'Langs':[['/dev/:controller(/:action/*)?','langs',null,'']],
 		'Dbs':[['/dev/:controller(/:action/*)?','db',null,'']],
-		'Tests':[['/dev/:controller(/:action/*)?','tests',null,'']]
+		'Tests':[['/dev/:controller(/:action/*)?','tests',null,'']],
+		'Deployments':[['/dev/:controller(/:action/*)?','deployments',null,'']]
 	}
 </header>
 {=$layout_content}
