@@ -15,6 +15,7 @@ class FilesLibraryController extends Controller{
 					'type'=>array('widthPx'=>1),
 					'created','updated'
 			))
+			->actionDelete()
 			->render(_t('plugins.files.FilesLibrary'),function(){
 				echo $form=HForm::File()->action('/filesLibrary/upload')->attrClass('oneline');
 				echo $form->inputFile('file')->noLabel();
@@ -25,6 +26,16 @@ class FilesLibraryController extends Controller{
 	/** */
 	function tools(){
 		/* TODO : regenerate thumbnails,... */
+		redirect('/filesLibrary');
+	}
+	
+	/** */
+	function delete(int $id){
+		if(CHttpRequest::referer(true) !== CRoute::getStringLink('admin','/filesLibrary')) exit;
+		$file = LibraryFile::ById($id);
+		if($file->type===LibraryFile::IMAGE) ACFilesLibraryImages::deleteFiles($id);
+		else ACFilesLibrary::deleteFile($file);
+		LibraryFile::deleteOneById($id);
 		redirect('/filesLibrary');
 	}
 	
