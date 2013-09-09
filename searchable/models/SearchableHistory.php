@@ -5,7 +5,7 @@ class SearchableHistory extends SSqlModel{
 		/** @Pk @AutoIncrement @SqlType('BIGINT(20) unsigned') @NotNull
 		*/ $id,
 		/** @SqlType('int(10) unsigned') @NotNull
-		* @ForeignKey('Searchable','id')
+		* @ForeignKey('Searchable','id','onDelete'=>'CASCADE')
 		*/ $searchable_id,
 		/** @SqlType('int(10) unsigned') @Null
 		* @ForeignKey('User','id')
