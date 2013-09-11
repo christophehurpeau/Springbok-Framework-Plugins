@@ -2,6 +2,7 @@ default=>
 SET FOREIGN_KEY_CHECKS=0;
 CREATE TABLE old_pages SELECT * FROM pages;
 UPDATE `page_histories` ph LEFT JOIN pages p ON p.id=ph.page_id SET ph.page_id=p.p_id;
+UPDATE `cms_menus` cm LEFT JOIN pages p ON p.id=cm.page_id SET cm.page_id=p.p_id;
 UPDATE `pages` SET id=p_id;
 
 
