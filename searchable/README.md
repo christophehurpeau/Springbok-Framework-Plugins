@@ -16,3 +16,4 @@ In our blog example :
 The post *Git : how to create a repository* is **searchable** and is linked to the tag *Git*
 
 
+![Schema](https://raw.github.com/christophehurpeau/Springbok-Framework-Plugins/master/searchable/documentation/searchables.png)
