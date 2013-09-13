@@ -13,13 +13,13 @@ class GuestIp extends SSqlModel{
 		*/ $created;
 	
 	public static function getOrCreate($guestId){
-		$ip=CHttpRequest::getClientIP();
+		$ip=CHttpRequest::getRealClientIP();
 		$id=self::QValue()->field('id')->where(array('guest_id'=>$guestId,'ip'=>$ip));
 		if($id!==false) return $id;
 		return self::QInsert()->set(array('guest_id'=>$guestId,'ip'=>$ip));
 	}
 	
 	public static function create($guestId){
-		return self::QInsert()->set(array('guest_id'=>$guestId,'ip'=>CHttpRequest::getClientIP()));
+		return self::QInsert()->set(array('guest_id'=>$guestId,'ip'=>CHttpRequest::getRealClientIP()));
 	}
 }

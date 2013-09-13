@@ -35,7 +35,7 @@ class JsLog extends SSqlModel{
 		$data=CHttpUserAgent::parseUserAgent();
 		$data['is_mobile']=CHttpUserAgent::isMobileAndNotTablet();
 		$data['is_bot']=CHttpUserAgent::isBot();
-		$data['ip']=CHttpRequest::getClientIP();
+		$data['ip']=CHttpRequest::getRealClientIP();
 		$data['href']=$href;
 		$data['url']=$jsurl;
 		$data['message']=$message;
