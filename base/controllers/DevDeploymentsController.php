@@ -4,13 +4,13 @@ Controller::$defaultLayout='Dev/deployments';
 class DevDeploymentsController extends Controller{
 	private static $deployments;
 	/** */
-	function beforeRender(){
+	static function beforeRender(){
 		self::setForLayout('deployments',self::$deployments=UFile::getYAML(SRC.'config/deployments.yml'));
 		return true;
 	}
 	
 	/** */
-	function index(){
+	static function index(){
 		render();
 	}
 }

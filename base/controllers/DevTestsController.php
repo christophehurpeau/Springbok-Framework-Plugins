@@ -2,18 +2,18 @@
 Controller::$defaultLayout='Dev/tests';
 class DevTestsController extends Controller{
 	/** */
-	function beforeRender(){
+	static function beforeRender(){
 		self::setForLayout('tests',STest::directoryIterator());
 		return true;
 	}
 	
 	/** */
-	function index(){
+	static function index(){
 		render();
 	}
 	
 	/** */
-	function all(){
+	static function all(){
 		set_time_limit(0);
 		$tests=STest::directoryIterator(); $allResults=array();
 		UPhp::recursive(function($callback,$tests) use(&$allResults){
@@ -30,7 +30,7 @@ class DevTestsController extends Controller{
 	}
 	
 	/** */
-	function view($file){
+	static function view($file){
 		set('results',STest::runFile(APP.'tests/'.str_replace('..','',$file)));
 		render();
 	}

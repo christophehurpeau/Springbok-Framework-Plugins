@@ -3,7 +3,7 @@ Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostsCommentsController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		HBreadcrumbs::set(array( 'Articles'=>'/posts', ));
 		PostComment::Table()
 			->fields('id,post_id,comment,status,created')
@@ -14,7 +14,7 @@ class PostsCommentsController extends Controller{
 	}
 	
 	/** */
-	function validation(){
+	static function validation(){
 		HBreadcrumbs::set(array(
 			'Articles'=>'/posts',
 			'Commentaires'=>'/postsComments',
@@ -29,13 +29,13 @@ class PostsCommentsController extends Controller{
 	}
 	
 	/** */
-	function validate(int $id){
+	static function validate(int $id){
 		PostComment::QUpdateOneField('status',PostComment::VALID)->where(array('id'=>$id,'status'=>PostComment::WAITING_VALIDATION))->limit1();
 		redirect('/postsComments/validation');
 	}
 	
 	/** */
-	function deny(int $id){
+	static function deny(int $id){
 		PostComment::QUpdateOneField('status',PostComment::DENIED)->where(array('id'=>$id,'status'=>PostComment::WAITING_VALIDATION))->limit1();
 		redirect('/postsComments/validation');
 	}

@@ -3,7 +3,7 @@ Controller::$defaultLayout='Dev/db';
 class DevDbController extends AController{
 	
 	/** */
-	function beforeRender(){
+	static function beforeRender(){
 		$models=array();
 		foreach(new FilesystemIterator(APP.'models/infos') as $file){
 			$modelName=$file->getFilename();
@@ -15,12 +15,12 @@ class DevDbController extends AController{
 	}
 	
 	/** */
-	function index(){
+	static function index(){
 		render();
 	}
 	
 	/** @NotEmpty('modelName') */
-	function model($modelName){
+	static function model($modelName){
 		self::beforeRender();
 		$modelName::Table()->noAutoRelations()
 			->allowFilters()
@@ -30,7 +30,7 @@ class DevDbController extends AController{
 	}
 	
 	/** @NotEmpty('modelName','pk') */
-	function view($modelName,$pk){
+	static function view($modelName,$pk){
 		$table=$modelName::TableOne()->where(array($modelName::_getPkName()=>$pk))->noAutoRelations()->notFoundIfFalse();
 		$row=$table->getResult();
 		

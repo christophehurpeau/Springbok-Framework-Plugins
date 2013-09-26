@@ -3,7 +3,7 @@ Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostsTagsController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		HBreadcrumbs::set(array('Articles'=>'/posts'));
 		PostsTag::Table()->noAutoRelations()->fields('id')->with('MainTerm')->withParent('id,created,updated')->orderBy(array('ssk.created'))
 			->allowFilters()
@@ -29,20 +29,20 @@ class PostsTagsController extends Controller{
 	}
 	
 	/** @ValidParams('/postsTags') @Id('id') */
-	function edit(int $id){
+	static function edit(int $id){
 		self::_breadcrumbs();
 		render();
 	}
 	
 	/** @ValidParams('/postsTags') @Id('id') */
-	function view(int $id){
+	static function view(int $id){
 		self::_breadcrumbs();
 		CRUD::view('PostsTag',$id,array(),array('Post'=>Post::CRUDOptions()));
 	}
 	
 	
 	/** @Ajax @ValidParams @NotEmpty('term') */
-	function autocomplete($term){
+	static function autocomplete($term){
 		self::renderJSON(SModel::json_encode(
 			PostsTag::QAll()->field('id')->with('MainTerm')
 				->where(array('skmt.term LIKE'=>'%'.$term.'%'))
@@ -52,7 +52,7 @@ class PostsTagsController extends Controller{
 	}
 
 	/** @Ajax @ValidParams @NotEmpty('val') */
-	function checkId(int $val){
+	static function checkId(int $val){
 		$tag=PostsTag::QOne()->field('id')->byId($val);
 		self::renderJSON($tag===false?'{"error":"Tag inconnu"}':$tag->toJSON_adminAutocomplete());
 	}

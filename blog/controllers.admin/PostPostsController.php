@@ -2,7 +2,7 @@
 /** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostPostsController extends Controller{
 	/** @Ajax @ValidParams @Required('id') */
-	function view(int $id){
+	static function view(int $id){
 		$allPosts=Post::QAll()->fields('id,status')->withParent('name,slug')
 			->with('LinkedPost',array('join'=>true,'fields'=>'deleted','fieldsInModel'=>true))
 			->where(array('pp.post_id'=>$id));
@@ -14,13 +14,13 @@ class PostPostsController extends Controller{
 	}
 	
 	/** @Ajax @ValidParams @Required('id') */
-	function refind(int $id){
+	static function refind(int $id){
 		PostPost::refind($id);
 	}
 	
 	
 	/** @Ajax @ValidParams @AllRequired */
-	function delete(int $postId,int $linkedPostId){
+	static function delete(int $postId,int $linkedPostId){
 		if(PostPost::QUpdateOneField('deleted',true)->byPost_idAndLinked_post_idAndManual($postId,$linkedPostId,false)->limit1())
 			self::renderText('1');
 		elseif(PostPost::QDeleteOne()->byPost_idAndLinked_post_idAndManual($postId,$linkedPostId,true))
@@ -29,7 +29,7 @@ class PostPostsController extends Controller{
 	}
 	
 	/** @Ajax @ValidParams @AllRequired */
-	function undelete(int $postId,int $linkedPostId){
+	static function undelete(int $postId,int $linkedPostId){
 		$res=PostPost::QUpdateOneField('deleted',false)->byPost_idAndLinked_post_id($postId,$linkedPostId)->limit1();
 		if(!$res) renderText('0');
 		else{
@@ -40,12 +40,12 @@ class PostPostsController extends Controller{
 
 
 	/** @Ajax @ValidParams @AllRequired */
-	function add(int $postId,int $linkedPostId){
+	static function add(int $postId,int $linkedPostId){
 		renderText(PostPost::add($postId,$linkedPostId)?'1':'0');
 	}
 
 	/** @Ajax @ValidParams @Required('term') */
-	function autocomplete(int $postId,$term){
+	static function autocomplete(int $postId,$term){
 		self::renderJSON(SModel::json_encode(
 			Post::QAll()->fields('DISTINCT id,status')->withParent('name,slug')
 				->with('LinkedPost',array('fields'=>false,'join'=>true))

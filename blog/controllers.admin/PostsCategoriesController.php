@@ -3,7 +3,7 @@ Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostsCategoriesController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		HBreadcrumbs::set(array('Articles'=>'/posts'));
 		PostsCategory::Table()->noAutoRelations()->fields('id')->with('MainTerm')->withParent('id,created,updated')->orderBy(array('ssk.created'))
 			->allowFilters()
@@ -28,13 +28,13 @@ class PostsCategoriesController extends Controller{
 	}
 	
 	/** @ValidParams('/postsCategories') @Required('id') */
-	function edit(int $id){
+	static function edit(int $id){
 		self::_breadcrumbs();
 		CRUD::edit('PostsCategory',$id);
 	}
 	
 	/** @ValidParams('/postsCategories') @Required('id') */
-	function view(int $id){
+	static function view(int $id){
 		self::_breadcrumbs();
 		CRUD::view('PostsCategory',$id,array(),array(
 			'Post'=>Post::CRUDOptions()));

@@ -3,12 +3,12 @@ Controller::$defaultLayout='admin/searchable';
 /** @Check('ACSecureAdmin') @Acl('Searchable') */
 class SearchableController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		Searchable::Table()->allowFilters()->paginate()->actionView()->render('Searchable');
 	}
 	
 	/** */
-	function view(int $id){
+	static function view(int $id){
 		HBreadcrumbs::set(array('Searchables'=>'/searchable'));
 		$table=Searchable::TableOne()->byId($id)->end();
 		if(!$table->hasResult()) exit("Aucun résultat trouvé");
@@ -21,21 +21,21 @@ class SearchableController extends Controller{
 	}
 	
 	/** */
-	function reindex(int $id){
+	static function reindex(int $id){
 		$sb=Searchable::ById($id)->notFoundIfFalse();
 		$sb->reindex();
 		redirect('/searchable/view/'.$id);
 	}
 	
 	/** */
-	function renormalize(int $id){
+	static function renormalize(int $id){
 		$sb=Searchable::ById($id)->notFoundIfFalse();
 		$sb->_renormalize();
 		redirect('/searchable/view/'.$id);
 	}
 	
 	/** */
-	function keywords(){
+	static function keywords(){
 		SearchablesKeyword::Table()->noAutoRelations()->fields('id,_type,created,updated')
 			->with('MainTerm','term,slug')
 			->allowFilters()->paginate()->controller('searchableKeyword')->actionView()
@@ -44,7 +44,7 @@ class SearchableController extends Controller{
 	}
 	
 	/** */
-	function terms(){
+	static function terms(){
 		SearchablesTerm::Table()->noAutoRelations()->fields('id,term,slug,created,updated')
 			->allowFilters()->paginate()->controller('searchableTerm')->actionView()
 			->fields(array('id','term','slug','created','updated'))

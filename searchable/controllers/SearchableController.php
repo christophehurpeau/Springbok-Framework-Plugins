@@ -1,13 +1,13 @@
 <?php
 class SearchableController extends AController{
 	/** @ValidParams @Id @NotEmpty('slug') */
-	function view(int $id,$slug){
+	static function view(int $id,$slug){
 		$sbChild=ACSearchable::find();
 		self::_callSubAction($sbChild);
 	}
 	
 	/**  */
-	function viewBySlug(){
+	static function viewBySlug(){
 		$sbChild=ACSearchable::findBySlug();
 		self::_callSubAction($sbChild);
 	}

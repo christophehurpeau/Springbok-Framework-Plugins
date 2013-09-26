@@ -4,12 +4,12 @@ define('SRC',dirname(APP).'/src/');
 include CORE.'enhancers/Translations.php';
 class DevLangsController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		render();
 	}
 	
 	/** @ValidParams @NotEmpty('lang') */
-	function lang($lang){
+	static function lang($lang){
 		mset($lang);
 		$arrayStrings=SpringbokTranslations::findTranslations(SRC);
 		$allStrings=$arrayStrings['all']; unset($arrayStrings['all']);
@@ -25,14 +25,14 @@ class DevLangsController extends Controller{
 	}
 
 	/** @ValidParams @NotEmpty('lang') */
-	function save($lang, array $data){
+	static function save($lang, array $data){
 		SpringbokTranslations::saveAll($lang,$data);
 		
 		redirect(['/dev/:controller(/:action/*)?','langs','lang',$lang]);
 	}
 	
 	/** @ValidParams @NotEmpty('lang') */
-	function sp(string $lang){
+	static function sp(string $lang){
 		mset($lang);
 		$arrayStrings=array('all'=>array());
 		self::_recursiveFiles($projectPath,$arrayStrings,'_t_p',true);
@@ -48,13 +48,13 @@ class DevLangsController extends Controller{
 	}
 	
 	/** @ValidParams @NotEmpty('lang') */
-	function sp_save(string $lang, array $data){
+	static function sp_save(string $lang, array $data){
 		SpringbokTranslations::saveAllSP($lang,$data);
 		redirect(['/dev/:controller(/:action/*)?','langs','sp',$lang]);
 	}
 	
 	/** @ValidParams @NotEmpty('lang') */
-	function models(string $lang){
+	static function models(string $lang){
 		mset($lang);
 		
 		$all=array();
@@ -76,7 +76,7 @@ class DevLangsController extends Controller{
 	}
 	
 	/** @ValidParams @NotEmpty('lang','modelname') */
-	function modelsSave($lang, string $modelname,array $data){
+	static function modelsSave($lang, string $modelname,array $data){
 		$db=self::_loadDbLang($lang);
 		$db->doUpdate('DELETE FROM t WHERE c=\'f\' AND s like '.$db->escape($modelname.'%'));
 		$statement=$db->prepare('INSERT INTO t(s,c,t) VALUES (:s,\'f\',:t)');
@@ -92,7 +92,7 @@ class DevLangsController extends Controller{
 	}
 	
 	/** @ValidParams @NotEmpty('lang') */
-	function plugins($lang){
+	static function plugins($lang){
 		mset($lang);
 		$enhanceConfig=include SRC.'/config/enhance.php';
 		$plugins=array_map(function(&$v){return $v[1];},$enhanceConfig['plugins']);
@@ -110,7 +110,7 @@ class DevLangsController extends Controller{
 	
 	
 	/** @ValidParams @NotEmpty('lang','pluginName') */
-	function pluginSave($lang,$pluginName,array $data){
+	static function pluginSave($lang,$pluginName,array $data){
 		$db=self::_loadDbLang($lang);
 		$db->doUpdate('DELETE FROM t WHERE c=\'a\' AND s like '.$db->escape('plugin.'.$pluginName.'.%'));
 		$statement=$db->prepare('INSERT INTO t(s,c,t) VALUES (:s,\'a\',:t)');
@@ -125,7 +125,7 @@ class DevLangsController extends Controller{
 	}
 	
 	/** @ValidParams @NotEmpty('lang') */
-	function js(string $lang){
+	static function js(string $lang){
 		mset($lang);
 		$projectPath=SRC.'web/js/';
 		$arrayStrings=array('all'=>array());
@@ -166,7 +166,7 @@ class DevLangsController extends Controller{
 	}
 
 	/** @ValidParams @NotEmpty('lang') */
-	function js_save(int $id, string $lang, array $data){
+	static function js_save(int $id, string $lang, array $data){
 		$projectPath=SRC.'web/js/';
 		
 		$content='';

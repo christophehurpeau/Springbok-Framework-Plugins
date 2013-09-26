@@ -3,7 +3,7 @@ Controller::$defaultLayout='admin/searchable';
 /** @Check('ACSecureAdmin') @Acl('Searchable') */
 class SearchableKeywordController extends Controller{
 	/** @ValidParams('/searchable') @Id */
-	function view($id){
+	static function view($id){
 		HBreadcrumbs::set(array('Keywords'=>'/searchable/keywords'));
 		$keyword=SearchablesKeyword::ById($id)->with('MainTerm')
 				->with('TermWithType')
@@ -17,7 +17,7 @@ class SearchableKeywordController extends Controller{
 	
 	/** @ValidParams @AllRequired @Id
 	* keyword > @Valid('text') */
-	function save(int $id,SearchablesKeyword $keyword){
+	static function save(int $id,SearchablesKeyword $keyword){
 		$keyword->id=$id;
 		//foreach(array('slug','meta_title','meta_descr','meta_keywords') as $metaName)
 		//	if(empty($keyword->$metaName)) $keyword->$metaName=$keyword->{'auto_'.$metaName}();
@@ -31,7 +31,7 @@ class SearchableKeywordController extends Controller{
 	}
 	
 	/** @ValidParams('/searchable') @Id @NotEmpty('term') */
-	function autocomplete(int $id,$term){
+	static function autocomplete(int $id,$term){
 		$keywordsTermsId=SearchablesKeywordTerm::QValues()->field('term_id')->byKeyword_id($id);
 		$where=array('st.term LIKE'=>$term.'%');
 		if(!empty($keywordsTermsId)) $where['term_id NOTIN']=$keywordsTermsId;
@@ -40,18 +40,18 @@ class SearchableKeywordController extends Controller{
 	}
 	
 	/** @ValidParams('/searchable') @Id('id','termId') @NotEmpty('type')*/
-	function add(int $id,int $termId,int $type,int $proximity){
+	static function add(int $id,int $termId,int $type,int $proximity){
 		SearchablesKeywordTerm::add($id,$termId,$type,$proximity);
 		$t=SearchablesKeywordTerm::byPks($id,$termId);
 		renderJSON('{"id":'.$termId.',"html":'.json_encode($t->nameHtml()).'}');
 	}
 	/** @ValidParams('/searchable') @Id('id','termId') */
-	function del(int $termId,int $id){
+	static function del(int $termId,int $id){
 		if(SearchablesKeywordTerm::QDeleteOne()->where(array('term_id'=>$termId,'keyword_id'=>$id)))
 			renderText('1');
 	}
 	/** @ValidParams('/searchable') @Id @NotEmpty('name','type') */
-	function create(int $id,$name,int $type,int $proximity){
+	static function create(int $id,$name,int $type,int $proximity){
 		if(($termId=SearchablesKeyword::addTerm($id,$name,$proximity,$type))){
 			$t=SearchablesKeywordTerm::byPks($id,$termId);
 			renderJSON('{"ok":1,"html":'.json_encode($t->nameHtml()).'}');
@@ -68,7 +68,7 @@ class SearchableKeywordController extends Controller{
 	}
 	
 	/** @ValidParams('/searchable') @Id('id','termId') @NotEmpty('type') */
-	function edit(int $id,int $termId,int $type,int $proximity){
+	static function edit(int $id,int $termId,int $type,int $proximity){
 		$t=SearchablesKeywordTerm::byPks($id,$termId);
 		notFoundIfFalse($t);
 		if($t->type !== $type){

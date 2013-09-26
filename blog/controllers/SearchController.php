@@ -1,7 +1,7 @@
 <?php
 class SearchController extends Controller{
 	/** @ValidParams @NotEmpty('term') */
-	function index($term){
+	static function index($term){
 		$_GET['term']=$term;
 		try{
 			new CSearchResult(new ACPostSearch(),$term);

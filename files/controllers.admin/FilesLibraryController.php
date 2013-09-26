@@ -3,7 +3,7 @@ Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('CMS') */
 class FilesLibraryController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		LibraryFile::Table()->allowFilters()
 			->paginate()
 			->fields(array('id',
@@ -24,13 +24,13 @@ class FilesLibraryController extends Controller{
 			});
 	}
 	/** */
-	function tools(){
+	static function tools(){
 		/* TODO : regenerate thumbnails,... */
 		redirect('/filesLibrary');
 	}
 	
 	/** */
-	function delete(int $id){
+	static function delete(int $id){
 		if(CHttpRequest::referer(true) !== CRoute::getStringLink('admin','/filesLibrary')) exit;
 		$file = LibraryFile::ById($id);
 		if($file->type===LibraryFile::IMAGE) ACFilesLibraryImages::deleteFiles($id);
@@ -40,7 +40,7 @@ class FilesLibraryController extends Controller{
 	}
 	
 	/** */
-	function upload(int $type){
+	static function upload(int $type){
 		if($type===LibraryFile::IMAGE) ACFilesLibraryImages::upload('file');
 		else ACFilesLibrary::uploadAndDetect('file','ACFilesLibraryImages');
 		redirect('/filesLibrary');
@@ -49,14 +49,14 @@ class FilesLibraryController extends Controller{
 	
 	
 	/** @Ajax */
-	function images(int $id){
+	static function images(int $id){
 		if($id===0) $id=false;
 		
 		CGallery::index($id,LibraryFile::IMAGE,'LibraryFolder','LibraryFile');
 	}
 	
 	/** */
-	function uploadImage(int $albumId){
+	static function uploadImage(int $albumId){
 		$image=new LibraryFile();
 		$image->type=LibraryFile::IMAGE;
 		if($albumId!==0) $image->album_id=$albumId;
@@ -64,19 +64,19 @@ class FilesLibraryController extends Controller{
 	}
 	
 	/** @Ajax @ValidParams @AllRequired */
-	function renameFile(int $id,$newName){
+	static function renameFile(int $id,$newName){
 		LibraryFile::updateOneFieldByPk($id,'name',$newName);
 		renderText('1');
 	}
 	
 	/** @Ajax @ValidParams @AllRequired */
-	function renameFolder(int $id,$newName){
+	static function renameFolder(int $id,$newName){
 		LibraryFolder::updateOneFieldByPk($id,'name',$newName);
 		renderText('1');
 	}
 	
 	/** @Ajax @ValidParams @Required('name') */
-	function addFolder(int $parentId,$name){
+	static function addFolder(int $parentId,$name){
 		if($parentId===0) $parentId=null;
 		$id=LibraryFolder::create($parentId,$name);
 		renderJSON('{"id":'.$id.'}');

@@ -1,13 +1,13 @@
 <?php
 class PostsController extends AController{
 	/** */
-	function index(){
+	static function index(){
 		set('posts',Post::QListAll()->paginate()->pageSize(10));
 		render();
 	}
 	
 	/** @ValidParams('/') @Required('slug') */
-	function tag($slug){
+	static function tag($slug){
 		$postTag=PostsTag::QOne()->addCondition('skmt.slug',$slug);
 		if($postTag===false){
 			$postTag=PostsTag::QOne()

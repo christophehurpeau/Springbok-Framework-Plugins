@@ -3,13 +3,13 @@ Controller::$defaultLayout='admin/users';
 /** @Check('ACSecureAdmin') @Acl('Users') */
 class UsersController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		User::Table()->fields('id,email,first_name,last_name,gender/*#if users.pseudo*/,pseudo/*#/if*/,type,status,created,updated')
 			->allowFilters()->paginate()->actionClick('view')->render('Utilisateurs');
 	}
 	
 	/** @ValidParams @Id('id') */
-	function view(int $id){
+	static function view(int $id){
 		$user=User::ById($id)->notFoundIfFalse();
 		mset($user);
 		$paginate=$user->findWithPaginate('UserHistory',array('with'=>array('type'),'orderBy'=>array('created'=>'DESC')));
@@ -17,7 +17,7 @@ class UsersController extends Controller{
 		render();
 	}
 	/** @ValidParams @Id('id') */
-	function disable(int $id){
+	static function disable(int $id){
 		User::QUpdateOneField('status',User::DISABLED)->byIdAndStatus($id,User::VALID);
 		UserHistory::add(UserHistory::DISABLE_USER,CSecure::connected(),$id);
 		redirect('/users/view/'.$id);
@@ -25,7 +25,7 @@ class UsersController extends Controller{
 	
 	
 	/** */
-	function connections(){
+	static function connections(){
 		UserConnection::Table()->orderByCreated()
 			->allowFilters()
 			->paginate()->fields(array('created','type','succeed','login',
@@ -36,7 +36,7 @@ class UsersController extends Controller{
 	}
 
 	/** */
-	function sendValidMail(int $id){
+	static function sendValidMail(int $id){
 		$user=User::ById($id);
 		if($user===false) redirect('/users');
 		$uhe=UserHistoryEmail::findOneByUser_idAndStatusAndEmail($id,UserHistoryEmail::WAITING,$user->email);
