@@ -37,4 +37,4 @@ The post *Git : how to create a repository* is **searchable** and is linked to t
 );
 ```
 
-`modelsParents` contains all the child of a model (see [[BParent and BChild|Behaviors-BParent-BChild]])
+`modelsParents` contains all the child of a model (see BParent and BChild)
