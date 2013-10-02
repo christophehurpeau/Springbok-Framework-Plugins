@@ -1,7 +1,7 @@
 <?php
 class PostController extends AController{
 	/** @ValidParams('/') @Id('id') @NotEmpty('slug') */
-	function view(int $id,$slug){
+	static function view(int $id,$slug){
 		$post=Post::QOne()->fields('id')->withParent('name,slug')->where(/*#if blog_slugOnly_enabled*/$id===null ? array('slug'=>$slug) :/*#/if*/array('id'=>$id))
 			->addCondition('status',Post::PUBLISHED)->notFoundIfFalse();
 		if(/*#if blog_slugOnly_enabled*/$id!==null && /*#/if*/$post->slug!==$slug) redirectPermanent($post->link());

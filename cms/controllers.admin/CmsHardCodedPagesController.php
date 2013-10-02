@@ -3,7 +3,7 @@
 class CmsHardCodedPagesController extends Controller{
 	
 	/** */
-	function index(){
+	static function index(){
 		CmsHardCodedPage::Table()->fields('id,status')->withParent('name,created,updated')
 			->where(array('status !='=>CmsHardCodedPage::DELETED))->orderBy(array('sb.created'=>'DESC'))
 			->allowFilters()
@@ -21,7 +21,7 @@ class CmsHardCodedPagesController extends Controller{
 	}
 	
 	/** @ValidParams @Required('id') */
-	function edit(int $id){
+	static function edit(int $id){
 		$page=CmsHardCodedPage::ById($id)->notFoundIfFalse();
 		mset($page,$id);
 		render();

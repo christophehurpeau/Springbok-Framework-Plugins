@@ -1,7 +1,7 @@
 <?php
 class UsersController extends AController{
 	/** @Ajax */
-	function isConnected(){
+	static function isConnected(){
 		if(!ACSecure::isConnected()) renderText('0');
 		else self::_renderConnected();
 	}
@@ -29,7 +29,7 @@ class UsersController extends AController{
 	
 	/** @Post @Required('user')
 	 * user > @Valid('email','first_name','last_name') */
-	function register(User $user){
+	static function register(User $user){
 		if(ACSecure::isConnected()) redirect('/');
 		if(CValidation::hasErrors()) render('login');
 		else{
@@ -43,14 +43,14 @@ class UsersController extends AController{
 	
 	/*#if users.pseudo*/
 	/** @Ajax @ValidParams @NotEmpty('val') */
-	function checkPseudo($val){
+	static function checkPseudo($val){
 		$errorCode=User::checkPseudo(trim($val));
 		renderText($errorCode===true ? '1' : $errorCode);
 	}
 	/*#/if*/
 	
 	/** @Ajax @ValidParams @NotEmpty('val') */
-	function checkEmail($val){
+	static function checkEmail($val){
 		$errorCode=User::checkEmail($val);
 		renderText($errorCode===true ? '1' : $errorCode);
 	}
@@ -59,7 +59,7 @@ class UsersController extends AController{
 	
 	
 	/** @Ajax */
-	function ajaxLostPassword($email){
+	static function ajaxLostPassword($email){
 		if(!empty($email)){
 			if($user=User::findValidUserByEmail($email)){
 				$user->email=$email;
@@ -71,7 +71,7 @@ class UsersController extends AController{
 	}
 	
 	/** @ValidParams @Id('userId') @NotEmpty('email','code') */
-	function validEmail(int $userId,$email,$code){
+	static function validEmail(int $userId,$email,$code){
 		if($uheId=UserHistoryEmail::validEmail($userId,$email,$code)){
 			if(User::existByIdAndStatus($userId,User::WAITING)){
 				User::updateOneFieldByPk($userId,'status',User::VALID);
@@ -100,7 +100,7 @@ class UsersController extends AController{
 	}
 	
 	/** @ValidParams @Id('userId') @NotEmpty('email','code') */
-	function cancelChangeEmail(int $userId,$email,$code,bool $confirm){
+	static function cancelChangeEmail(int $userId,$email,$code,bool $confirm){
 		if(($uhe=UserHistoryEmail::cancelable($userId,$email,$code))!==false){
 			if($uhe->status===UserHistoryEmail::WAITING){
 				$uhe->status=UserHistoryEmail::CANCELED;

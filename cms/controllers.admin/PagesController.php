@@ -3,7 +3,7 @@ Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('CMS') */
 class PagesController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		Page::Table()->fields('id,name,status,created,updated')
 			->where(array('status !='=>Page::DELETED))->orderByCreated()
 			->allowFilters()
@@ -23,7 +23,7 @@ class PagesController extends Controller{
 	}
 	
 	/** @ValidParams @Required('id') */
-	function edit(int $id){
+	static function edit(int $id){
 		$page=Page::ById($id);
 		notFoundIfFalse($page);
 		mset($page,$id);
@@ -31,7 +31,7 @@ class PagesController extends Controller{
 	}
 	
 	/** @ValidParams @Required('id') */
-	function delete(int $id){
+	static function delete(int $id){
 		Page::updateOneFieldByPk($id,'status',Page::DELETED);
 		Page::onModified($id,true);
 		redirect('/pages');
@@ -39,7 +39,7 @@ class PagesController extends Controller{
 	
 	/** @ValidParams @AllRequired
 	* page > @Valid('name','content') */
-	function save(int $id,Page $page){
+	static function save(int $id,Page $page){
 		$page->id=$id;
 		$page->checkMetasSet();
 		if(empty($page->slug)) $page->slug=$page->auto_slug();
@@ -51,7 +51,7 @@ class PagesController extends Controller{
 
 
 	/** @Ajax @ValidParams @Required('term') */
-	function autocomplete($term){
+	static function autocomplete($term){
 		self::renderJSON(SModel::json_encode(
 			Page::QAll()->fields('id,name,slug')
 				->where(array('name LIKE'=>'%'.$term.'%','status !='=>Page::DELETED))
@@ -61,18 +61,18 @@ class PagesController extends Controller{
 	}
 
 	/** @Ajax @ValidParams @Required('val') */
-	function checkId(int $val){
+	static function checkId(int $val){
 		$page=Page::ById($val)->fields('id,name,slug')->addCondition('status !=',Page::DELETED);
 		self::renderJSON($page===false?'{"error":"Page inconnue"}':$page->toJSON_autocomplete());
 	}
 	
 	/** @ValidParams */
-	function tools(){
+	static function tools(){
 		render();
 	}
 	
 	/** */
-	function regenerateSitemap(){
+	static function regenerateSitemap(){
 		ACSitemapPages::generate();
 		redirect('/pages/tools');
 	}

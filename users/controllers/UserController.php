@@ -2,12 +2,12 @@
 /** @Check */
 class UserController extends AController{
 	/** */
-	function index(){
+	static function index(){
 		render();
 	}
 	
 	/** */
-	function me(User $user,bool $save){
+	static function me(User $user,bool $save){
 		if($user !== null){
 			if($user->check(false)){
 				$moreInfos=''; $messageType='success';
@@ -69,7 +69,7 @@ class UserController extends AController{
 	}
 	
 	/** @ValidParams @AllRequired */
-	function changePassword($old_password,$new_password,$new_password_confirm){
+	static function changePassword($old_password,$new_password,$new_password_confirm){
 		$old_password=trim($old_password); $new_password=trim($new_password); $new_password_confirm=trim($new_password_confirm);
 		$error=null;
 		$actualPassword=User::findValuePwdById($userId=CSecure::connected());

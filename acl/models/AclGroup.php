@@ -13,10 +13,11 @@ class AclGroup extends SSqlModel{
 	
 	
 	public static function afterCreateTable(){
-		self::QInsert()->cols('id,name')->mvalues(array(
-			array(1,_tC('Guest')),
-			array(2,_tC('Basic user')),
+		self::QInsert()->cols('id,name,left,right,level_depth')->mvalues(array(
+			array(1,_tC('Guest'),0,0,0),
+			array(2,_tC('Basic user'),0,0,0),
 		));
+		self::rebuild();
 	}
 	
 	public static function findListName(){

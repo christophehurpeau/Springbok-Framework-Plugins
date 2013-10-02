@@ -31,13 +31,13 @@ class SearchableHistory extends SSqlModel{
 		06=>MERGED_TO,
 	);
 	
-	public static function add($searchableId,$type,$relId=null,$userId=true/*#if searchableHistory.source*/,$source=null/*#/if*/,$date=null){
+	public static function add($searchableId,$type,$relId=null,$userId=true/*#if searchableHistory.source*/,$source=true/*#/if*/,$date=null){
 		if($userId===true) $userId=CSecure::connected();
 		$h=new self;
 		$h->searchable_id=$searchableId;
 		if($userId!==null) $h->user_id=$userId;
 		$h->type=$type;
-		/*#if searchableHistory.source*/ $h->source=$source===null ? AConsts::DEFAULT_SOURCE : $source; /*#/if*/
+		/*#if searchableHistory.source*/ $h->source=$source===true||$source===null ? AConsts::DEFAULT_SOURCE : $source; /*#/if*/
 		if($relId !== null) $h->rel_id=$relId;
 		if($date!==null) $h->created=$date;
 		$h->insert();

@@ -1,7 +1,7 @@
 <?php
 class PageController extends AController{
 	/** */
-	function view($slug){
+	static function view($slug){
 		if($slug===null) $pageId=Page::FIRST;
 		elseif(is_object($slug)){
 			self::viewSearchable($slug);
@@ -24,7 +24,7 @@ class PageController extends AController{
 	}
 	
 	/** @SubAction('Searchable') */
-	function viewSearchable($page){
+	static function viewSearchable($page){
 		$ve=VPage::create($page->id);
 		set('metas',$ve->metas());
 		mset($ve);

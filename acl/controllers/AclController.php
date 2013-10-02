@@ -8,7 +8,7 @@ class AclController extends Controller{
 	
 	
 	/** @Acl('AclGroup') */
-	function index(){
+	static function index(){
 		$modelName=self::MODEL;
 		set('tree',$modelName::TreeView()->actionView('/acl/permissions'));
 		render();
@@ -18,7 +18,7 @@ class AclController extends Controller{
 		->render('Acl Groups',array('modelName'=>'AclGroup','form'=>array('action'=>'/acl/add')));*/
 	
 	/** @ValidParams @Acl('Acl') */
-	function permissions(int $groupId){
+	static function permissions(int $groupId){
 		if(empty($groupId)) $groupId=0;
 		mset(array(
 			'groupId'=>&$groupId,
@@ -29,7 +29,7 @@ class AclController extends Controller{
 	}
 	
 	/** @ValidParams @Required('perm') @Acl('Acl') */
-	function update(int $groupId,$perm,bool $value){
+	static function update(int $groupId,$perm,bool $value){
 		if(empty($groupId)) $groupId=0;
 		$gp=new AclGroupPerm;
 		$gp->group_id=$groupId;

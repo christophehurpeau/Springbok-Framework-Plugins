@@ -4,7 +4,7 @@ Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostsAuthorsController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		HBreadcrumbs::set(array('Articles'=>'/posts'));
 		PostsAuthor::Table()->fields('id,name,created,updated')->orderBy('created')
 			->allowFilters()
@@ -14,7 +14,7 @@ class PostsAuthorsController extends Controller{
 	
 	/** @ValidParams('/postsAuthors') @Required('postsAuthor')
 	* postsAuthor > @Valid('name') */
-	function add(PostsAuthor $postsAuthor){
+	static function add(PostsAuthor $postsAuthor){
 		$postsAuthor->insert();
 		redirect('/postsAuthors/edit/'.$postsAuthor->id);
 	}
@@ -28,13 +28,13 @@ class PostsAuthorsController extends Controller{
 	}
 	
 	/** @ValidParams('/postsAuthors') @Required('id') */
-	function edit(int $id){
+	static function edit(int $id){
 		self::_breadcrumbs();
 		CRUD::edit('PostsAuthor',$id);
 	}
 	
 	/** @ValidParams('/postsAuthors') @Required('id') */
-	function view(int $id){
+	static function view(int $id){
 		self::_breadcrumbs();
 		CRUD::view('PostsAuthor',$id,array(),array('Post'=>Post::CRUDOptions()));
 	}

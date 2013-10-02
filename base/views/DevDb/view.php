@@ -1,7 +1,15 @@
 <?php new AjaxContentView('DevDb') ?>
 <?php $table->display() ?>
 
-{f $belongsTo as $b}
+{f $relations as $relName => $tableRel}
+	<div class="block1 mt20">
+		<h5>{$relName}</h5>
+		<?php $tableRel->display() ?>
+	</div>
+{/f}
+		
+
+{*f $belongsTo as $b}
 	{debug $b}
 {/f}
 
@@ -22,4 +30,4 @@
 			{tC 'No result'}
 		{/if}
 	</div>
-{/f}
+{/f*}

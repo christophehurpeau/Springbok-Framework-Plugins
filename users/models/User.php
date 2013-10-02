@@ -153,7 +153,7 @@ class User extends SSqlModel{
 		$password=UGenerator::randomLetters(12);
 		$user->pwd=USecure::hashWithSalt($password);
 		$user->status=User::WAITING;
-		/*#if user.searchable*/ $user->name=$user->first_name.' '.$user->last_name; $user->updateParent(); /*#/if*/
+		/*#if user.searchable*/ $user->name=$user->first_name.' '.$user->last_name; $user->visible=true; /*#/if*/
 		$user->insert('email','pseudo','pwd','status','first_name','last_name');
 		
 		if($connectAfterRegistration) CSecure::setConnected(CSecure::CONNECTION_AFTER_REGISTRATION,$user->id,$user->email);
@@ -188,4 +188,5 @@ class User extends SSqlModel{
 	public function isAllowed(){
 		return $this->isAdmin();
 	}
+	
 }

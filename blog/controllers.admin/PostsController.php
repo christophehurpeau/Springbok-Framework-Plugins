@@ -3,7 +3,7 @@ Controller::$defaultLayout='admin/cms';
 /** @Check('ACSecureAdmin') @Acl('Posts') */
 class PostsController extends Controller{
 	/** */
-	function index(){
+	static function index(){
 		Post::Table()->fields('id,status')->withParent('name,created,updated')
 			->where(array('status !='=>Post::DELETED))->orderBy(array('sb.created'=>'DESC'))
 			->allowFilters()
@@ -23,7 +23,7 @@ class PostsController extends Controller{
 	}
 	
 	/** @ValidParams @Required('id') */
-	function edit(int $id){
+	static function edit(int $id){
 		$post=Post::ById($id)->withParent('name,slug,meta_title,meta_descr,meta_keywords')->with('PostTag','tag_id')->with('PostCategory','category_id')
 			->with('PostImage')
 			/*#if blog_personalizeAuthors_enabled*/->with('PostAuthor','author_id')/*#/if*/
@@ -34,7 +34,7 @@ class PostsController extends Controller{
 	}
 	
 	/** @ValidParams @Required('id') */
-	function delete(int $id){
+	static function delete(int $id){
 		Post::updateOneFieldByPk($id,'status',Post::DELETED);
 		Post::onModified($id,true);
 		redirect('/posts');
@@ -42,7 +42,7 @@ class PostsController extends Controller{
 	
 	/** @ValidParams @AllRequired
 	* post > @Valid('name','excerpt','content') */
-	function save(int $id,Post $post){
+	static function save(int $id,Post $post){
 		$post->id=$id;
 		//if(empty($post->meta_keywords)) $post->findWith('PostTag',array('fields'=>'tag_id'));
 		if(isset($_POST['imageInText'])) PostImage::updateOneFieldByPk($id,'in_text',$_POST['imageInText']?true:false);
@@ -59,7 +59,7 @@ class PostsController extends Controller{
 
 
 	/** @Ajax @ValidParams @AllRequired */
-	function selectImage(int $postId,int $imageId){
+	static function selectImage(int $postId,int $imageId){
 		$pi=new PostImage;
 		$pi->post_id=$postId;
 		$pi->image_id=$imageId;
@@ -73,7 +73,7 @@ class PostsController extends Controller{
 	
 	
 	/** @Ajax @ValidParams @Required('term') */
-	function autocomplete($term){
+	static function autocomplete($term){
 		self::renderJSON(SModel::json_encode(
 			Post::QAll()->field('id')->withParent('name,slug')
 				->where(array('sb.name LIKE'=>'%'.$term.'%'))
@@ -83,29 +83,29 @@ class PostsController extends Controller{
 	}
 
 	/** @Ajax @ValidParams @Required('val') */
-	function checkId(int $val){
+	static function checkId(int $val){
 		$post=Post::QOne()->field('id')->withParent('name,slug')->byId($val);
 		self::renderJSON($post===false?'{"error":"Article inconnu"}':$post->toJSON_autocomplete());
 	}
 	
 	/** @ValidParams */
-	function tools(){
+	static function tools(){
 		render();
 	}
 	
 	/** */
-	function regenerateLatest(){
+	static function regenerateLatest(){
 		VPostsLatest::destroy();
 		redirect('/posts/tools');
 	}
 	/** */
-	function regenerateSitemap(){
+	static function regenerateSitemap(){
 		ACSitemapPosts::generate();
 		redirect('/posts/tools');
 	}
 	
 	/** @ValidParams @Required('id') */
-	function test(int $id){
+	static function test(int $id){
 		$post=Post::QOne()->fields('id,excerpt,text')->withParent('name,slug')->byId($id);
 	}
 }

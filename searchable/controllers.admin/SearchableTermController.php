@@ -3,7 +3,7 @@ Controller::$defaultLayout='admin/searchable';
 /** @Check('ACSecureAdmin') @Acl('Searchable') */
 class SearchableTermController extends Controller{
 	/** @ValidParams('/searchable') @Id */
-	function view($id){
+	static function view($id){
 		HBreadcrumbs::set(array('Terms'=>'/searchable/terms'));
 		set('term',SearchablesTerm::ById($id)
 				->with('SearchablesKeyword',array('fields'=>'id','with'=>array('MainTerm')))
@@ -13,7 +13,7 @@ class SearchableTermController extends Controller{
 	
 	/** @ValidParams @AllRequired @Id
 	* keyword > @Valid('descr') */
-	function save(int $id,SearchablesTerm $term){
+	static function save(int $id,SearchablesTerm $term){
 		$term->id=$id;
 		foreach(array('meta_title','meta_descr','meta_keywords') as $metaName)
 			if(empty($term->$metaName)) $term->$metaName=null;
