@@ -17,3 +17,24 @@ The post *Git : how to create a repository* is **searchable** and is linked to t
 
 
 ![Schema](https://raw.github.com/christophehurpeau/Springbok-Framework-Plugins/master/searchable/documentation/searchables.png)
+
+
+### Configuration
+
+
+> config/enhance.php
+
+```
+<?php return array(
+	'plugins'=>array(
+		'searchable'=>array('SpringbokCore','searchable'),
+	),
+
+	'modelParents'=>array(
+		'Searchable'=>array(0=>'Post',5=>'Page',6=>'CmsHardCodedPage'),
+		'SearchablesKeyword'=>array(0=>'PostsTag',1=>'PostsCategory'),
+	),
+);
+```
+
+`modelsParents` contains all the child of a model (see BParent and BChild)
