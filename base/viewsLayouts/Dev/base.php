@@ -4,7 +4,8 @@
 		<? HHtml::metaCharset() ?>
 		<?php
 			HHead::title(Config::$projectName.' - '.$layout_title);
-			HHead::linkCssAndJs('/Dev/dev');
+			HHead::linkCss('/dev');
+			HHead::linkJs('/Dev/dev');
 			HHead::jsI18n();
 			HHead::favicon();
 			HHead::display();

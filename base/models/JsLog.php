@@ -1,4 +1,4 @@
-<?php
+/*#if springbok.JsLog*/<?php
 /** @TableAlias('jl') @TableName('js_log') @Created */
 class JsLog extends SSqlModel{
 	public
@@ -43,3 +43,4 @@ class JsLog extends SSqlModel{
 		return self::QInsert()->data($data);
 	}
 }
+/*#/if*/
