@@ -39,7 +39,7 @@ class DevDbController extends AController{
 	
 	/** @NotEmpty('modelName','pk') */
 	static function view($modelName,$pk){
-		$table=$modelName::TableOne()->where(array($modelName::_getPkName()=>$pk))->noAutoRelations()->notFoundIfFalse()
+		$table=$modelName::TableOne()->where(array($modelName::_getPkName()=>$pk))->noAutoRelations()->mustFetch()
 			->addAction(array('edit',CRoute::getArrayLink('index',array('/dev/:controller(/:action/*)?','db','edit','/'.$modelName)),'title'=>_tC('Edit')));
 		
 		$relations = array();

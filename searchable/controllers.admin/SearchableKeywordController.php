@@ -8,7 +8,7 @@ class SearchableKeywordController extends Controller{
 		$keyword=SearchablesKeyword::ById($id)->with('MainTerm')
 				->with('TermWithType')
 				->with('Types')
-				->notFoundIfFalse();
+				->mustFetch();
 						/*->with('SearchablesTypedTerm',array('with'=>array('SearchablesTerm'=>array('fieldsInModel'=>true,'fields'=>'term'))))*/
 		mset($keyword);
 		render();

@@ -22,7 +22,7 @@ class CmsHardCodedPagesController extends Controller{
 	
 	/** @ValidParams @Required('id') */
 	static function edit(int $id){
-		$page=CmsHardCodedPage::ById($id)->notFoundIfFalse();
+		$page=CmsHardCodedPage::ById($id)->mustFetch();
 		mset($page,$id);
 		render();
 	}

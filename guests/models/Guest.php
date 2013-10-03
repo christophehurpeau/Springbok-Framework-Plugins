@@ -22,7 +22,7 @@ class Guest extends SSqlModel{
 		return !empty($_COOKIE['guest']) && ($cvalue=(int)USecure::decryptAES($_COOKIE['guest'])) && Guest::existById($cvalue) ? $cvalue : false;
 	}
 	public static function get(){
-		return !empty($_COOKIE['guest']) && ($cvalue=(int)USecure::decryptAES($_COOKIE['guest'])) ? Guest::QOne()->fields('id,pseudo,email')->byId($cvalue)->execute() : false;
+		return !empty($_COOKIE['guest']) && ($cvalue=(int)USecure::decryptAES($_COOKIE['guest'])) ? Guest::QOne()->fields('id,pseudo,email')->byId($cvalue)->fetch() : false;
 	}
 	
 	public static function getOrCreate(){
