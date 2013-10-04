@@ -26,7 +26,7 @@ class PostController extends AController{
 	* postId > @Required
 	* page > @Required
 	*/ function commentsPagination(int $postId,int $page,boolean $forceLastPage){
-		$query=PostComment::QAll()->where(array('post_id'=>&$postId));
+		$query=PostComment::QAll()->where(array('post_id'=>$postId));
 		set('userId',$userId=CSecure::connected());
 		$queryOptions=PostComment::_paginationQueryCommentsOptions($userId);
 		$query->setAllWith($queryOptions['with']); $query->where($queryOptions['where']);

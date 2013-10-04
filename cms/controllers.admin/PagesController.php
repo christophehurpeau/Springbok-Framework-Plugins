@@ -24,8 +24,7 @@ class PagesController extends Controller{
 	
 	/** @ValidParams @Required('id') */
 	static function edit(int $id){
-		$page=Page::ById($id);
-		notFoundIfFalse($page);
+		$page=Page::ById($id)->mustFetch();
 		mset($page,$id);
 		render();
 	}
@@ -55,14 +54,14 @@ class PagesController extends Controller{
 		self::renderJSON(SModel::json_encode(
 			Page::QAll()->fields('id,name,slug')
 				->where(array('name LIKE'=>'%'.$term.'%','status !='=>Page::DELETED))
-				->limit(14)
+				->limit(14)->fetch()
 			,'_autocomplete'
 		));
 	}
 
 	/** @Ajax @ValidParams @Required('val') */
 	static function checkId(int $val){
-		$page=Page::ById($val)->fields('id,name,slug')->addCondition('status !=',Page::DELETED);
+		$page=Page::ById($val)->fields('id,name,slug')->addCondition('status !=',Page::DELETED)->fetch();
 		self::renderJSON($page===false?'{"error":"Page inconnue"}':$page->toJSON_autocomplete());
 	}
 	

@@ -11,6 +11,6 @@ class LibraryFolder extends SSqlModel{
 		*/ $name;
 	
 	public static function create($parentId,$name){
-		return self::QInsert()->set(array('parent_id'=>$parentId,'name'=>$name));
+		return self::QInsert()->set(array('parent_id'=>$parentId,'name'=>$name))->execute();
 	}
 }

@@ -43,7 +43,7 @@ class Post extends Searchable{
 	
 	
 	public static function findLatest(){
-		return Post::QAll()->byStatus(Post::PUBLISHED)->fields('id')->withParent('name')->orderByCreated()->limit(5);
+		return Post::QAll()->byStatus(Post::PUBLISHED)->fields('id')->withParent('name')->orderByCreated()->limit(5)->fetch();
 	}
 
 	public static function QListAll(){
@@ -53,7 +53,8 @@ class Post extends Searchable{
 			/*#if blog_comments_enabled*/->with('PostComment',array('isCount'=>true,'onConditions'=>array('pcom.status'=>PostComment::VALID)))/*#/if*/
 			->byStatus(Post::PUBLISHED)
 			->addCondition('sb.visible',true)
-			->orderBy(array('sb.created'=>'DESC'));
+			->orderBy(array('sb.created'=>'DESC'))
+			->fetch();
 	}
 	
 	public function beforeInsert(){ return true; }
@@ -68,7 +69,7 @@ class Post extends Searchable{
 	public function auto_meta_keywords(){
 		/*#if DEV */ if(!isset($this->tags)) throw new Exception('Please find post tags'); /*#/if*/
 		return empty($this->tags)?'':implode(', ',is_int($this->tags[0])?
-				PostsTag::QValues()->setFields(false)->with('MainTerm','term')->byId($this->tags)->orderBy(array('skmt.term'))
+				PostsTag::QValues()->setFields(false)->with('MainTerm','term')->byId($this->tags)->orderBy(array('skmt.term'))->fetch()
 				: array_map(function(&$t){return $t->name;},$this->tags));
 	}
 	
@@ -116,7 +117,7 @@ class Post extends Searchable{
 	
 	public static function internalLink($id){
 		$post=new Post; $post->id=$id;
-		$post->slug=Searchable::QValue()->field('slug')->with('Post',array('fields'=>false))->addCondition('p.id',$id);
+		$post->slug=Searchable::QValue()->field('slug')->with('Post',array('fields'=>false))->addCondition('p.id',$id)->fetch();
 		if($post->slug===false) return false;
 		return $post->link();
 	}

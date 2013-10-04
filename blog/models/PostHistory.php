@@ -19,7 +19,7 @@ class PostHistory extends SSqlModel{
 		*/ $created;
 	
 	public static function last($postId){
-		return self::QOne()->fields('excerpt,content')->byPost_id($postId)->orderByCreated();
+		return self::QOne()->fields('excerpt,content')->byPost_id($postId)->orderByCreated()->fetch();
 	}
 	
 	public static function create($post,$type){
@@ -29,7 +29,7 @@ class PostHistory extends SSqlModel{
 			'post_id'=>$post->id,
 			'excerpt'=>$post->excerpt,
 			'content'=>$post->content
-		));
+		))->execute();
 	}
 	
 	/*public static function restore($postId,$historyId){

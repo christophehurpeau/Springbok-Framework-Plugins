@@ -17,7 +17,7 @@ class PageHistory extends SSqlModel{
 		*/ $created;
 	
 	public static function last($pageId){
-		return self::QOne()->fields('content')->byPage_id($pageId)->orderByCreated();
+		return self::QOne()->fields('content')->byPage_id($pageId)->orderByCreated()->fetch();
 	}
 	
 	public static function create($page,$type){
@@ -26,7 +26,7 @@ class PageHistory extends SSqlModel{
 		return self::QInsert()->set(array(
 			'page_id'=>$page->id,
 			'content'=>$page->content
-		));
+		))->execute();
 	}
 	
 	/*public static function restore($postId,$historyId){

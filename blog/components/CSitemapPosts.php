@@ -3,7 +3,7 @@ class ACSitemapPosts{
 	public static function generate(){
 		$sitemap=new HSitemaps('posts_');
 		
-		$tags=PostsTag::QValues()->setFields(false)->with('MainTerm','slug');
+		$tags=PostsTag::QValues()->setFields(false)->with('MainTerm','slug')->fetch();
 		foreach($tags as $tag) $sitemap->add('/posts/tag/'.$tag,array('priority'=>'0.6'));
 		
 		

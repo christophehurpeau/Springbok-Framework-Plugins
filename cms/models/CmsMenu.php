@@ -15,18 +15,20 @@ class CmsMenu extends SSqlModel{
 	
 	public static function add($pageId/*#if cms.multisite*/,$site/*#/if*/){
 		return self::QInsert()->ignore()->cols('page_id,/*#if cms.multisite*/,site/*#/if*/position')
-				->values(array($pageId/*#if cms.multisite*/,$site/*#/if*/,self::findNextPosition()));
+				->values(array($pageId/*#if cms.multisite*/,$site/*#/if*/,self::findNextPosition()))
+				->execute();
 	}
 
 	public static function findNextPosition(/*#if cms.multisite*/$site/*#/if*/){
 		$currPos=self::QValue()->field('position')->orderBy(array('position'=>'DESC'))
-				/*#if cms.multisite*/->bySite($site)/*#/if*/;
+				/*#if cms.multisite*/->bySite($site)/*#/if*/
+				->fetch();
 		return $currPos===false?0:((int)$currPos)+1;
 	}
 
 
 	public static function QListName(){
-		return self::QList()->field('page_id')->with('Page','name')->orderBy('position')
+		return /**/self::QList()->field('page_id')->with('Page','name')->orderBy('position')
 				/*#if cms.multisite*/->bySite($_GET['site.num'])/*#/if*/;
 	}
 	

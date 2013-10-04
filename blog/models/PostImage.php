@@ -12,7 +12,7 @@ class PostImage extends SSqlModel{
 		*/ $in_text;
 	
 	public static function create($postId,$imageId){
-		return self::QInsert()->values(array('post_id'=>$postId,'image_id'=>$imageId));
+		return self::QInsert()->values(array('post_id'=>$postId,'image_id'=>$imageId))->execute();
 	}
 }
 

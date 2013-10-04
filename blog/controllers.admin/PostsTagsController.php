@@ -47,13 +47,14 @@ class PostsTagsController extends Controller{
 			PostsTag::QAll()->field('id')->with('MainTerm')
 				->where(array('skmt.term LIKE'=>'%'.$term.'%'))
 				->limit(14)
-			,'_adminAutocomplete'
+				->fetch(),
+			'_adminAutocomplete'
 		));
 	}
 
 	/** @Ajax @ValidParams @NotEmpty('val') */
 	static function checkId(int $val){
-		$tag=PostsTag::QOne()->field('id')->byId($val);
+		$tag=PostsTag::QOne()->field('id')->byId($val)->fetch();
 		self::renderJSON($tag===false?'{"error":"Tag inconnu"}':$tag->toJSON_adminAutocomplete());
 	}
 	

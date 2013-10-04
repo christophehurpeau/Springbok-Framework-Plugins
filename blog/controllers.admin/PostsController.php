@@ -27,8 +27,7 @@ class PostsController extends Controller{
 		$post=Post::ById($id)->withParent('name,slug,meta_title,meta_descr,meta_keywords')->with('PostTag','tag_id')->with('PostCategory','category_id')
 			->with('PostImage')
 			/*#if blog_personalizeAuthors_enabled*/->with('PostAuthor','author_id')/*#/if*/
-			;
-		notFoundIfFalse($post);
+			->mustFetch();
 		mset($post,$id);
 		render();
 	}
@@ -78,13 +77,14 @@ class PostsController extends Controller{
 			Post::QAll()->field('id')->withParent('name,slug')
 				->where(array('sb.name LIKE'=>'%'.$term.'%'))
 				->limit(14)
-			,'_autocomplete'
+				->fetch(),
+			'_autocomplete'
 		));
 	}
 
 	/** @Ajax @ValidParams @Required('val') */
 	static function checkId(int $val){
-		$post=Post::QOne()->field('id')->withParent('name,slug')->byId($val);
+		$post=Post::QOne()->field('id')->withParent('name,slug')->byId($val)->fetch();
 		self::renderJSON($post===false?'{"error":"Article inconnu"}':$post->toJSON_autocomplete());
 	}
 	
@@ -102,10 +102,5 @@ class PostsController extends Controller{
 	static function regenerateSitemap(){
 		ACSitemapPosts::generate();
 		redirect('/posts/tools');
-	}
-	
-	/** @ValidParams @Required('id') */
-	static function test(int $id){
-		$post=Post::QOne()->fields('id,excerpt,text')->withParent('name,slug')->byId($id);
 	}
 }

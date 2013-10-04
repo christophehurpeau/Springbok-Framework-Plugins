@@ -30,13 +30,17 @@ class PostsCommentsController extends Controller{
 	
 	/** */
 	static function validate(int $id){
-		PostComment::QUpdateOneField('status',PostComment::VALID)->where(array('id'=>$id,'status'=>PostComment::WAITING_VALIDATION))->limit1();
+		PostComment::QUpdateOneField('status',PostComment::VALID)
+			->where(array('id'=>$id,'status'=>PostComment::WAITING_VALIDATION))
+			->limit1()->execute();
 		redirect('/postsComments/validation');
 	}
 	
 	/** */
 	static function deny(int $id){
-		PostComment::QUpdateOneField('status',PostComment::DENIED)->where(array('id'=>$id,'status'=>PostComment::WAITING_VALIDATION))->limit1();
+		PostComment::QUpdateOneField('status',PostComment::DENIED)
+			->where(array('id'=>$id,'status'=>PostComment::WAITING_VALIDATION))
+			->limit1()->execute();
 		redirect('/postsComments/validation');
 	}
 }

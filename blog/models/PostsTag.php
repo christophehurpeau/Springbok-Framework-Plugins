@@ -11,7 +11,7 @@ class PostsTag extends SSqlModel{
 	);
 	
 	public static function create($name){
-		if($id=self::QValue()->field('id')->with('MainTerm')->addCondition('skmt.term LIKE',$name))
+		if($id=self::QValue()->field('id')->with('MainTerm')->addCondition('skmt.term LIKE',$name)->fetch())
 			return $id;
 		$t=new PostsTag;
 		$t->term=$name;
@@ -43,7 +43,8 @@ class PostsTag extends SSqlModel{
 		$models=self::QListAll()->setFields(false)->with('MainTerm')/*#if searchable.keywords.slug*/->with('Keyword')/*#/if*/
 			->with('PostTag',array('isCount'=>true))
 			->orderBy(array('tags'=>'DESC'))
-			->limit(self::MAX_SIZE);
+			->limit(self::MAX_SIZE)
+			->fetch();
 
 		$total=0;
 		foreach($models as $model)
@@ -71,7 +72,7 @@ class PostsTag extends SSqlModel{
 	
 	public static function internalLink($id){
 		$tag=new PostsTag; $tag->id=$id;
-		$tag->slug=PostsTag::QValue()->noFields()->with('MainTerm',array('fields'=>'slug'))->addCondition('id',$id);
+		$tag->slug=PostsTag::QValue()->noFields()->with('MainTerm',array('fields'=>'slug'))->addCondition('id',$id)->fetch();
 		if($tag->slug===false) return false;
 		return $tag->link();
 	}
