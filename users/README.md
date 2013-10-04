@@ -12,8 +12,8 @@
 	
 	// Optional
 	'config'=>array(
-		'users.pseudo'=>false, // default to false, 
-		'user.searchable'=>true,
+		'users.pseudo'=>false, // default to false, if the user can have a pseudo
+		'user.searchable'=>true, // default to false, if User extends from Searchable
 	),
 	
 );
