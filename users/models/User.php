@@ -55,7 +55,7 @@ class User extends SSqlModel{
 	/*#if user.searchable*/
 	/* @ImportFunction('searchable','Searchable','link') */
 	public static function findOneById($id){
-		return self::ById($id)->withParent();
+		return self::ById($id)->withParent()->fetch();
 	}
 	/*#/if*/
 	
@@ -68,8 +68,8 @@ class User extends SSqlModel{
 	
 	public static function checkPseudo($pseudo){
 		if(empty($pseudo)) return '20';
-		if(User::QExist()->where(array('pseudo LIKE'=>$pseudo))) return '21';
-		if(ProhibitedWord::QExist()->where(array('LOCATE(word,'.ProhibitedWord::dbEscape($pseudo).') != 0'))) return '22';
+		if(User::QExist()->where(array('pseudo LIKE'=>$pseudo))->fetch()) return '21';
+		if(ProhibitedWord::QExist()->where(array('LOCATE(word,'.ProhibitedWord::dbEscape($pseudo).') != 0'))->fetch()) return '22';
 		return true;
 	}
 	
@@ -77,7 +77,7 @@ class User extends SSqlModel{
 	
 	
 	public static function findValidUserByEmail($email){
-		return self::QOne()->field('id')->where(array('email LIKE'=>$email,'status'=>array(User::VALID,User::ADMIN)));
+		return self::QOne()->field('id')->where(array('email LIKE'=>$email,'status'=>array(User::VALID,User::ADMIN)))->fetch();
 	}
 	
 	/** Email must be lowercased */
@@ -120,7 +120,7 @@ class User extends SSqlModel{
 	}
 
 	public static function existsByEmail($email){
-		return User::QExist()->where(array('email LIKE'=>$email));
+		return User::QExist()->where(array('email LIKE'=>$email))->fetch();
 	}
 
 	public function check($checkPseudoValidityAndEmailValidity=true){

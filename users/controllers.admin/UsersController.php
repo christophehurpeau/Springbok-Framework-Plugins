@@ -18,7 +18,7 @@ class UsersController extends Controller{
 	}
 	/** @ValidParams @Id('id') */
 	static function disable(int $id){
-		User::QUpdateOneField('status',User::DISABLED)->byIdAndStatus($id,User::VALID);
+		User::QUpdateOneField('status',User::DISABLED)->byIdAndStatus($id,User::VALID)->execute();
 		UserHistory::add(UserHistory::DISABLE_USER,CSecure::connected(),$id);
 		redirect('/users/view/'.$id);
 	}
@@ -37,7 +37,7 @@ class UsersController extends Controller{
 
 	/** */
 	static function sendValidMail(int $id){
-		$user=User::ById($id);
+		$user=User::ById($id)->fetch();
 		if($user===false) redirect('/users');
 		$uhe=UserHistoryEmail::findOneByUser_idAndStatusAndEmail($id,UserHistoryEmail::WAITING,$user->email);
 		if($uhe===false) redirect('/users/view/'.$id);

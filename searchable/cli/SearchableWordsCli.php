@@ -7,10 +7,10 @@ class SearchableWordsCli{
 		$db->doUpdate('SET FOREIGN_KEY_CHECKS=1');
 		set_time_limit(0); ini_set('memory_limit', '1024M');
 				
-		foreach(Searchable::QRows()->fields('id,name')->byVisible(true) as $searchable){
+		foreach(Searchable::QRows()->fields('id,name')->byVisible(true)->fetch() as $searchable){
 			SearchableWord::add((int)$searchable['id'],$searchable['name']);
 		}
-		foreach(SearchablesTerm::QRows()->fields('id,term') as $term){
+		foreach(SearchablesTerm::QRows()->fields('id,term')->fetch() as $term){
 			SearchableTermWord::add((int)$term['id'],$term['term']);
 		}
 	}

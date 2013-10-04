@@ -40,7 +40,7 @@ class JsLog extends SSqlModel{
 		$data['url']=$jsurl;
 		$data['message']=$message;
 		$data['line']=$line;
-		return self::QInsert()->data($data);
+		return self::QInsert()->data($data)->execute();
 	}
 }
 /*#/if*/

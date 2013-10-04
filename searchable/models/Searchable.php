@@ -38,7 +38,8 @@ class Searchable extends SSqlModel{
 			$term=SearchablesTerm::QOne()
 				->withForce('SearchablesTermAbbreviation',array(0=>array('id'=>'term_id'),
 						'with'=>array('SearchablesTerm'=>array('alias'=>'stabbr','fields'=>false,0=>array('abbr_id'=>'id')))))
-				->where(array('stabbr.normalized LIKE'=>UString::normalizeWithoutTransliterate($word)));
+				->where(array('stabbr.normalized LIKE'=>UString::normalizeWithoutTransliterate($word)))
+				->fetch();
 			if($term!==false){
 				$replacementsHtml[]='<abbr title="'.($replacementsLong[]=h($term->term)).'">'.h($word.$dot).'</abbr>';
 				return $replace[]='__SEARCHABLE_STRING_TO_REPLACE_'.($i++).'__';
@@ -91,5 +92,4 @@ class Searchable extends SSqlModel{
 		$options['orderBy']=array('sb.created'=>'DESC');
 		return $options;
 	}
-	
 }
