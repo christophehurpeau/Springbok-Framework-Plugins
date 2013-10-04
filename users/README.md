@@ -30,6 +30,15 @@ class SiteController extends AController{
 }
 ```
 
+### Javascript
+
+To be able to use validation in forms, add this line in your index javascript file :
+
+```
+includePlugin('users/_users');
+```
+
+
 ### Use the Login and Register page
 
 By default, your login page contains a simple login form
