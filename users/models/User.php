@@ -27,10 +27,10 @@ class User extends SSqlModel{
 		*/ $gender,
 		/*#if users.pseudo*/
 		/** @SqlType('varchar(40)') @Null
-		* @Required @Index
+		* @Required @Index @Match('^[\w\.\-]+$')
 		*/ $pseudo,
 		/*#/if*/
-		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(1) @Comment("Default type")
+		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(1)
 		* @Enum(1=>'Site','Facebook','Google','Yahoo','W. Live','OpenID')
 		* @Icons(1=>'pageWww','facebook','google','yahoo','wlive','openid')
 		*/ $type,

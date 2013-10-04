@@ -13,7 +13,6 @@ class UserController extends AController{
 				$moreInfos=''; $messageType='success';
 				$user->id=CSecure::connected();
 				$currentUser=CSecure::user();
-				$user->type=$currentUser->type;
 				/*#if users.pseudo*/
 				if($user->pseudo===$currentUser->pseudo || User::checkPseudo($user->pseudo)!==true) unset($user->pseudo);
 				/*#/if*/
@@ -47,17 +46,23 @@ class UserController extends AController{
 
 	private static function _updateUser($currentUser,$user){
 		if($currentUser->type===User::SITE){
-			if($currentUser->first_name!==$user->first_name || $currentUser->last_name!==$user->last_name || $currentUser->gender!==$user->gender/*#if users.pseudo*/ || isset($user->pseudo)/*#/if*/){
+			try{
+				$fields = array_keys($user->_getData());
+				/*#if user.searchable*/ $fields[] = 'p_id'; /*#/if*/
+				$originalData=User::QRow()->byId($user->id)->setFields($fields)->fetch();
+			}catch(DBException $ex){
+				//The user added in the form fields that should not be there...
+				/*#if DEV*/ throw $ex; /*#/if*/
+				return;
+			}
+			/*#if user.searchable*/ $pId=$originalData['p_id']; /*#/if*/
+			$isUpdated=$user->updateCompare($originalData);
+			if($isUpdated===true){
 				UserHistory::add(UserHistory::UPDATE);
-				$originalData=User::QRow()->byId($user->id)->fields('/*#if user.searchable*/p_id,/*#/if*/first_name,last_name,gender/*#if users.pseudo*/,pseudo/*#/if*/')->fetch();
-				/*#if user.searchable*/ $pId=$originalData['p_id']; /*#/if*/
-				$isUpdated=$user->updateCompare($originalData);
 				/*#if user.searchable*/
-				if($isUpdated===true){
-					$user->p_id=$pId; $user->visible=true;
-					$user->name=$user->first_name.' '.$user->last_name;
-					$user->updateParent();
-				}
+				$user->p_id=$pId; $user->visible=true;
+				$user->name=$user->first_name.' '.$user->last_name;
+				$user->updateParent();
 				/*#/if*/
 			}
 		}/*#if users.pseudo*/elseif(!empty($user->pseudo)){
