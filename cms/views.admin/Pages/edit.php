@@ -16,7 +16,7 @@
 </div>
 
 <div class="col variable r200">
-	<? HBreadcrumbs::display(_tC('Home'),$page->id.': '.$page->name) ?>
+	<?php HBreadcrumbs::display(_tC('Home'),$page->id.': '.$page->name) ?>
 	<div id="editTabs" class="tabs">
 		<ul><li>{iconLink 'page','Page','#editTab1'}</li><li>{iconLink 'pageEdit','Contenu','#editTab2'}</li><li>{iconLink 'time','Historique','/pageHistories/view/'.$id}</li></ul>
 		<div id="editTab1" class="clearfix">

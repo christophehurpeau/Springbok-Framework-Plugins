@@ -18,14 +18,14 @@ class SearchableWord extends SSqlModel{
 				unset($words[$wordId]);
 			}else{
 				$wordId=SearchablesWord::createOrIncrement($word);
-				self::QInsert()->ignore()->set(array('searchable_id'=>$searchableId,'word_id'=>$wordId));
+				self::QInsert()->ignore()->set(array('searchable_id'=>$searchableId,'word_id'=>$wordId))->execute();
 			}
 		}
 		if(!empty($words)) self::decrementAndDeleteWords($searchableId,$words);
 	}
 	
 	private static function getWords($searchableId){
-		return self::QList()->fields('word_id')->with('SearchablesWord','word')->bySearchable_id($searchableId);
+		return self::QList()->fields('word_id')->with('SearchablesWord','word')->bySearchable_id($searchableId)->fetch();
 	}
 	
 	public static function deleteFor($searchableId){
@@ -36,7 +36,7 @@ class SearchableWord extends SSqlModel{
 	private static function decrementAndDeleteWords($searchableId,$words){
 		self::beginTransaction();
 		foreach($words as $wordId=>$word) SearchablesWord::decrement($wordId);
-		self::QDeleteAll()->where(array('searchable_id'=>$searchableId,'word_id'=>array_keys($words)));
+		self::QDeleteAll()->where(array('searchable_id'=>$searchableId,'word_id'=>array_keys($words)))->execute();
 		self::commit();
 	}
 }

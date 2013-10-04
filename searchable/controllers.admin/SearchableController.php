@@ -22,14 +22,14 @@ class SearchableController extends Controller{
 	
 	/** */
 	static function reindex(int $id){
-		$sb=Searchable::ById($id)->notFoundIfFalse();
+		$sb=Searchable::ById($id)->mustFetch();
 		$sb->reindex();
 		redirect('/searchable/view/'.$id);
 	}
 	
 	/** */
 	static function renormalize(int $id){
-		$sb=Searchable::ById($id)->notFoundIfFalse();
+		$sb=Searchable::ById($id)->mustFetch();
 		$sb->_renormalize();
 		redirect('/searchable/view/'.$id);
 	}

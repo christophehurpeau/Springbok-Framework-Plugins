@@ -21,9 +21,9 @@ class AclController extends Controller{
 	static function permissions(int $groupId){
 		if(empty($groupId)) $groupId=0;
 		mset(array(
-			'groupId'=>&$groupId,
+			'groupId'=>$groupId,
 			'groups'=>App::configArray('aclGroups'),
-			'perms'=>AclGroupPerm::QList()->fields('permission,granted')->byGroup_id($groupId),
+			'perms'=>AclGroupPerm::QList()->fields('permission,granted')->byGroup_id($groupId)->fetch(),
 		));
 		render();
 	}

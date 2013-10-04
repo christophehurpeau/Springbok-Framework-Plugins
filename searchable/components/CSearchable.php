@@ -6,7 +6,7 @@ class ACSearchable{
 		$id=(int)$params['id']; $slug=$params['slug'];
 		
 		if($modelName===null){
-			$type=Searchable::QValue()->field('_type')->where(array('id'=>$id,'visible'=>true));
+			$type=Searchable::QValue()->field('_type')->where(array('id'=>$id,'visible'=>true))->fetch();
 			if($type===false) notFound();
 			$modelName=Config::$modelParents['type2model']['Searchable'][$type];
 		}
@@ -26,7 +26,7 @@ class ACSearchable{
 		$slug=$params['slug'];
 		
 		if($modelName===null){
-			$row=Searchable::QRow()->fields('id,_type')->where(array('visible'=>true,'slug LIKE'=>$slug));
+			$row=Searchable::QRow()->fields('id,_type')->where(array('visible'=>true,'slug LIKE'=>$slug))->fetch();
 			if(!$row) $sbChild=false;
 			else{
 				$modelName=Config::$modelParents['type2model']['Searchable'][$row['_type']];

@@ -9,6 +9,6 @@
 </div>
 
 <div class="col variable l160">
-	<? HBreadcrumbs::display(_tC('Home'),$layout_title) ?>
+	<?php HBreadcrumbs::display(_tC('Home'),$layout_title) ?>
 	{=$layout_content}
 </div>

@@ -8,7 +8,7 @@ class ACSitemapPosts{
 		
 		
 		$posts=Post::QAll()->fields('id,published')->withParent('name,slug,updated')
-			->where(array('status'=>Post::PUBLISHED));
+			->where(array('status'=>Post::PUBLISHED))->fetch();
 		foreach($posts as $post)
 			$sitemap->add($post->link(),array('priority'=>'0.9','changefreq'=>'yearly',
 				'lastmod'=>date('c',strtotime($post->updated===null?$post->published:$post->updated))));

@@ -11,7 +11,7 @@ class SearchablesTermAbbreviation extends SSqlModel{
 	
 	
 	public static function create($termId,$abbrId){
-		if($res=self::QInsert()->ignore()->set(array('term_id'=>$termId,'abbr_id'=>$abbrId)))
+		if($res=self::QInsert()->ignore()->set(array('term_id'=>$termId,'abbr_id'=>$abbrId))->execute())
 			self::_update($abbrId);
 		return $res;
 	}
@@ -25,12 +25,13 @@ class SearchablesTermAbbreviation extends SSqlModel{
 		if(empty($terms)) return;
 		Searchable::QAll()->fields('id,name')
 			->addCond('normalized RLIKE','(^| )('.implode('|',array_map('preg_quote',array_map(array('UString','normalize'),$terms))).')( |$)')
-			->callback('_renormalize()');
+			->forEachModel('_renormalize()');
 	}
 	
 	public static function _updateAllAbbr($termId){
 		$terms=SearchablesTerm::QValues()->field('term')->withForce('SearchablesTermAbbreviation',array(array('id'=>'abbr_id')))
-				->where(array('sta.term_id'=>$termId));
+				->where(array('sta.term_id'=>$termId))
+				->fetch();
 		self::_updateTerms($terms);
 		
 	}

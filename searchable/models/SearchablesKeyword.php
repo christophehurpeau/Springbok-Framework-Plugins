@@ -15,7 +15,7 @@ class SearchablesKeyword extends SSqlModel{
 	
 	/*#if searchable.keywords.text*/
 	public static function findOneForSeo($id){
-		return parent::QOne()/*#if !searchable.keywords.seo*/->with('MainTerm')/*#/if*/->where(array('id'=>$id));
+		return parent::QOne()/*#if !searchable.keywords.seo*/->with('MainTerm')/*#/if*/->where(array('id'=>$id))->fetch();
 	}
 	/*#/if*/
 	
@@ -48,7 +48,7 @@ class SearchablesKeyword extends SSqlModel{
 	
 	public function auto_meta_title(){ return $this->term; }
 	public function auto_meta_descr(){ return trim(preg_replace('/[\s\r\n]+/',' ',str_replace('&nbsp;',' ',html_entity_decode(strip_tags($this->text),ENT_QUOTES,'UTF-8')))); }
-	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('term')->withForce('SearchablesKeywordTerm')->addCondition('skt.keyword_id',$this->id)->orderBy('term')); }
+	public function auto_meta_keywords(){ return implode(', ',SearchablesTerm::QValues()->field('term')->withForce('SearchablesKeywordTerm')->addCondition('skt.keyword_id',$this->id)->orderBy('term')->fetch()); }
 	
 	
 	public function beforeInsert(){
@@ -64,7 +64,8 @@ class SearchablesKeyword extends SSqlModel{
 	public static function listKeywordIds($phraseCleaned){
 		return SearchablesKeywordTerm::QValues()->field('DISTINCT keyword_id')
 			->withForce('SearchablesTerm')
-			->where(array(self::dbEscape(' '.UString::normalize($phraseCleaned).' ').' LIKE CONCAT("% ",st.normalized," %")'));
+			->where(array(self::dbEscape(' '.UString::normalize($phraseCleaned).' ').' LIKE CONCAT("% ",st.normalized," %")'))
+			->fetch();
 	}
 	
 	

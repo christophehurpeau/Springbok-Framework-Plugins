@@ -26,7 +26,8 @@ class SearchablesKeywordTerm extends SearchablesTypedTerm{ /* EXTENDS : methods 
 	public static function byPks($keywordId,$termId){
 		return self::QOne()->where(array('keyword_id'=>$keywordId,'term_id'=>$termId))
 			->with('SearchablesTerm',array('fields'=>'term','fieldsInModel'=>true))
-			->with('TermKeyword',array('fields'=>'id'));
+			->with('TermKeyword',array('fields'=>'id'))
+			->fetch();
 	}
 	
 	public static function create($keywordId,$termName,$type,$proximity){
@@ -34,8 +35,8 @@ class SearchablesKeywordTerm extends SearchablesTypedTerm{ /* EXTENDS : methods 
 		return self::add($keywordId,$termId,$type,$proximity);
 	}
 	public static function add($keywordId,$termId,$type,$proximity){
-		if(!self::QInsert()->ignore()->set(array('keyword_id'=>$keywordId,'term_id'=>$termId,'type'=>$type,'proximity'=>$proximity)))
-			self::QUpdateOneField('proximity',$proximity)->limit1()->where(array('keyword_id'=>$keywordId,'term_id'=>$termId,'proximity >'=>$proximity));
+		if(!self::QInsert()->ignore()->set(array('keyword_id'=>$keywordId,'term_id'=>$termId,'type'=>$type,'proximity'=>$proximity))->execute())
+			self::QUpdateOneField('proximity',$proximity)->limit1()->where(array('keyword_id'=>$keywordId,'term_id'=>$termId,'proximity >'=>$proximity))->execute();
 	}
 	
 	/* for ajaxCRDInputAutocomplete */

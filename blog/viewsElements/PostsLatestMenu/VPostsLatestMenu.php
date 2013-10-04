@@ -9,7 +9,7 @@ class VPostsLatestMenu extends SViewCachedElement{
 				->orderBy(array('sb.created'=>'DESC'))
 				/*->with('PostsAuthor','name,url')*/
 				->limit(6)
-				->execute()
+				->fetch()
 		);
 	}
 }

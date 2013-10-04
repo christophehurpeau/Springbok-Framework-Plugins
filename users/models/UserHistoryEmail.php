@@ -18,10 +18,10 @@ class UserHistoryEmail extends SSqlModel{
 		*/ $last;
 	
 	public static function create($userId,$email,$valid=false){
-		$exist=UserHistoryEmail::QOne()->where(array('user_id'=>$userId,'email'=>$email,'status'=>self::WAITING));
+		$exist=UserHistoryEmail::QOne()->where(array('user_id'=>$userId,'email'=>$email,'status'=>self::WAITING))->fetch();
 		if($exist!==false) return $exist;
 		
-		UserHistoryEmail::QUpdateOneField('last',false)->byUser_id($userId);
+		UserHistoryEmail::QUpdateOneField('last',false)->byUser_id($userId)->execute();
 		$uph=new UserHistoryEmail;
 		$uph->user_id=$userId;
 		$uph->email=$email;
@@ -32,7 +32,7 @@ class UserHistoryEmail extends SSqlModel{
 	}
 	
 	public static function validEmail($userId,$email,$code){
-		if($uheId=self::QValue()->field('id')->where(array('user_id'=>$userId,'email'=>$email,'code'=>$code,'status'=>self::WAITING,'last'=>true))){
+		if($uheId=self::QValue()->field('id')->where(array('user_id'=>$userId,'email'=>$email,'code'=>$code,'status'=>self::WAITING,'last'=>true))->fetch()){
 			self::updateOneFieldByPk($uheId,'status',self::VALID);
 			return $uheId;
 		}
@@ -41,13 +41,13 @@ class UserHistoryEmail extends SSqlModel{
 	
 	public static function cancelable($userId,$email,$code){
 		return self::QOne()->fields('id,status')
-			->where(array('user_id'=>$userId,'email'=>$email,'code'=>$code,'status'=>array(self::WAITING,self::VALID),'last'=>true,'ADDDATE(created,INTERVAL 15 DAY) >= CURDATE()'));
+			->where(array('user_id'=>$userId,'email'=>$email,'code'=>$code,'status'=>array(self::WAITING,self::VALID),'last'=>true,'ADDDATE(created,INTERVAL 15 DAY) >= CURDATE()'))->fetch();
 	}
 	
 	public static function lastValid($userId,$except=false){
 		$where=array('user_id'=>$userId,'status'=>self::VALID);
 		if($except!==false) $where['id !=']=$except;
-		return self::QValue()->fields('email')->where($where)->orderBy(array('created'=>'DESC'));
+		return self::QValue()->fields('email')->where($where)->orderBy(array('created'=>'DESC'))->fetch();
 	}
 	
 	public function details(){

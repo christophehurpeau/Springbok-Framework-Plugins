@@ -65,7 +65,7 @@ class SearchablesTerm extends SSqlModel{
 	public static function createOrGet($term,$type){
 		$term=self::cleanTerm($term);
 		if(empty($term)) throw new Exception('term is empty');
-		$id=self::QValue()->field('id')->where(array('normalized'=>UString::normalize($term)));
+		$id=self::QValue()->field('id')->where(array('normalized'=>UString::normalize($term)))->fetch();
 		if($id!==false){
 			SearchablesTypedTerm::addIgnore($id,$type);
 			return $id;
@@ -79,7 +79,7 @@ class SearchablesTerm extends SSqlModel{
 	}
 	public static function get($term){
 		$term=self::cleanTerm($term);
-		return self::QValue()->field('id')->where(array('OR'=>array('term LIKE'=>$term,'normalized'=>UString::normalize($term))));
+		return self::QValue()->field('id')->where(array('OR'=>array('term LIKE'=>$term,'normalized'=>UString::normalize($term))))->fetch();
 	}
 	
 	public static function cleanTerm($term){
@@ -97,7 +97,8 @@ class SearchablesTerm extends SSqlModel{
 			->withForce('SearchablesKeywordTerm',false)
 			->leftjoin('SearchablesKeywordTerm',false,array('skt.keyword_id=skt2.keyword_id'),array('alias'=>'skt2'))
 			->addCondition('skt2.term_id',$this->id)
-			->orderBy('term')); }
+			->orderBy('term'))
+			->fetch(); }
 	
 	/*#/if*/
 	
@@ -114,7 +115,7 @@ class SearchablesTerm extends SSqlModel{
 		
 		/*#if searchable.keywordTerms.slug*/
 		if(isset($this->id) && !empty($this->slug) && empty($this->oldSlug)){
-			$oldSlug=self::QValue()->field('slug')->byId($this->id);
+			$oldSlug=self::QValue()->field('slug')->byId($this->id)->fetch();
 			if(!empty($oldSlug) && $oldSlug!=$this->slug) $this->oldSlug=$oldSlug;
 		}
 		/*#/if*/

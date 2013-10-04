@@ -49,7 +49,7 @@ class UserController extends AController{
 		if($currentUser->type===User::SITE){
 			if($currentUser->first_name!==$user->first_name || $currentUser->last_name!==$user->last_name || $currentUser->gender!==$user->gender/*#if users.pseudo*/ || isset($user->pseudo)/*#/if*/){
 				UserHistory::add(UserHistory::UPDATE);
-				$originalData=User::QRow()->byId($user->id)->fields('p_id,first_name,last_name,gender/*#if users.pseudo*/,pseudo/*#/if*/');
+				$originalData=User::QRow()->byId($user->id)->fields('p_id,first_name,last_name,gender/*#if users.pseudo*/,pseudo/*#/if*/')->fetch();
 				/*#if user.searchable*/ $pId=$originalData['p_id']; /*#/if*/
 				$isUpdated=$user->updateCompare($originalData);
 				/*#if user.searchable*/

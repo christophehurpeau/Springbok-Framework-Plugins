@@ -23,7 +23,7 @@
 </div>
 
 <div class="col variable r200">
-	<? HBreadcrumbs::display(_tC('Home'),$post->id.': '.$post->name) ?>
+	<?php HBreadcrumbs::display(_tC('Home'),$post->id.': '.$post->name) ?>
 	
 	<div id="editTabs" class="tabs">
 		<ul><li>{iconLink 'page','Article','#editTab1'}</li><li>{iconLink 'pageEdit','Contenu','#editTab2'}</li><li>{iconLink 'time','Historique','/postHistories/view/'.$id}</li><li>{iconLink 'pageLink','Articles liés','/postPosts/view/'.$id}</li></ul>

@@ -19,32 +19,32 @@ class SearchablesWord extends SSqlModel{
 	/*#value searchables_word_phpcontent*/ 
 	
 	
-	public static function &createOrIncrement($word){
+	public static function createOrIncrement($word){
 		self::beginTransaction();
-		/*if(!self::QUpdateOneField('count',array('`count`++'))){
+		/*if(!self::QUpdateOneField('count',array('`count`++'))->execute()){
 			
 		}*/
 		
-		$id=self::QValue()->field('id')->where(array('word LIKE'=>$word));
+		$id=self::QValue()->field('id')->where(array('word LIKE'=>$word))->fetch();
 		if($id===false){
-			$id=self::QInsert()->set(array('word'=>$word,'length'=>strlen($word),'count'=>1));
+			$id=self::QInsert()->set(array('word'=>$word,'length'=>strlen($word),'count'=>1))->execute();
 		}else{
 			self::updateOneFieldByPk($id,'count',array('`count`+1'));
 		}
 		self::commit();
 		return $id;
 	}
-	public static function &createOrGet($word){
-		$id=self::QValue()->field('id')->where(array('word LIKE'=>$word));
-		if($id===false) $id=self::QInsert()->set(array('word'=>$word,'length'=>strlen($word),'count'=>0));
+	public static function createOrGet($word){
+		$id=self::QValue()->field('id')->where(array('word LIKE'=>$word))->fetch();
+		if($id===false) $id=self::QInsert()->set(array('word'=>$word,'length'=>strlen($word),'count'=>0))->execute();
 		return $id;
 	}
 	
 	
 	public static function decrement($wordId){
-		self::QUpdateOneField('count',array('`count`-1'))->where(array('id'=>$wordId,'count >'=>0));
+		self::QUpdateOneField('count',array('`count`-1'))->where(array('id'=>$wordId,'count >'=>0))->execute();
 		/*
-			self::QDeleteOne()->where(array('word'=>&$word));
+			self::QDeleteOne()->where(array('word'=>$word))->execute();
 		}*/
 	}
 }

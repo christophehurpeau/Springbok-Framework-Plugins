@@ -19,13 +19,13 @@ class SearchablesTypedTerm extends SSqlModel{ /* EXTENDED by SearchablesKeywordT
 	
 	
 	public static function createOrGet($termId,$type){
-		$sttId=self::QValue()->field('id')->where(array('term_id'=>$termId,'type'=>$type));
+		$sttId=self::QValue()->field('id')->where(array('term_id'=>$termId,'type'=>$type))->fetch();
 		if($sttId!==false) return $sttId;
 		return self::addIgnore($termId,$type);
 	}
 	public static function addIgnore($termId,$type){
 		if($type !== SearchablesTypedTerm::NONE)
-			return self::QInsert()->ignore()->set(array('term_id'=>$termId,'type'=>$type));
+			return self::QInsert()->ignore()->set(array('term_id'=>$termId,'type'=>$type))->execute();
 	}
 	
 	public function jsonSerialize(){

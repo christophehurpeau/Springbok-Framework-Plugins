@@ -15,18 +15,18 @@ class SearchableTermWord extends SSqlModel{
 			if($wordId=array_search($word,$words)){
 				unset($words[$wordId]);
 			}else{
-				self::QInsert()->ignore()->set(array('term_id'=>$termId,'word_id'=>SearchablesWord::createOrGet($word)));
+				self::QInsert()->ignore()->set(array('term_id'=>$termId,'word_id'=>SearchablesWord::createOrGet($word)))->execute();
 				$diff=true;
 			}
 		}
 		if(!empty($words)){
-			self::QDeleteAll()->where(array('term_id'=>$termId,'word_id'=>array_keys($words)));
+			self::QDeleteAll()->where(array('term_id'=>$termId,'word_id'=>array_keys($words)))->execute();
 			$diff=true;
 		}
 		return $diff;
 	}
 	
 	private static function getWords($termId){
-		return self::QList()->fields('word_id')->with('SearchablesWord','word')->byTerm_id($termId);
+		return self::QList()->fields('word_id')->with('SearchablesWord','word')->byTerm_id($termId)->fetch();
 	}
 }

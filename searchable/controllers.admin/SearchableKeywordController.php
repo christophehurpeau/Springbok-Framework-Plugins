@@ -8,7 +8,7 @@ class SearchableKeywordController extends Controller{
 		$keyword=SearchablesKeyword::ById($id)->with('MainTerm')
 				->with('TermWithType')
 				->with('Types')
-				->notFoundIfFalse();
+				->mustFetch();
 						/*->with('SearchablesTypedTerm',array('with'=>array('SearchablesTerm'=>array('fieldsInModel'=>true,'fields'=>'term'))))*/
 		mset($keyword);
 		render();
@@ -32,11 +32,12 @@ class SearchableKeywordController extends Controller{
 	
 	/** @ValidParams('/searchable') @Id @NotEmpty('term') */
 	static function autocomplete(int $id,$term){
-		$keywordsTermsId=SearchablesKeywordTerm::QValues()->field('term_id')->byKeyword_id($id);
+		$keywordsTermsId=SearchablesKeywordTerm::QValues()->field('term_id')->byKeyword_id($id)->fetch();
 		$where=array('st.term LIKE'=>$term.'%');
 		if(!empty($keywordsTermsId)) $where['term_id NOTIN']=$keywordsTermsId;
 		self::renderJSON(json_encode(
-			SearchablesTypedTerm::QAll()->withField('SearchablesTerm','term')->where($where)->limit(16)));
+			SearchablesTypedTerm::QAll()->withField('SearchablesTerm','term')->where($where)->limit(16)->fetch()
+		));
 	}
 	
 	/** @ValidParams('/searchable') @Id('id','termId') @NotEmpty('type')*/
@@ -47,7 +48,7 @@ class SearchableKeywordController extends Controller{
 	}
 	/** @ValidParams('/searchable') @Id('id','termId') */
 	static function del(int $termId,int $id){
-		if(SearchablesKeywordTerm::QDeleteOne()->where(array('term_id'=>$termId,'keyword_id'=>$id)))
+		if(SearchablesKeywordTerm::QDeleteOne()->where(array('term_id'=>$termId,'keyword_id'=>$id))->execute())
 			renderText('1');
 	}
 	/** @ValidParams('/searchable') @Id @NotEmpty('name','type') */
@@ -57,12 +58,12 @@ class SearchableKeywordController extends Controller{
 			renderJSON('{"ok":1,"html":'.json_encode($t->nameHtml()).'}');
 		}
 		/*
-		//$termId=SearchablesTerm::QInsert()->set(array('term'=>SearchablesTerm::cleanTerm($val)));
+		//$termId=SearchablesTerm::QInsert()->set(array('term'=>SearchablesTerm::cleanTerm($val)))->execute();
 		$term=new SearchablesTerm;
 		$term->term=SearchablesTerm::cleanTerm($val);
 		$term->type=SearchablesTypedTerm::NONE;
 		$term->insert();
-		if(SearchablesKeywordTerm::QInsert()->set(array('term_id'=>$term->id,'keyword_id'=>$id)))
+		if(SearchablesKeywordTerm::QInsert()->set(array('term_id'=>$term->id,'keyword_id'=>$id))->execute())
 			renderText('1');
 		 */
 	}

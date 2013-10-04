@@ -18,17 +18,18 @@ class SearchablesTermSlugRedirect extends SSqlModel{
 		$psr->new_slug=$newSlug;
 		$psr->direct=true;
 		$psr->insertIgnore();
-		if(self::QUpdateOneField('direct',false)->byNew_slug($oldSlug))
-			self::QInsertSelect()->ignore()->query(self::QAll()->setFields(array('old_slug','('.UPhp::exportString($newSlug).')','("")','NOW()'))->byNew_slug($oldSlug));
+		if(self::QUpdateOneField('direct',false)->byNew_slug($oldSlug)->execute())
+			self::QInsertSelect()->ignore()->query(self::QAll()->setFields(array('old_slug','('.UPhp::exportString($newSlug).')','("")','NOW()'))->byNew_slug($oldSlug))->execute();
 	}
 	
 	
 	public static function get($oldSlug){
-		return self::QValue()->field('new_slug')->byOld_slugAndDirect($oldSlug,true);
+		return self::QValue()->field('new_slug')->byOld_slugAndDirect($oldSlug,true)->fetch();
 	}
 	
 	public static function findTerm($oldSlug){
 		return SearchablesTerm::QOne()->field('slug')->innerjoin('SearchablesTermSlugRedirect',false,array('stsr.new_slug=st.slug','stsr.direct'=>true))
-					->byText(true)->addCondition('stsr.old_slug LIKE',$oldSlug);
+					->byText(true)->addCondition('stsr.old_slug LIKE',$oldSlug)
+					->fetch();
 	}
 }
