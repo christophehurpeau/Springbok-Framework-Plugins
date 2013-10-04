@@ -8,7 +8,14 @@
 	'plugins'=>array(
 		'users'=>array('SpringbokCore','users'),
 	),
-
+	
+	
+	// Optional
+	'config'=>array(
+		'users.pseudo'=>false, // default to false, 
+		'user.searchable'=>true,
+	),
+	
 );
 ```
 

@@ -10,11 +10,11 @@ HBreadcrumbs::set(array('Mon compte'=>'/user'));
 {=$form->input('first_name')->disabled($disabled)}
 {=$form->input('last_name')->disabled($disabled)}
 /*#if users.pseudo*/
-{=$form->input('pseudo')->dataattr('ajaxcheck','pseudo')->required()->dataattr('data-checkexception',$user->pseudo)}
+{=$form->input('pseudo')->dataattr('ajaxcheck','pseudo')->required()->dataattr('checkexception',$user->pseudo)}
 /*#/if*/
 {if $user->type!==User::SITE} {=$form->input('gender')->disabled()->value($user->gender())}
 {else} {=$form->select('gender',SConsts::gender())} {/if}
-{=$form->input('email')->disabled($disabled)->dataattr('ajaxcheck','email')->required()->dataattr('data-checkexception',$user->email)}
+{=$form->input('email')->disabled($disabled)->dataattr('ajaxcheck','email')->required()->dataattr('checkexception',$user->email)}
 {=$form->end()}
 
 {if $user->type!==User::SITE}
