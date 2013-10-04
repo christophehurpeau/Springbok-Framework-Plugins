@@ -33,7 +33,7 @@ class Page extends Searchable{
 	
 	
 	public static function findOneById($id){
-		return self::QOne()->fields('id,slug')->byId($id);
+		return self::QOne()->fields('id,slug')->byId($id)->fetch();
 	}
 	
 	public function destroyVElement(){
@@ -78,12 +78,12 @@ class Page extends Searchable{
 	}
 	public static function internalLink($id){
 		$page=new Page; $page->id=$id;
-		$page->slug=Page::QValue()->field('slug')->addCondition('id',$id);
+		$page->slug=Page::QValue()->field('slug')->addCondition('id',$id)->fetch();
 		if($page->slug===false) return false;
 		return $page->link();
 	}
 
 	public static function findPlublishedBySlug($slug){
-		return Page::QValue()->field('id')->where(array('slug'=>$slug,'status'=>Page::PUBLISHED));
+		return Page::QValue()->field('id')->where(array('slug'=>$slug,'status'=>Page::PUBLISHED))->fetch();
 	}
 }

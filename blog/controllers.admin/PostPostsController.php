@@ -5,7 +5,8 @@ class PostPostsController extends Controller{
 	static function view(int $id){
 		$allPosts=Post::QAll()->fields('id,status')->withParent('name,slug')
 			->with('LinkedPost',array('join'=>true,'fields'=>'deleted','fieldsInModel'=>true))
-			->where(array('pp.post_id'=>$id));
+			->where(array('pp.post_id'=>$id))
+			->fetch();
 		$posts=$deletedPosts=array();
 		foreach($allPosts as &$post)
 			$post->deleted===null ? $posts[]=&$post : $deletedPosts[]=&$post;
@@ -21,16 +22,16 @@ class PostPostsController extends Controller{
 	
 	/** @Ajax @ValidParams @AllRequired */
 	static function delete(int $postId,int $linkedPostId){
-		if(PostPost::QUpdateOneField('deleted',true)->byPost_idAndLinked_post_idAndManual($postId,$linkedPostId,false)->limit1())
+		if(PostPost::QUpdateOneField('deleted',true)->byPost_idAndLinked_post_idAndManual($postId,$linkedPostId,false)->limit1()->execute())
 			self::renderText('1');
-		elseif(PostPost::QDeleteOne()->byPost_idAndLinked_post_idAndManual($postId,$linkedPostId,true))
+		elseif(PostPost::QDeleteOne()->byPost_idAndLinked_post_idAndManual($postId,$linkedPostId,true)->execute())
 			self::renderText('2');
 		else self::renderText('0');
 	}
 	
 	/** @Ajax @ValidParams @AllRequired */
 	static function undelete(int $postId,int $linkedPostId){
-		$res=PostPost::QUpdateOneField('deleted',false)->byPost_idAndLinked_post_id($postId,$linkedPostId)->limit1();
+		$res=PostPost::QUpdateOneField('deleted',false)->byPost_idAndLinked_post_id($postId,$linkedPostId)->limit1()->execute();
 		if(!$res) renderText('0');
 		else{
 			PostPost::refind($postId);
@@ -50,7 +51,8 @@ class PostPostsController extends Controller{
 			Post::QAll()->fields('DISTINCT id,status')->withParent('name,slug')
 				->with('LinkedPost',array('fields'=>false,'join'=>true))
 				->where(array('id !='=>$postId,'sb.name LIKE'=>'%'.$term.'%','OR'=>array('pp.post_id IS NULL','pp.post_id !='=>$postId)))
-			,'_autocomplete_linkedposts'
+				->fetch(),
+			'_autocomplete_linkedposts'
 		));
 	}
 }

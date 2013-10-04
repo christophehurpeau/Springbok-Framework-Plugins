@@ -12,6 +12,6 @@ class PostCategory extends SSqlModel{
 		*/ $created;
 	
 	public static function create($postId,$catId){
-		return self::QInsert()->set(array('post_id'=>$postId,'category_id'=>$catId));
+		return self::QInsert()->set(array('post_id'=>$postId,'category_id'=>$catId))->execute();
 	}
 }

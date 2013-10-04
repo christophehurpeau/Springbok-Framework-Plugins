@@ -16,7 +16,7 @@ class PostTag extends SSqlModel{
 	);
 	
 	public static function create($postId,$tagId){
-		$res=self::QInsert()->set(array('post_id'=>$postId,'tag_id'=>$tagId));
+		$res=self::QInsert()->set(array('post_id'=>$postId,'tag_id'=>$tagId))->execute();
 		if($res) PostPost::refind($postId);
 		return $res;
 	}

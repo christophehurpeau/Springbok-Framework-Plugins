@@ -42,6 +42,6 @@ class GuestRequest extends SSqlModel{
 			$data['referer']=&$ref['referer'];
 			if(!empty($ref['searchTerms'])) $data['search_terms']=&$ref['searchTerms'];
 		}
-		return self::QInsert()->data($data);
+		return self::QInsert()->data($data)->execute();
 	}
 }

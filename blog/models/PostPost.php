@@ -17,18 +17,18 @@ class PostPost extends SSqlModel{
 	
 	public static function refind($postId){
 		self::deleteAllByPost_idAndDeletedAndManual($postId,false,false);
-		$tags=PostTag::QValues()->field('tag_id')->byPost_id($postId);
+		$tags=PostTag::QValues()->field('tag_id')->byPost_id($postId)->fetch();
 		if(!empty($tags))
 			self::QInsertSelect()->ignore()->cols('post_id,linked_post_id')->query(
 				Post::QAll()->fields($postId.',id')
 					->with('PostTag',array('join'=>true,'fields'=>false))
 					->where(array('id !='=>$postId,'pt.tag_id'=>$tags))
-			);
+			)->execute();
 		Post::onModified($postId);
 	}
 	
 	public static function add($postId,$linkedPostId){
-		if(self::QInsert()->ignore()->set(array('post_id'=>$postId,'linked_post_id'=>$linkedPostId,'manual'=>true))){
+		if(self::QInsert()->ignore()->set(array('post_id'=>$postId,'linked_post_id'=>$linkedPostId,'manual'=>true))->execute()){
 			Post::onModified($postId);
 			return true;
 		}

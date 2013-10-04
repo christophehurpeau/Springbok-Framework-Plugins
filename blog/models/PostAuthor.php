@@ -13,7 +13,7 @@ class PostAuthor extends SSqlModel{
 		*/ $created;
 	
 	public static function create($postId,$authorId){
-		return self::QInsert()->set(array('post_id'=>$postId,'author_id'=>$authorId));
+		return self::QInsert()->set(array('post_id'=>$postId,'author_id'=>$authorId))->execute();
 	}
 }
 /*#/if*/

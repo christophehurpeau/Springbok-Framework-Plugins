@@ -21,13 +21,13 @@ class PostRating extends SSqlModel{
 	);
 	
 	public static function exist($userId,$postId){
-		return self::QExist()->where(array('post_id'=>&$postId,'user_id'=>&$userId));
+		return self::QExist()->where(array('post_id'=>$postId,'user_id'=>$userId))->fetch();
 	}
 	public static function ratingValue($userId,$postId){
-		return self::QValue()->field('value')->where(array('post_id'=>&$postId,'user_id'=>&$userId));		
+		return self::QValue()->field('value')->where(array('post_id'=>$postId,'user_id'=>$userId))->fetch();
 	}
 	public static function idAndRatingValue($userId,$postId){
-		return self::QOne()->fields('id,value')->where(array('post_id'=>&$postId,'user_id'=>&$userId));		
+		return self::QOne()->fields('id,value')->where(array('post_id'=>$postId,'user_id'=>$userId))->fetch();
 	}
 	
 }

@@ -8,16 +8,18 @@ class PostsController extends AController{
 	
 	/** @ValidParams('/') @Required('slug') */
 	static function tag($slug){
-		$postTag=PostsTag::QOne()->addCondition('skmt.slug',$slug);
+		$postTag=PostsTag::QOne()->addCondition('skmt.slug',$slug)->fetch();
 		if($postTag===false){
 			$postTag=PostsTag::QOne()
 				->innerjoin('PostsTagSlugRedirect',false,array('ptsr.new_slug=skmt.slug','ptsr.direct'=>true))
-				->addCondition('ptsr.old_slug LIKE',$slug);
+				->addCondition('ptsr.old_slug LIKE',$slug)
+				->fetch();
 			
 			if($postTag===false){
 				$postTag=PostsTag::QOne()
 						->innerjoin('SearchablesTermSlugRedirect',false,array('stsr.new_slug=skmt.slug','stsr.direct'=>true))
-						->addCondition('stsr.old_slug LIKE',$slug);
+						->addCondition('stsr.old_slug LIKE',$slug)
+						->fetch();
 			}
 			notFoundIfFalse($postTag);
 			redirectPermanent($postTag->link());
