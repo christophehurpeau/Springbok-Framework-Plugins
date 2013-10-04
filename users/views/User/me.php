@@ -5,16 +5,16 @@ HBreadcrumbs::set(array('Mon compte'=>'/user'));
 <? CSession::flash('user/me','p') ?>
 {*<h1>Mes Informations</h1>*}
 
-<?php $form=HForm::create('User') ?>
-<?php $attrs=$user->type!==User::SITE ? array('disabled'=>true) : array(); ?>
-{=$form->input('first_name',$attrs)}
-{=$form->input('last_name',$attrs)}
+<?php $disabled = $user->type!==User::SITE; ?>
+{=User::Form()}
+{=$form->input('first_name')->disabled($disabled)}
+{=$form->input('last_name')->disabled($disabled)}
 /*#if users.pseudo*/
-{=$form->input('pseudo',array('data-ajaxcheck'=>'pseudo','required'=>true,'data-checkexception'=>$user->pseudo))}
+{=$form->input('pseudo')->dataattr('ajaxcheck'=>'pseudo')->required()->dataattr('data-checkexception'=>$user->pseudo)}
 /*#/if*/
-{if $user->type!==User::SITE}{=$form->input('gender',array('disabled'=>true,'value'=>$user->gender()))}
-{else}{=$form->select('gender',SConsts::gender())}{/if}
-{=$form->input('email',array('data-ajaxcheck'=>'email','required'=>true,'data-checkexception'=>$user->email)+$attrs)}
+{if $user->type!==User::SITE} {=$form->input('gender')->disabled()->value($user->gender())}
+{else} {=$form->select('gender',SConsts::gender())} {/if}
+{=$form->input('email')->disabled($disabled)->dataattr('ajaxcheck'=>'email')->required()->dataattr('data-checkexception'=>$user->email)}
 {=$form->end()}
 
 {if $user->type!==User::SITE}
@@ -27,10 +27,11 @@ HBreadcrumbs::set(array('Mon compte'=>'/user'));
 	<p class="message error">{$errorPasswordChange}</p>
 	{/if}
 	
-	<?php $form=HForm::create(null,array('action'=>'/user/changePassword')) ?>
-	<? $form->input('old_password',array('label'=>'Ancien mot de passe','type'=>'password','required'=>true,'autocomplete'=>'off','pattern'=>'.{4,}')) ?>
-	<? $form->input('new_password',array('label'=>'Nouveau mot de passe','type'=>'password','required'=>true,'data-min-length'=>6,'autocomplete'=>'off','pattern'=>'^(.*[A-Za-z]+.*[0-9]+.*|.*[0-9]+.*[A-Za-z]+.*)$')) ?>
-	<? $form->input('new_password_confirm',array('label'=>'Confirmation','type'=>'password','autocomplete'=>'off','data-same'=>'#new_password')) ?>
+	{=User::Form()->action('/user/changePassword')}
+	{=$form->input('old_password')->label('Ancien mot de passe')->setType('password')->required()->attr('autocomplete','off')->pattern('.{4,}')}
+	{=$form->input('new_password')->label('Nouveau mot de passe')->setType('password')->required()->datattr('min-length',6)
+				->attr('autocomplete','off')->pattern('^(.*[A-Za-z]+.*[0-9]+.*|.*[0-9]+.*[A-Za-z]+.*)$')}
+	{=$form->input('new_password_confirm')->label('Confirmation')->setType('password')->attr('autocomplete','off')->datattr('same','#new_password')}
 	{=$form->end('Changer')}
 	
 	<p class="message info">Votre mot de passe doit avoir un minimum de <b>6</b> caractères. Il doit comporter des chiffres et des lettres. Tous les caractères sont autorisés.</p>
