@@ -6,7 +6,7 @@ HBreadcrumbs::set(array('Mon compte'=>'/user'));
 {*<h1>Mes Informations</h1>*}
 
 <?php $disabled = $user->type!==User::SITE; ?>
-{=User::Form()}
+{=$form=User::Form()}
 {=$form->input('first_name')->disabled($disabled)}
 {=$form->input('last_name')->disabled($disabled)}
 /*#if users.pseudo*/
