@@ -44,7 +44,7 @@ class UserController extends AController{
 		render();
 	}
 
-	private static function _updateUser($currentUser,$user){debug($user);
+	private static function _updateUser($currentUser,$user){
 		if($currentUser->type===User::SITE){
 			try{
 				$fields = array_keys($user->_getData());
