@@ -53,8 +53,7 @@ class Post extends Searchable{
 			/*#if blog_comments_enabled*/->with('PostComment',array('isCount'=>true,'onConditions'=>array('pcom.status'=>PostComment::VALID)))/*#/if*/
 			->byStatus(Post::PUBLISHED)
 			->addCondition('sb.visible',true)
-			->orderBy(array('sb.created'=>'DESC'))
-			->fetch();
+			->orderBy(array('sb.created'=>'DESC'));
 	}
 	
 	public function beforeInsert(){ return true; }

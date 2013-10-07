@@ -29,3 +29,22 @@ class SiteController extends AController{
 	/* @ImportAction('core','Site','logout') */
 }
 ```
+
+### Javascript
+
+To be able to use validation in forms, add this line in your index javascript file :
+
+```
+includePlugin('users/_users');
+```
+
+
+### Use the Login and Register page
+
+By default, your login page contains a simple login form
+
+To be able to use a page with 3 forms : login, register and a form for lost password, you need to override the view in `views/Site/login.php`  :
+
+```
+{includePlugin users/views/Site/login_register.php}
+```
