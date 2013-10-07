@@ -1,6 +1,6 @@
 <?php
 class VPostsLatest extends SViewCachedElement{
-	protected static $views=array('view','titles');
+	protected static $views=array('view');
 	
 	/*#if DEV*/ public function exists(){ return false; } /*#/if*/
 	
