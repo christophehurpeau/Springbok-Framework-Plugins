@@ -97,8 +97,8 @@ class SearchablesTerm extends SSqlModel{
 			->withForce('SearchablesKeywordTerm',false)
 			->leftjoin('SearchablesKeywordTerm',false,array('skt.keyword_id=skt2.keyword_id'),array('alias'=>'skt2'))
 			->addCondition('skt2.term_id',$this->id)
-			->orderBy('term'))
-			->fetch(); }
+			->orderBy('term')
+			->fetch()); }
 	
 	/*#/if*/
 	
