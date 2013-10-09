@@ -22,7 +22,7 @@ class PostsCategory extends SSqlModel{
 	}
 	
 	public static function QListName(){
-		return /**/self::QList()->field('id')->with('MainTerm',array('fields'=>'term'))->orderBy(array('skmt.term'))->fetch();
+		return /**/self::QList()->field('id')->with('MainTerm',array('fields'=>'term'))->orderBy(array('skmt.term'));
 	}
 	
 }
