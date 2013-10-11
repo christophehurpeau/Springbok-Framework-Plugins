@@ -2,7 +2,7 @@
 <header>
 	<div id="logo"><?= Config::$projectName ?></div> 
 	{menuTop 'startsWith':true
-		'Retour':false,
+		'Retour':'/',
 		'Langs':[['/dev/:controller(/:action/*)?','langs',null,'']],
 		'Dbs':[['/dev/:controller(/:action/*)?','db',null,'']],
 		'Tests':[['/dev/:controller(/:action/*)?','tests',null,'']],
