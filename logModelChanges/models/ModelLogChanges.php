@@ -15,10 +15,12 @@ class ModelLogChanges extends SSqlModel{
 		
 	public static function logInsert($data){
 		self::QInsert()->cols('type,data')
-			->values(array(self::INSERT,json_encode($data)));
+			->values(array(self::INSERT,json_encode($data)))
+			->execute();
 	}
 	public static function logUpdate($primaryKeys,$data){
 		self::QInsert()->cols('type,primaryKeys,data')
-			->values(array(self::UPDATE,json_encode($primaryKeys),json_encode($data)));
+			->values(array(self::UPDATE,json_encode($primaryKeys),json_encode($data)))
+			->execute();
 	}
 }

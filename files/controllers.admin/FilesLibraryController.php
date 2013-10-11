@@ -32,7 +32,7 @@ class FilesLibraryController extends Controller{
 	/** */
 	static function delete(int $id){
 		if(CHttpRequest::referer(true) !== CRoute::getStringLink('admin','/filesLibrary')) exit;
-		$file = LibraryFile::ById($id);
+		$file = LibraryFile::ById($id)->mustFetch();
 		if($file->type===LibraryFile::IMAGE) ACFilesLibraryImages::deleteFiles($id);
 		else ACFilesLibrary::deleteFile($file);
 		LibraryFile::deleteOneById($id);

@@ -14,11 +14,13 @@ class SlugRedirect extends SSqlModel{
 		*/ $created;
 	
 	public static function add($modelName,$oldSlug,$newSlug){
-		if(!self::QInsert()->ignore()->set(array('model_name'=>$modelName,'old_slug'=>$oldSlug,'new_slug'=>$newSlug,'direct'=>true))->execute())
+		if( !self::QInsert()->ignore()->set(array('model_name'=>$modelName,'old_slug'=>$oldSlug,'new_slug'=>$newSlug,'direct'=>true))->execute() )
 			self::QUpdateOneField('direct',true)->where(array('model_name'=>$modelName,'old_slug'=>$oldSlug,'new_slug'=>$newSlug))->execute();
-		if(self::QUpdateOneField('direct',false)->byNew_slug($oldSlug)->execute())
-			self::QInsertSelect()->ignore()->query(self::QAll()->setFields(array('model_name','old_slug','('.UPhp::exportString($newSlug).')','("")','NOW()'))
-							->where(array('new_slug'=>$oldSlug,'model_name'=>$modelName)))->execute();
+		if( self::QUpdateOneField('direct',false)->byNew_slug($oldSlug)->execute() )
+			self::QInsertSelect()->ignore()->query(
+				self::QAll()->setFields(array('model_name','old_slug','('.UPhp::exportString($newSlug).')','("")','NOW()'))
+							->where(array('new_slug'=>$oldSlug,'model_name'=>$modelName))
+			)->execute();
 	}
 	/*
 	public static function slugAdded($modelName,$slug){
