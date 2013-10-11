@@ -2,18 +2,18 @@
 HBreadcrumbs::set(array('Mon compte'=>'/user'));
 ?>
 
-<? CSession::flash('user/me','p') ?>
+<? CSession::flash('user/me','p',array('permanent'=>true)) ?>
 {*<h1>Mes Informations</h1>*}
 
 <?php $disabled = $user->type!==User::SITE; ?>
 {=$form=User::Form()}
+{if $user->type!==User::SITE} {=$form->input('gender')->disabled()->value($user->gender())}
+{else} {=$form->select('gender')} {/if}
 {=$form->input('first_name')->disabled($disabled)}
 {=$form->input('last_name')->disabled($disabled)}
 /*#if users.pseudo*/
 {=$form->input('pseudo')->dataattr('ajaxcheck','pseudo')->required()->dataattr('checkexception',$user->pseudo)}
 /*#/if*/
-{if $user->type!==User::SITE} {=$form->input('gender')->disabled()->value($user->gender())}
-{else} {=$form->select('gender',SConsts::gender())} {/if}
 {=$form->input('email')->disabled($disabled)->dataattr('ajaxcheck','email')->required()->dataattr('checkexception',$user->email)}
 {=$form->end()}
 

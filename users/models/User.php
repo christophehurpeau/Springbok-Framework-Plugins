@@ -22,7 +22,7 @@ class User extends SSqlModel{
 		* @MinLength(2)
 		*/ $last_name,
 		/** @SqlType('tinyint(1) unsigned') @NotNull @Default(SConsts::UNKNOWN)
-		* @Enum(['SConsts','gender'])
+		* @Enum(0=>'','Man','Woman') do not use : ['SConsts','gender']
 		* @Icons(SConsts::genderIcons())
 		*/ $gender,
 		/*#if users.pseudo*/

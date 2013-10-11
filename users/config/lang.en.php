@@ -5,6 +5,9 @@
 	'models.User:first_name'=>'First name',
 	'models.User:last_name'=>'Last name',
 	'models.User:gender'=>'Gender',
+	'models.User:gender.Enum.'=>'',
+	'models.User:gender.Enum.Man'=>'Man',
+	'models.User:gender.Enum.Woman'=>'Woman',
 	'models.User:pseudo'=>'Pseudo',
 	
 	'models.UserConnection.created'=>'Connection date',

@@ -37,8 +37,8 @@ class UserController extends AController{
 					/*#if users.pseudo*/if(!empty($user->pseudo)) $currentUser->pseudo=$user->pseudo;/*#/if*/
 					$_POST['user']=$currentUser->_getData();
 				}
-				CSession::setFlash('Vos informations ont bien été enregistrées.'.$moreInfos,'user/me','message '.$messageType);
-			}else CSession::setFlash('Vos informations ne sont pas valides.','user/me','message error');
+				CSession::setFlash('Vos informations ont bien été enregistrées.'.$moreInfos,'user/me',array('class'=>'message '.$messageType,'icon'=>$messageType === 'success' ? 'tick' : 'cross'));
+			}else CSession::setFlash('Vos informations ne sont pas valides.','user/me',array('class'=>'message error','icon'=>'cross'));
 		}
 		set('user',CSecure::user());
 		render();
@@ -85,7 +85,7 @@ class UserController extends AController{
 			$uhpId=UserHistoryPassword::create($userId,UserHistoryPassword::USER_DEFINED,$pwd);
 			UserHistory::add(UserHistory::CHANGE_PWD,$uhpId);
 			User::updateOneFieldByPk($userId,'pwd',$pwd);
-			CSession::setFlash('Mot de passe modifié !','user/me',array('class'=>'message success'));
+			CSession::setFlash('Mot de passe modifié !','user/me',array('class'=>'message success','icon'=>'tick'));
 			redirect('/user/me');
 		}
 		set('errorPasswordChange',$error);
