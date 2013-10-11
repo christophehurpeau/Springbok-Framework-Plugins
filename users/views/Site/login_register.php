@@ -4,7 +4,7 @@
 <div class="content w840 clearfix" style="margin:20px auto 0">
 	<div class="floatL w400 mr20">
 		<h3>Connectez-vous</h3>
-		{=$form=User::Form()->attrClass('big')->action('/site/login')}
+		{=$form=User::Form()->attrClass('big')->action('/site/login')->attr('target','_self')}
 		{=$form->fieldsetStart()}
 		{=$form->input('email')->wp100()}
 		{=$form->input('pwd')->wp100()}
@@ -13,11 +13,11 @@
 		
 		<div id="divLostPassword" class="mt20">
 			<h3>Mot de passe perdu</h3>
-			<div class="smallinfo italic mb10">Vous avez perdu votre mot de passe ?<br/>Nous pouvons vous en renvoyer un nouveau à votre adresse email.</div>
+			<div class="smallinfo italic mb10">Vous avez perdu votre mot de passe ?<br/>Recevez un lien sur votre adresse email vous permettant de le changer.</div>
 			{=$form=User::Form(false)->id('formLostPassword')->attrClass('big')->action('/users/ajaxLostPassword')}
 			{=$form->fieldsetStart()}
 			{=$form->input('email')->id('UserEmailLostPassword')}
-			{=$form->end('Renvoyer un nouveau mot de passe')}
+			{=$form->end('Envoyez-moi un mail')}
 		</div>
 	</div>
 	<div class="floatL w400 ml20">
@@ -28,8 +28,10 @@
 		{=$form->input('last_name')->wp100()}
 		{=$form->input('email')->wp100()->id('UserEmailRegister')->attr('data-ajaxcheck','email')}
 		{=$form->input('confirm_email')->label("Confirmation de l'adresse email")->noName()->wp100()->id('UserEmailRegisterConfirm')->attr('data-same','#UserEmailRegister')}
+		{=$form->input('pwd')->wp100()->id('UserPwdRegister')->attr('data-ajaxcheck','email')}
+		{=$form->input('pwd')->label("Confirmation du mot de passe")->noName()->id('UserPwdConfirmRegister')->wp100()->attr('data-same','#UserPwdRegister')}
 		<br class="clear"/>
-		<div class="italic">Le mot de passe sera envoyé à l'adresse ci-dessus.</div>
+		<div class="italic">Un lien de validation sera envoyé à l'adresse ci-dessus.</div>
 		{=$form->submit(_tC('Register'))->container()->attrClass('center')}
 		{=$form->end(false)}
 	</div>

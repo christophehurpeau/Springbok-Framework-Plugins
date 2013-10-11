@@ -15,4 +15,6 @@
 	'models.UserConnection.ip'=>'Adresse IP',
 	
 	'plugin.users.My account'=>'Mon compte',
+
+	'Your password must have numbers and letters'=>'Votre mot de passe doit avoir des lettres et des chiffres',
 );

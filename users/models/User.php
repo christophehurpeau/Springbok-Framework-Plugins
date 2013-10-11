@@ -13,7 +13,7 @@ class User extends SSqlModel{
 		* @Email @Required
 		*/ $email,
 		/** @SqlType('VARCHAR(100)') @Null
-		* @Required
+		* @Required @Match('.*[A-Za-z]+.*[0-9]+.*|.*[0-9]+.*[A-Za-z]+.*','Your password must have numbers and letters') @MinLength(6)
 		*/ $pwd,
 		/** @SqlType('VARCHAR(100)') @NotNull
 		* @MinLength(2)
@@ -145,16 +145,20 @@ class User extends SSqlModel{
 		return '/users/validEmail/'.$this->id.'/'.urlencode($this->email).'/'.$code;
 	}
 	
+	public function changePasswordLink($code){
+		return '/users/changePassword/'.$this->id.'/'.urlencode($this->email).'/'.$code;
+	}
+	
 	
 	
 	public static function register($user,$connectAfterRegistration=false){
 		if(CSecure::isConnected()) return '0';
 		if(!$user->check()) return '2';
-		$password=UGenerator::randomLetters(12);
-		$user->pwd=USecure::hashWithSalt($password);
+		$password = !($generatedPassword = empty($user->pwd)) ? $user->pwd : UGenerator::randomLetters(12); //compatibility
+		$user->pwd = USecure::hashWithSalt($password);
 		$user->status=User::WAITING;
 		/*#if user.searchable*/ $user->name=$user->first_name.' '.$user->last_name; $user->visible=true; /*#/if*/
-		$user->insert('email','pseudo','pwd','status','first_name','last_name');
+		$user->insert('email'/*#if users.pseudo*/,'pseudo'/*#/if*/,'pwd','status','first_name','last_name');
 		
 		if($connectAfterRegistration) CSecure::setConnected(CSecure::CONNECTION_AFTER_REGISTRATION,$user->id,$user->email);
 		
@@ -162,18 +166,18 @@ class User extends SSqlModel{
 		$uhe=UserHistoryEmail::create($user->id,$user->email);
 		UserHistory::add(UserHistory::CREATE,$uhe->id,$user->id);
 		$uphId=UserHistoryPassword::create($user->id,UserHistoryPassword::INITIAL,$user->pwd);
-		CMail::send('user_registration',array('user'=>$user,'password'=>$password,'uhe'=>$uhe),'Bienvenue sur '.Config::$projectName,$user->email);
+		CMail::send('user_registration',array('user'=>$user,'password'=>$password,'generatedPassword'=>$generatedPassword,'uhe'=>$uhe),
+								'Bienvenue sur '.Config::$projectName,$user->email);
 		return '1';
 	}
 	
 	public static function sendLostPassword($user){
 		CLogger::get('lostPassword')->log($user->id.': '.$user->email);
-		$password=UGenerator::randomLetters(12);
-		$pwd=USecure::hashWithSalt($password);
-		$uphId=UserHistoryPassword::create($user->id,UserHistoryPassword::LOST_PASSWORD,$pwd);
-		UserHistory::add(UserHistory::LOST_PWD,$uphId,$user->id);
-		User::updateOneFieldByPk($user->id,'pwd',$pwd);
-		CMail::send('user_lostPassword',array('user'=>$user,'password'=>$password),'Mot de passe perdu - '.Config::$projectName.'.',$user->email);
+		//$password = ($hasPassword = !empty($user->pwd)) ? $user->pwd : UGenerator::randomLetters(12);
+		
+		$uhe=UserHistoryEmail::create($user->id,$user->email,false,UserHistoryEmail::WAITING_LOST_PASSWORD);
+		UserHistory::add(UserHistory::ASK_PWD_LOST,$uhe->id,$user->id);
+		CMail::send('user_lostPassword',array('user'=>$user,'uhe'=>$uhe),'Mot de passe perdu - '.Config::$projectName.'.',$user->email);
 	}
 	
 	/* -- - -- */

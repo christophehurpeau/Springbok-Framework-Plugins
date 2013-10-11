@@ -2,7 +2,8 @@
 /** @TableAlias('uh') @TableName('user_history') */
 class UserHistory extends SSqlModel{
 	const CREATE=01, DELETE=02, UPDATE=03, CONNECT=05, LOST_PWD=06, CHANGE_PWD=07, VALID_USER=08, DISABLE_USER=09,
-		CHANGE_EMAIL=10, VALID_CHANGE_EMAIL=11, CANCEL_CHANGE_EMAIL=12 ;
+		CHANGE_EMAIL=10, VALID_CHANGE_EMAIL=11, CANCEL_CHANGE_EMAIL=12,
+		ASK_PWD_LOST=17, CHANGE_PWD_LOST =18 ;
 	public
 		/** @Pk @AutoIncrement @SqlType('int(10) unsigned') @NotNull
 		*/ $id,
@@ -45,6 +46,7 @@ class UserHistory extends SSqlModel{
 	private static $_detailsOperation=array(self::CREATE=>'Création du compte',self::DELETE=>'Suppression du compte',self::UPDATE=>'Modification des informations',
 		self::VALID_USER=>"Validation de l'utilisateur",self::DISABLE_USER=>"Désactivation de l'utilisateur",
 		self::CONNECT=>'Connexion',self::LOST_PWD=>"Demande d'un nouveau mot de passe (perte)",self::CHANGE_PWD=>'Changement de mot de passe',
+		self::ASK_PWD_LOST=>'Demande de changement de mot de passe (perte)', self::CHANGE_PWD_LOST=>'Changement de mot de passe (perte)',
 		self::CHANGE_EMAIL=>"Changement d'email",self::VALID_CHANGE_EMAIL=>"Validation du changement d'email",self::CANCEL_CHANGE_EMAIL=>"Annulation du changement d'email"
 	);
 	public function detailOperation(){

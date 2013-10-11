@@ -70,9 +70,45 @@ class UsersController extends AController{
 		renderText('0');
 	}
 	
+	
+	/** @ValidParams @Id('userId') @NotEmpty('email','code') */
+	static function changePassword(int $userId,string $email,string $code){
+		$password = CHttpRequest::_POSTor('pwd');
+		if( empty($password) ){
+			if( !($uheId=UserHistoryEmail::existsWaiting($userId,$email,$code,UserHistoryEmail::WAITING_LOST_PASSWORD)) ){
+				$message='Votre code ne correspond à aucune demande de changement de mot de passe.';
+				$classMessage='error';
+			}else{
+				$message = null;
+				// it's not likely that the user is connected, but if he is, disconnects him
+				if(CSecure::isConnected()) ACSecure::logout();
+				mset($userId,$email,$code);
+			}
+		}else{
+			if( !($uheId=UserHistoryEmail::validEmail($userId,$email,$code,UserHistoryEmail::WAITING_LOST_PASSWORD,UserHistoryEmail::VALID_LOST_PASSWORD)) ){
+				$message='Votre code ne correspond à aucune demande de changement de mot de passe.';
+				$classMessage='error';
+			}else{
+				$pwd = USecure::hashWithSalt($password);
+				$uphId = UserHistoryPassword::create($userId,UserHistoryPassword::LOST_PASSWORD,$pwd,$uheId);
+				UserHistory::add(UserHistory::CHANGE_PWD_LOST,$uphId,$userId);
+				User::updateOneFieldByPk($userId,'pwd',$pwd);
+				$message='Votre nouveau mot de passe a bien été validé et enregistré. Vous pouvez maintenant vous connecter.';
+				CSession::setFlash($message,'user/login',array('class'=>'message success'));
+				redirect('/site/login');
+			}
+		}
+		if($message !== null)
+			{ mset($message,$classMessage); } // {} is required.
+		render();
+	}
+	
 	/** @ValidParams @Id('userId') @NotEmpty('email','code') */
 	static function validEmail(int $userId,$email,$code){
-		if($uheId=UserHistoryEmail::validEmail($userId,$email,$code)){
+		if( !($uheId=UserHistoryEmail::validEmail($userId,$email,$code)) ){
+			$message='Votre code ne correspond à aucune validation de courriel.';
+			$classMessage='error';
+		}else{
 			if(User::existByIdAndStatus($userId,User::WAITING)){
 				User::updateOneFieldByPk($userId,'status',User::VALID);
 				UserHistory::add(UserHistory::VALID_USER,$uheId,$userId);
@@ -87,9 +123,6 @@ class UsersController extends AController{
 				$message='Votre nouveau courriel a bien été validé et enregistré.';
 				$classMessage='success';
 			}
-		}else{
-			$message='Votre code ne correspond à aucune validation de courriel.';
-			$classMessage='error';
 		}
 		if(CSecure::connected()===$userId){
 			CSession::setFlash($message,'user/me',array('class'=>'message '.$classMessage));

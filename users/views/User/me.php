@@ -29,8 +29,7 @@ HBreadcrumbs::set(array('Mon compte'=>'/user'));
 	
 	{=$form=User::Form()->action('/user/changePassword')}
 	{=$form->input('old_password')->label('Ancien mot de passe')->setType('password')->required()->attr('autocomplete','off')->pattern('.{4,}')}
-	{=$form->input('new_password')->label('Nouveau mot de passe')->setType('password')->required()->dataattr('min-length',6)
-				->attr('autocomplete','off')->pattern('^(.*[A-Za-z]+.*[0-9]+.*|.*[0-9]+.*[A-Za-z]+.*)$')}
+	{=$form->input('pwd')->attr('name','new_password')->id('UserNewPassword')->label('Nouveau mot de passe')->setType('password')->attr('autocomplete','off')}
 	{=$form->input('new_password_confirm')->label('Confirmation')->setType('password')->attr('autocomplete','off')->dataattr('same','#new_password')}
 	{=$form->end('Changer')}
 	

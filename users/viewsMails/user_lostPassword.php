@@ -1,7 +1,7 @@
+<p>Bonjour,</p>
 <p>Récupération du mot de passe :</p>
-<p>Vous avez demandé un nouveau mot de passe.</p>
-<p>Votre email : <b>{$user->email}</b><br />
-		Votre mot de passe : {$password}
-</p>
-<p>Vous pouvez maintenant vous connecter sur {link null,'/',array('fullUrl'=>true)}</p>
-<p>Vous pouvez changer votre mot de passe dans votre compte.</p>
+<p>Vous avez demandé à changer votre mot de passe.</p>
+<p>{link 'Cliquez-ici',$user->changePasswordLink($uhe->code),array('entry'=>'index','fullUrl'=>true)} pour accéder au formulaire.</p>
+<p>Ce lien n'est valable que pour un seul changement de mot de passe, sur une durée limitée.</p>
+
+<p>A bientôt !</p>

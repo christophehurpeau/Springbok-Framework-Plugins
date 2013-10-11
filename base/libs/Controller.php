@@ -1,3 +1,6 @@
 <?php
-class AController extends Controller{
+abstract class AController extends Controller{
+	public static function beforeDispatch(){
+		ACSecure::connect(false);
+	}
 }

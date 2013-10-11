@@ -13,14 +13,18 @@ class UserHistoryPassword extends SSqlModel{
 		/** @SqlType('tinyint(1) unsigned') @NotNull
 		* @Enum(1=>'Initial','Mot de passe perdu','Défini par l\'utilisateur')
 		*/ $type,
+		/** @SqlType('int(10) unsigned') @Null
+		* @ForeignKey('UserHistoryEmail','id')
+		*/ $user_history_email,
 		/** @SqlType('datetime') @NotNull
 		*/ $created;
 	
-	public static function create($userId,$type,$pwd){
+	public static function create($userId,$type,$pwd,$userHistoryEmail=null){
 		$uph=new UserHistoryPassword;
-		$uph->user_id=$userId;
-		$uph->pwd=$pwd;
-		$uph->type=$type;
+		$uph->user_id = $userId;
+		$uph->pwd = $pwd;
+		$uph->type = $type;
+		$uph->user_history_email = $userHistoryEmail;
 		return $uph->insert();
 	}
 	
