@@ -7,8 +7,8 @@ window.users={
 		$('#formLostPassword').ajaxForm(function(data){
 			if(data!=='0'){
 				var divLostPassword=$('#divLostPassword').html('');
-				$('<div class="message success" style="display:none;opacity:0"/>').html('<b>Mot de passe envoyé !</b><br/>Vérifiez vos emails, puis connectez vous dans le formulaire ci-dessus.').appendTo(divLostPassword).animate({opacity:1,height:'show'},'fast');
-			}else $('<div class="message error bold" style="display:none;opacity:0"/>').text('Impossible de renvoyer de mot de passe à cette adresse.').prependTo($('#formLostPassword'))
+				$('<div class="message success" style="display:none;opacity:0"/>').html('<b>Mail envoyé !</b><br/>Vérifiez vos emails, puis cliquez sur le lien pour modifier votre mot de passe.').appendTo(divLostPassword).animate({opacity:1,height:'show'},'fast');
+			}else $('<div class="message error bold" style="display:none;opacity:0"/>').text('Impossible d\'envoyer de mail à cette adresse.').prependTo($('#formLostPassword'))
 						.animate({opacity:1,height:'show'},'fast').delay(4500).animate({opacity:0,height:'hide'},800);
 		});
 	}
