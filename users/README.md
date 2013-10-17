@@ -51,7 +51,7 @@ To be able to use a page with 3 forms : login, register and a form for lost pass
 
 ### Add in the header the connected user and links to My Account and Logout
 
-Add this in your layout, in the <header>
+Add this in your layout, in the `<header>`
 
 > viewsLayouts/page.php
 
