@@ -74,12 +74,14 @@ class UserController extends AController{
 	}
 	
 	/** @ValidParams @AllRequired */
-	static function changePassword($old_password,$new_password,$new_password_confirm){
-		$old_password=trim($old_password); $new_password=trim($new_password); $new_password_confirm=trim($new_password_confirm);
+	static function changePassword($old_password,$new_password){
+		$old_password=trim($old_password);
+		$new_password=trim($new_password);
+		$new_password_confirm=trim(CHttpRequest::_POSTor('new_password_confirm',''));
 		$error=null;
 		$actualPassword=User::findValuePwdById($userId=CSecure::connected());
 		if(USecure::hashWithSalt($old_password) !== $actualPassword) $error='Votre mot de passe actuel ne correspond pas à celui que vous avez entré.';
-		elseif($new_password !== $new_password_confirm) $error='Votre nouveau mot de passe ne correspond pas au mot de passe de confirmation.';
+		elseif(!empty($new_password_confirm) && $new_password !== $new_password_confirm) $error='Votre nouveau mot de passe ne correspond pas au mot de passe de confirmation.';
 		else{
 			$pwd=USecure::hashWithSalt($new_password);
 			$uhpId=UserHistoryPassword::create($userId,UserHistoryPassword::USER_DEFINED,$pwd);
