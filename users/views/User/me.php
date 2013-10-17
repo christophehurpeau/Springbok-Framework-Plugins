@@ -27,7 +27,7 @@ HBreadcrumbs::set(array('Mon compte'=>'/user'));
 	<p class="message error">{$errorPasswordChange}</p>
 	{/if}
 	
-	{=$form=User::Form()->action('/user/changePassword')}
+	{=$form=User::Form(false)->action('/user/changePassword')}
 	{=$form->input('old_password')->label('Ancien mot de passe')->setType('password')->required()->attr('autocomplete','off')->pattern('.{4,}')}
 	{=$form->input('pwd')->attr('name','new_password')->id('UserNewPassword')->label('Nouveau mot de passe')->setType('password')->attr('autocomplete','off')}
 	{=$form->input('new_password_confirm')->label('Confirmation')->setType('password')->attr('autocomplete','off')->dataattr('same','#UserNewPassword')}
