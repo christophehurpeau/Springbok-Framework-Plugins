@@ -30,7 +30,7 @@ HBreadcrumbs::set(array('Mon compte'=>'/user'));
 	{=$form=User::Form()->action('/user/changePassword')}
 	{=$form->input('old_password')->label('Ancien mot de passe')->setType('password')->required()->attr('autocomplete','off')->pattern('.{4,}')}
 	{=$form->input('pwd')->attr('name','new_password')->id('UserNewPassword')->label('Nouveau mot de passe')->setType('password')->attr('autocomplete','off')}
-	{=$form->input('new_password_confirm')->label('Confirmation')->setType('password')->attr('autocomplete','off')->dataattr('same','#new_password')}
+	{=$form->input('new_password_confirm')->label('Confirmation')->setType('password')->attr('autocomplete','off')->dataattr('same','#UserNewPassword')}
 	{=$form->end('Changer')}
 	
 	<p class="message info">Votre mot de passe doit avoir un minimum de <b>6</b> caractères. Il doit comporter des chiffres et des lettres. Tous les caractères sont autorisés.</p>
