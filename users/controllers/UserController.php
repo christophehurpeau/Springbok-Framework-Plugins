@@ -47,6 +47,7 @@ class UserController extends AController{
 	private static function _updateUser($currentUser,$user){
 		if($currentUser->type===User::SITE){
 			try{
+				unset($user->pwd,$user->type,$user->status);
 				$fields = array_keys($user->_getData());
 				/*#if user.searchable*/ $fields[] = 'p_id'; /*#/if*/
 				$originalData=User::QRow()->byId($user->id)->setFields($fields)->fetch();
